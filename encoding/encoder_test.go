@@ -29,3 +29,9 @@ func TestEncoder_EncodeMoney_ZeroTrimming(t *testing.T) {
 }
 
 func TestEncoder_EncodeMoney_ValueOverflow(t *testing.T) {
+	buffer := new(bytes.Buffer)
+	encoder := NewEncoder(buffer)
+
+	err := encoder.EncodeMoney("11111111111111111111111111111111111111 SCR")
+	require.Error(t, err)
+}
