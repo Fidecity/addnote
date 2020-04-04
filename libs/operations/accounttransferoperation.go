@@ -27,4 +27,20 @@ func (p AccountTransferOperation) Type() types.OperationType {
 }
 
 func (p AccountTransferOperation) Marshal(enc *util.TypeEncoder) error {
-	if err := enc.Encode(int8(p.
+	if err := enc.Encode(int8(p.Type())); err != nil {
+		return errors.Annotate(err, "encode OperationType")
+	}
+	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode Fee")
+	}
+	if err := enc.Encode(p.AccountID); err != nil {
+		return errors.Annotate(err, "encode AccountID")
+	}
+	if err := enc.Encode(p.NewOwner); err != nil {
+		return errors.Annotate(err, "encode NewOwner")
+	}
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode Extensions")
+	}
+	return nil
+}
