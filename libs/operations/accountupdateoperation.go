@@ -62,4 +62,28 @@ func (p AccountUpdateOperation) Marshal(enc *util.TypeEncoder) error {
 	}
 
 	if err := enc.Encode(p.Owner); err != nil {
-		re
+		return errors.Annotate(err, "encode Owner")
+	}
+
+	if err := enc.Encode(p.Active != nil); err != nil {
+		return errors.Annotate(err, "encode have Active")
+	}
+
+	if err := enc.Encode(p.Active); err != nil {
+		return errors.Annotate(err, "encode Active")
+	}
+
+	if err := enc.Encode(p.NewOptions != nil); err != nil {
+		return errors.Annotate(err, "encode have NewOptions")
+	}
+
+	if err := enc.Encode(p.NewOptions); err != nil {
+		return errors.Annotate(err, "encode NewOptions")
+	}
+
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode extensions")
+	}
+
+	return nil
+}
