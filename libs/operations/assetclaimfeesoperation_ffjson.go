@@ -182,4 +182,51 @@ mainparse:
 					if bytes.Equal(ffjKeyAssetClaimFeesOperationFee, kn) {
 						currentKey = ffjtAssetClaimFeesOperationFee
 						state = fflib.FFParse_want_colon
-					
+						goto mainparse
+					}
+
+				case 'i':
+
+					if bytes.Equal(ffjKeyAssetClaimFeesOperationIssuer, kn) {
+						currentKey = ffjtAssetClaimFeesOperationIssuer
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyAssetClaimFeesOperationFee, kn) {
+					currentKey = ffjtAssetClaimFeesOperationFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAssetClaimFeesOperationExtensions, kn) {
+					currentKey = ffjtAssetClaimFeesOperationExtensions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyAssetClaimFeesOperationAmountToClaim, kn) {
+					currentKey = ffjtAssetClaimFeesOperationAmountToClaim
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAssetClaimFeesOperationIssuer, kn) {
+					currentKey = ffjtAssetClaimFeesOperationIssuer
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtAssetClaimFeesOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib
