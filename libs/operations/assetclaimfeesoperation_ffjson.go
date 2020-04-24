@@ -74,4 +74,55 @@ func (j *AssetClaimFeesOperation) MarshalJSONBuf(buf fflib.EncodingBuffer) error
 			buf.WriteByte(',')
 		}
 	}
-	buf.
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtAssetClaimFeesOperationbase = iota
+	ffjtAssetClaimFeesOperationnosuchkey
+
+	ffjtAssetClaimFeesOperationIssuer
+
+	ffjtAssetClaimFeesOperationAmountToClaim
+
+	ffjtAssetClaimFeesOperationExtensions
+
+	ffjtAssetClaimFeesOperationFee
+)
+
+var ffjKeyAssetClaimFeesOperationIssuer = []byte("issuer")
+
+var ffjKeyAssetClaimFeesOperationAmountToClaim = []byte("amount_to_claim")
+
+var ffjKeyAssetClaimFeesOperationExtensions = []byte("extensions")
+
+var ffjKeyAssetClaimFeesOperationFee = []byte("fee")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *AssetClaimFeesOperation) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *AssetClaimFeesOperation) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtAssetClaimFeesOperationbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_le
