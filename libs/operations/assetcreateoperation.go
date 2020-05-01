@@ -34,4 +34,53 @@ func (p AssetCreateOperation) Type() types.OperationType {
 
 func (p AssetCreateOperation) MarshalFeeScheduleParams(params types.M, enc *util.TypeEncoder) error {
 	if s3, ok := params["symbol3"]; ok {
-		s3Val, 
+		s3Val, err := ToUInt64(s3)
+		if err != nil {
+			return errors.Annotate(err, "ToUint64 [symbol3]")
+		}
+		if err := enc.Encode(s3Val); err != nil {
+			return errors.Annotate(err, "encode Symbol3")
+		}
+	}
+	if s4, ok := params["symbol4"]; ok {
+		s4Val, err := ToUInt64(s4)
+		if err != nil {
+			return errors.Annotate(err, "ToUint64 [symbol4]")
+		}
+		if err := enc.Encode(s4Val); err != nil {
+			return errors.Annotate(err, "encode Symbol4")
+		}
+	}
+	if ls, ok := params["long_symbol"]; ok {
+		lsVal, err := ToUInt64(ls)
+		if err != nil {
+			return errors.Annotate(err, "ToUint64 [LongSymbol]")
+		}
+		if err := enc.Encode(lsVal); err != nil {
+			return errors.Annotate(err, "encode LongSymbol")
+		}
+	}
+	if ppk, ok := params["price_per_kbyte"]; ok {
+		if err := enc.Encode(types.UInt32(ppk.(float64))); err != nil {
+			return errors.Annotate(err, "encode PricePerKByte")
+		}
+	}
+
+	return nil
+}
+
+func (p AssetCreateOperation) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(int8(p.Type())); err != nil {
+		return errors.Annotate(err, "encode OperationType")
+	}
+
+	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode fee")
+	}
+
+	if err := enc.Encode(p.Issuer); err != nil {
+		return errors.Annotate(err, "encode issuer")
+	}
+
+	if err := enc.Encode(p.Symbol); err != nil {
+		ret
