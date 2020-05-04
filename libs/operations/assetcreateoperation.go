@@ -83,4 +83,45 @@ func (p AssetCreateOperation) Marshal(enc *util.TypeEncoder) error {
 	}
 
 	if err := enc.Encode(p.Symbol); err != nil {
-		ret
+		return errors.Annotate(err, "encode Symbol")
+	}
+
+	if err := enc.Encode(p.Precision); err != nil {
+		return errors.Annotate(err, "encode Precision")
+	}
+
+	if err := enc.Encode(p.CommonOptions); err != nil {
+		return errors.Annotate(err, "encode CommonOptions")
+	}
+
+	if err := enc.Encode(p.BitassetOptions != nil); err != nil {
+		return errors.Annotate(err, "encode have BitassetOptions")
+	}
+
+	if err := enc.Encode(p.BitassetOptions); err != nil {
+		return errors.Annotate(err, "encode BitassetOptions")
+	}
+
+	if err := enc.Encode(p.IsPredictionMarket); err != nil {
+		return errors.Annotate(err, "encode IsPredictionMarket")
+	}
+
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode extensions")
+	}
+
+	return nil
+}
+
+func ToUInt64(in interface{}) (types.UInt64, error) {
+	inString, ok := in.(string)
+	if ok {
+		inVal, err := strconv.ParseUint(inString, 10, 64)
+		if err != nil {
+			return types.UInt64(0), errors.Annotate(err, "ParseUint")
+		}
+		return types.UInt64(inVal), nil
+	}
+
+	return types.UInt64(in.(float64)), nil
+}
