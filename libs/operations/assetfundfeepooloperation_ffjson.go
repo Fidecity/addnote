@@ -40,4 +40,75 @@ func (j *AssetFundFeePoolOperation) MarshalJSONBuf(buf fflib.EncodingBuffer) err
 
 	{
 
-		obj, err = 
+		obj, err = j.AssetID.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"extensions":`)
+
+	{
+
+		obj, err = j.Extensions.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"from_account":`)
+
+	{
+
+		obj, err = j.FromAccount.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte(',')
+	if j.Fee != nil {
+		if true {
+			/* Struct fall back. type=types.AssetAmount kind=struct */
+			buf.WriteString(`"fee":`)
+			err = buf.Encode(j.Fee)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtAssetFundFeePoolOperationbase = iota
+	ffjtAssetFundFeePoolOperationnosuchkey
+
+	ffjtAssetFundFeePoolOperationAmount
+
+	ffjtAssetFundFeePoolOperationAssetID
+
+	ffjtAssetFundFeePoolOperationExtensions
+
+	ffjtAssetFundFeePoolOperationFromAccount
+
+	ffjtAssetFundFeePoolOperationFee
+)
+
+var ffjKeyAssetFundFeePoolOperationAmount = []byte("amount")
+
+var ffjKeyAssetFundFeePoolOperationAssetID = []byte("asset_id")
+
+var ffjKeyAssetFundFeePoolOperationExtensions = []byte("extensions")
+
+var ffjKeyAssetFundFeePoolOperationFromAccount = []byte("from_account")
+
+var ffjKeyAssetFundFeePoolOperationFee = []byte("fee")
+
+// UnmarshalJSON umarshall json - temp
