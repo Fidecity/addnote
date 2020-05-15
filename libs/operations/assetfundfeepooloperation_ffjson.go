@@ -158,3 +158,54 @@ mainparse:
 			if tok == fflib.FFTok_right_bracket {
 				goto done
 			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtAssetFundFeePoolOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeyAssetFundFeePoolOperationAmount, kn) {
+						currentKey = ffjtAssetFundFeePoolOperationAmount
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAssetFundFeePoolOperationAssetID, kn) {
+						currentKey = ffjtAssetFundFeePoolOperationAssetID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'e':
+
+					if bytes.Equal(ffjKeyAssetFundFeePoolOperationExtensions, kn) {
+						currentKey = ffjtAssetFundFeePoolOperationExtensions
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'f':
+
+					if bytes.Equal(ffjKeyAssetFundFeePoolOperationFromAccount, kn) {
+						currentKey = ffjtAssetFundFeePoolOperationFromAccount
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAssetFundFeePoolOperationFee, kn) {
+						currentKey = ffjtAssetFundFeePoolOperationFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.Simple
