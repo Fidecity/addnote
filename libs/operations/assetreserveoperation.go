@@ -17,4 +17,35 @@ func init() {
 
 type AssetReserveOperation struct {
 	types.OperationFee
-	Payer    
+	Payer           types.AccountID   `json:"payer"`
+	AmountToReserve types.AssetAmount `json:"amount_to_reserve"`
+	Extensions      types.Extensions  `json:"extensions"`
+}
+
+func (p AssetReserveOperation) Type() types.OperationType {
+	return types.OperationTypeAssetReserve
+}
+
+func (p AssetReserveOperation) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(int8(p.Type())); err != nil {
+		return errors.Annotate(err, "encode OperationType")
+	}
+
+	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode fee")
+	}
+
+	if err := enc.Encode(p.Payer); err != nil {
+		return errors.Annotate(err, "encode payer")
+	}
+
+	if err := enc.Encode(p.AmountToReserve); err != nil {
+		return errors.Annotate(err, "encode amount to reverse")
+	}
+
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode extensions")
+	}
+
+	return nil
+}
