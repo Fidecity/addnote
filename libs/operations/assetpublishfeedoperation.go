@@ -32,3 +32,25 @@ func (p AssetPublishFeedOperation) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode OperationType")
 	}
 
+	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode Fee")
+	}
+
+	if err := enc.Encode(p.Publisher); err != nil {
+		return errors.Annotate(err, "encode Publisher")
+	}
+
+	if err := enc.Encode(p.AssetID); err != nil {
+		return errors.Annotate(err, "encode AssetID")
+	}
+
+	if err := enc.Encode(p.Feed); err != nil {
+		return errors.Annotate(err, "encode Feed")
+	}
+
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode Extensions")
+	}
+
+	return nil
+}
