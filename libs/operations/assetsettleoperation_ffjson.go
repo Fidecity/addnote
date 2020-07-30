@@ -71,4 +71,60 @@ func (j *AssetSettleOperation) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 			if err != nil {
 				return err
 			}
-			buf.Write
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtAssetSettleOperationbase = iota
+	ffjtAssetSettleOperationnosuchkey
+
+	ffjtAssetSettleOperationAccount
+
+	ffjtAssetSettleOperationAmount
+
+	ffjtAssetSettleOperationExtensions
+
+	ffjtAssetSettleOperationFee
+)
+
+var ffjKeyAssetSettleOperationAccount = []byte("account")
+
+var ffjKeyAssetSettleOperationAmount = []byte("amount")
+
+var ffjKeyAssetSettleOperationExtensions = []byte("extensions")
+
+var ffjKeyAssetSettleOperationFee = []byte("fee")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *AssetSettleOperation) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *AssetSettleOperation) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtAssetSettleOperationbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto
