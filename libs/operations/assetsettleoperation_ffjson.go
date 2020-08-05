@@ -230,4 +230,66 @@ mainparse:
 			continue
 		case fflib.FFParse_want_value:
 
-			if tok == fflib.FF
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtAssetSettleOperationAccount:
+					goto handle_Account
+
+				case ffjtAssetSettleOperationAmount:
+					goto handle_Amount
+
+				case ffjtAssetSettleOperationExtensions:
+					goto handle_Extensions
+
+				case ffjtAssetSettleOperationFee:
+					goto handle_Fee
+
+				case ffjtAssetSettleOperationnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_Account:
+
+	/* handler: j.Account type=types.AccountID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.Account.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Amount:
+
+	/* handler: j.Amount type=types.AssetAmount kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.AssetAmount kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(e
