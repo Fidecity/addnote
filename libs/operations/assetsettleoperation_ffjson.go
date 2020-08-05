@@ -127,4 +127,59 @@ mainparse:
 		case fflib.FFParse_map_start:
 			if tok != fflib.FFTok_left_bracket {
 				wantedTok = fflib.FFTok_left_bracket
-				goto
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			continue
+
+		case fflib.FFParse_after_value:
+			if tok == fflib.FFTok_comma {
+				state = fflib.FFParse_want_key
+			} else if tok == fflib.FFTok_right_bracket {
+				goto done
+			} else {
+				wantedTok = fflib.FFTok_comma
+				goto wrongtokenerror
+			}
+
+		case fflib.FFParse_want_key:
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtAssetSettleOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeyAssetSettleOperationAccount, kn) {
+						currentKey = ffjtAssetSettleOperationAccount
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAssetSettleOperationAmount, kn) {
+						currentKey = ffjtAssetSettleOperationAmount
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'e':
+
+					if bytes.Equal(ffjKeyAssetSettleOperationExtensions, kn) {
+						currentKey = ffjtAssetSettleOperationExtensions
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'f':
