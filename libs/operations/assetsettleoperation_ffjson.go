@@ -183,3 +183,51 @@ mainparse:
 					}
 
 				case 'f':
+
+					if bytes.Equal(ffjKeyAssetSettleOperationFee, kn) {
+						currentKey = ffjtAssetSettleOperationFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyAssetSettleOperationFee, kn) {
+					currentKey = ffjtAssetSettleOperationFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAssetSettleOperationExtensions, kn) {
+					currentKey = ffjtAssetSettleOperationExtensions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyAssetSettleOperationAmount, kn) {
+					currentKey = ffjtAssetSettleOperationAmount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyAssetSettleOperationAccount, kn) {
+					currentKey = ffjtAssetSettleOperationAccount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtAssetSettleOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FF
