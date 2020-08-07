@@ -359,4 +359,10 @@ tokerror:
 	}
 	err = fs.Error.ToError()
 	if err != nil {
-		return f
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
