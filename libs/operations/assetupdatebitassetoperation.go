@@ -42,4 +42,16 @@ func (p AssetUpdateBitassetOperation) Marshal(enc *util.TypeEncoder) error {
 	}
 
 	if err := enc.Encode(p.AssetToUpdate); err != nil {
-		return errors.Annota
+		return errors.Annotate(err, "encode AssetToUpdate")
+	}
+
+	if err := enc.Encode(p.NewOptions); err != nil {
+		return errors.Annotate(err, "encode new options")
+	}
+
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode extensions")
+	}
+
+	return nil
+}
