@@ -49,4 +49,33 @@ func (p AssetUpdateOperation) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode OperationType")
 	}
 
-	if err := enc.Encode(p.
+	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode Fee")
+	}
+
+	if err := enc.Encode(p.Issuer); err != nil {
+		return errors.Annotate(err, "encode Issuer")
+	}
+
+	if err := enc.Encode(p.AssetToUpdate); err != nil {
+		return errors.Annotate(err, "encode AssetToUpdate")
+	}
+
+	if err := enc.Encode(p.NewIssuer != nil); err != nil {
+		return errors.Annotate(err, "encode have NewIssuer")
+	}
+
+	if err := enc.Encode(p.NewIssuer); err != nil {
+		return errors.Annotate(err, "NewIssuer")
+	}
+
+	if err := enc.Encode(p.NewOptions); err != nil {
+		return errors.Annotate(err, "encode new NewOptions")
+	}
+
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode Extensions")
+	}
+
+	return nil
+}
