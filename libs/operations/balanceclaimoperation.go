@@ -52,4 +52,9 @@ func (p BalanceClaimOperation) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode BalanceOwnerKey")
 	}
 
-	if err := enc.Encode(p.TotalClaimed
+	if err := enc.Encode(p.TotalClaimed); err != nil {
+		return errors.Annotate(err, "encode TotalClaimed")
+	}
+
+	return nil
+}
