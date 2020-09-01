@@ -59,4 +59,52 @@ func (j *CommitteeMemberCreateOperation) MarshalJSONBuf(buf fflib.EncodingBuffer
 	buf.WriteByte(',')
 	if j.Fee != nil {
 		if true {
-			/* 
+			/* Struct fall back. type=types.AssetAmount kind=struct */
+			buf.WriteString(`"fee":`)
+			err = buf.Encode(j.Fee)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtCommitteeMemberCreateOperationbase = iota
+	ffjtCommitteeMemberCreateOperationnosuchkey
+
+	ffjtCommitteeMemberCreateOperationCommitteeMemberAccount
+
+	ffjtCommitteeMemberCreateOperationURL
+
+	ffjtCommitteeMemberCreateOperationFee
+)
+
+var ffjKeyCommitteeMemberCreateOperationCommitteeMemberAccount = []byte("committee_member_account")
+
+var ffjKeyCommitteeMemberCreateOperationURL = []byte("url")
+
+var ffjKeyCommitteeMemberCreateOperationFee = []byte("fee")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *CommitteeMemberCreateOperation) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *CommitteeMemberCreateOperation) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtCommitteeMemberCreateOperationbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, stat
