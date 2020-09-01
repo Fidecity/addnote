@@ -32,4 +32,12 @@ func (p CommitteeMemberCreateOperation) Marshal(enc *util.TypeEncoder) error {
 	if err := enc.Encode(p.Fee); err != nil {
 		return errors.Annotate(err, "encode Fee")
 	}
-	if err := 
+	if err := enc.Encode(p.CommitteeMemberAccount); err != nil {
+		return errors.Annotate(err, "encode CommitteeMemberAccount")
+	}
+	if err := enc.Encode(p.URL); err != nil {
+		return errors.Annotate(err, "encode URL")
+	}
+
+	return nil
+}
