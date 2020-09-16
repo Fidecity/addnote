@@ -162,4 +162,51 @@ mainparse:
 				case 'f':
 
 					if bytes.Equal(ffjKeyCommitteeMemberCreateOperationFee, kn) {
-						currentKey = ffjt
+						currentKey = ffjtCommitteeMemberCreateOperationFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'u':
+
+					if bytes.Equal(ffjKeyCommitteeMemberCreateOperationURL, kn) {
+						currentKey = ffjtCommitteeMemberCreateOperationURL
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyCommitteeMemberCreateOperationFee, kn) {
+					currentKey = ffjtCommitteeMemberCreateOperationFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyCommitteeMemberCreateOperationURL, kn) {
+					currentKey = ffjtCommitteeMemberCreateOperationURL
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyCommitteeMemberCreateOperationCommitteeMemberAccount, kn) {
+					currentKey = ffjtCommitteeMemberCreateOperationCommitteeMemberAccount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtCommitteeMemberCreateOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib
