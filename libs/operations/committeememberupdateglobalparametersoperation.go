@@ -82,4 +82,37 @@ func (p ChainParameters) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode MaximumTimeUntilExpiration")
 	}
 	// (maximum_proposal_lifetime)
-	if err := enc.Encode(p.Maxim
+	if err := enc.Encode(p.MaximumProposalLifetime); err != nil {
+		return errors.Annotate(err, "encode MaximumProposalLifetime")
+	}
+	// (maximum_asset_whitelist_authorities)
+	if err := enc.Encode(p.MaximumAssetWhitelistAuthorities); err != nil {
+		return errors.Annotate(err, "encode MaximumAssetWhitelistAuthorities")
+	}
+	// (maximum_asset_feed_publishers)
+	if err := enc.Encode(p.MaximumAssetFeedPublishers); err != nil {
+		return errors.Annotate(err, "encode MaximumAssetFeedPublishers")
+	}
+	// (maximum_witness_count)
+	if err := enc.Encode(p.MaximumWitnessCount); err != nil {
+		return errors.Annotate(err, "encode MaximumWitnessCount")
+	}
+	// (maximum_committee_count)
+	if err := enc.Encode(p.MaximumCommitteeCount); err != nil {
+		return errors.Annotate(err, "encode MaximumCommitteeCount")
+	}
+	// (maximum_authority_membership)
+	if err := enc.Encode(p.MaximumAuthorityMembership); err != nil {
+		return errors.Annotate(err, "encode MaximumAuthorityMembership")
+	}
+	// (reserve_percent_of_fee)
+	if err := enc.Encode(p.ReservePercentOfFee); err != nil {
+		return errors.Annotate(err, "encode ReservePercentOfFee")
+	}
+	// (network_percent_of_fee)
+	if err := enc.Encode(p.NetworkPercentOfFee); err != nil {
+		return errors.Annotate(err, "encode NetworkPercentOfFee")
+	}
+	// (lifetime_referrer_percent_of_fee)
+	if err := enc.Encode(p.LifetimeReferrerPercentOfFee); err != nil {
+		return errors.Annotate(err, "encode Lifetime
