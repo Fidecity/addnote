@@ -48,4 +48,38 @@ type ChainParameters struct {
 	FeeLiquidationThreshold          types.Int64       `json:"fee_liquidation_threshold"`
 }
 
-func (p ChainParameters) Marshal(enc *util.TypeEncoder) error 
+func (p ChainParameters) Marshal(enc *util.TypeEncoder) error {
+	// (current_fees)
+	if err := enc.Encode(p.CurrentFees); err != nil {
+		return errors.Annotate(err, "encode CurrentFees")
+	}
+	// (block_interval)
+	if err := enc.Encode(p.BlockInterval); err != nil {
+		return errors.Annotate(err, "encode BlockInterval")
+	}
+	// (maintenance_interval)
+	if err := enc.Encode(p.MaintenanceInterval); err != nil {
+		return errors.Annotate(err, "encode MaintenanceInterval")
+	}
+	// (maintenance_skip_slots)
+	if err := enc.Encode(p.MaintenanceSkipSlots); err != nil {
+		return errors.Annotate(err, "encode MaintenanceSkipSlots")
+	}
+	// (committee_proposal_review_period)
+	if err := enc.Encode(p.CommitteeProposalReviewPeriod); err != nil {
+		return errors.Annotate(err, "encode CommitteeProposalReviewPeriod")
+	}
+	// (maximum_transaction_size)
+	if err := enc.Encode(p.MaximumTransactionSize); err != nil {
+		return errors.Annotate(err, "encode MaximumTransactionSize")
+	}
+	// (maximum_block_size)
+	if err := enc.Encode(p.MaximumBlockSize); err != nil {
+		return errors.Annotate(err, "encode MaximumBlockSize")
+	}
+	// (maximum_time_until_expiration)
+	if err := enc.Encode(p.MaximumTimeUntilExpiration); err != nil {
+		return errors.Annotate(err, "encode MaximumTimeUntilExpiration")
+	}
+	// (maximum_proposal_lifetime)
+	if err := enc.Encode(p.Maxim
