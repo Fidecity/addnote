@@ -115,4 +115,36 @@ func (p ChainParameters) Marshal(enc *util.TypeEncoder) error {
 	}
 	// (lifetime_referrer_percent_of_fee)
 	if err := enc.Encode(p.LifetimeReferrerPercentOfFee); err != nil {
-		return errors.Annotate(err, "encode Lifetime
+		return errors.Annotate(err, "encode LifetimeReferrerPercentOfFee")
+	}
+	// (cashback_vesting_period_seconds)
+	if err := enc.Encode(p.CashbackVestingPeriodSeconds); err != nil {
+		return errors.Annotate(err, "encode CashbackVestingPeriodSeconds")
+	}
+	// (cashback_vesting_threshold)
+	if err := enc.Encode(p.CashbackVestingThreshold); err != nil {
+		return errors.Annotate(err, "encode CashbackVestingThreshold")
+	}
+	// (count_non_member_votes)
+	if err := enc.Encode(p.CountNonMemberVotes); err != nil {
+		return errors.Annotate(err, "encode CountNonMemberVotes")
+	}
+	// (allow_non_member_whitelists)
+	if err := enc.Encode(p.AllowNonMemberWhitelists); err != nil {
+		return errors.Annotate(err, "encode AllowNonMemberWhitelists")
+	}
+	// (witness_pay_per_block)
+	if err := enc.Encode(p.WitnessPayPerBlock); err != nil {
+		return errors.Annotate(err, "encode WitnessPayPerBlock")
+	}
+	// (witness_pay_vesting_seconds)
+	// if err := enc.Encode(p.WitnessPayVestingSeconds); err != nil {
+	// 	return errors.Annotate(err, "encode WitnessPayVWestingSeconds")
+	// }
+	// (worker_budget_per_day)
+	if err := enc.Encode(p.WorkerBudgetPerDay); err != nil {
+		return errors.Annotate(err, "encode WorkerBudgetPerDay")
+	}
+	// (max_predicate_opcode)
+	if err := enc.Encode(p.MaxPredicateOpcode); err != nil {
+		return errors.Annotate(err, "encode MaxPredicat
