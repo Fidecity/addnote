@@ -147,4 +147,44 @@ func (p ChainParameters) Marshal(enc *util.TypeEncoder) error {
 	}
 	// (max_predicate_opcode)
 	if err := enc.Encode(p.MaxPredicateOpcode); err != nil {
-		return errors.Annotate(err, "encode MaxPredicat
+		return errors.Annotate(err, "encode MaxPredicateOpcode")
+	}
+	// (fee_liquidation_threshold)
+	if err := enc.Encode(p.FeeLiquidationThreshold); err != nil {
+		return errors.Annotate(err, "encode FeeLiquidationThreshold")
+	}
+	// (accounts_per_fee_scale)
+	if err := enc.Encode(p.AccountsPerFeeScale); err != nil {
+		return errors.Annotate(err, "encode AccountsPerFeeScale")
+	}
+	// (account_fee_scale_bitshifts)
+	if err := enc.Encode(p.AccountFeeScaleBitshifts); err != nil {
+		return errors.Annotate(err, "encode AccountFeeScaleBitshifts")
+	}
+	// (max_authority_depth)
+	if err := enc.Encode(p.MaxAuthorityDepth); err != nil {
+		return errors.Annotate(err, "encode MaxAuthorityDepth")
+	}
+	// (extensions)
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode Extensions")
+	}
+
+	return nil
+}
+
+type CommitteeMemberUpdateGlobalParametersOperation struct {
+	types.OperationFee
+	NewParameters ChainParameters `json:"new_parameters"`
+}
+
+func (p CommitteeMemberUpdateGlobalParametersOperation) Type() types.OperationType {
+	return types.OperationTypeCommitteeMemberUpdateGlobalParameters
+}
+
+func (p CommitteeMemberUpdateGlobalParametersOperation) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(int8(p.Type())); err != nil {
+		return errors.Annotate(err, "encode OperationType")
+	}
+
+	if err := enc.Encode(p.Fee); err != nil {
