@@ -188,3 +188,12 @@ func (p CommitteeMemberUpdateGlobalParametersOperation) Marshal(enc *util.TypeEn
 	}
 
 	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode Fee")
+	}
+
+	if err := enc.Encode(p.NewParameters); err != nil {
+		return errors.Annotate(err, "encode NewParameters")
+	}
+
+	return nil
+}
