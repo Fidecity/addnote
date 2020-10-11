@@ -49,4 +49,34 @@ func (j *ChainParameters) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 
 	{
 
-		obj,
+		obj, err = j.Extensions.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	/* Struct fall back. type=types.FeeSchedule kind=struct */
+	buf.WriteString(`,"current_fees":`)
+	err = buf.Encode(&j.CurrentFees)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"account_fee_scale_bitshifts":`)
+	fflib.FormatBits2(buf, uint64(j.AccountFeeScaleBitshifts), 10, false)
+	buf.WriteString(`,"block_interval":`)
+	fflib.FormatBits2(buf, uint64(j.BlockInterval), 10, false)
+	buf.WriteString(`,"maintenance_skip_slots":`)
+	fflib.FormatBits2(buf, uint64(j.MaintenanceSkipSlots), 10, false)
+	buf.WriteString(`,"max_authority_depth":`)
+	fflib.FormatBits2(buf, uint64(j.MaxAuthorityDepth), 10, false)
+	buf.WriteString(`,"maximum_asset_feed_publishers":`)
+	fflib.FormatBits2(buf, uint64(j.MaximumAssetFeedPublishers), 10, false)
+	buf.WriteString(`,"maximum_asset_whitelist_authorities":`)
+	fflib.FormatBits2(buf, uint64(j.MaximumAssetWhitelistAuthorities), 10, false)
+	buf.WriteString(`,"accounts_per_fee_scale":`)
+	fflib.FormatBits2(buf, uint64(j.AccountsPerFeeScale), 10, false)
+	buf.WriteString(`,"lifetime_referrer_percent_of_fee":`)
+	fflib.FormatBits2(buf, uint64(j.LifetimeReferrerPercentOfFee), 10, false)
+	buf.WriteString(`,"max_predicate_opcode":`)
+	fflib.FormatBits2(buf, uint64
