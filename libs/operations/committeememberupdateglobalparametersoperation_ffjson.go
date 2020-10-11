@@ -101,4 +101,43 @@ func (j *ChainParameters) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	buf.WriteString(`,"maximum_time_until_expiration":`)
 	fflib.FormatBits2(buf, uint64(j.MaximumTimeUntilExpiration), 10, false)
 	buf.WriteString(`,"maximum_transaction_size":`)
-	fflib.FormatBits2(buf, uint64(j.MaximumTransactionSize), 10, 
+	fflib.FormatBits2(buf, uint64(j.MaximumTransactionSize), 10, false)
+	buf.WriteString(`,"maintenance_interval":`)
+	fflib.FormatBits2(buf, uint64(j.MaintenanceInterval), 10, false)
+	buf.WriteString(`,"maximum_block_size":`)
+	fflib.FormatBits2(buf, uint64(j.MaximumBlockSize), 10, false)
+	buf.WriteString(`,"cashback_vesting_threshold":`)
+	fflib.FormatBits2(buf, uint64(j.CashbackVestingThreshold), 10, j.CashbackVestingThreshold < 0)
+	buf.WriteString(`,"witness_pay_per_block":`)
+	fflib.FormatBits2(buf, uint64(j.WitnessPayPerBlock), 10, j.WitnessPayPerBlock < 0)
+	buf.WriteString(`,"worker_budget_per_day":`)
+	fflib.FormatBits2(buf, uint64(j.WorkerBudgetPerDay), 10, j.WorkerBudgetPerDay < 0)
+	buf.WriteString(`,"fee_liquidation_threshold":`)
+	fflib.FormatBits2(buf, uint64(j.FeeLiquidationThreshold), 10, j.FeeLiquidationThreshold < 0)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtChainParametersbase = iota
+	ffjtChainParametersnosuchkey
+
+	ffjtChainParametersAllowNonMemberWhitelists
+
+	ffjtChainParametersCountNonMemberVotes
+
+	ffjtChainParametersExtensions
+
+	ffjtChainParametersCurrentFees
+
+	ffjtChainParametersAccountFeeScaleBitshifts
+
+	ffjtChainParametersBlockInterval
+
+	ffjtChainParametersMaintenanceSkipSlots
+
+	ffjtChainParametersMaxAuthorityDepth
+
+	ffjtChainParametersMaximumAssetFeedPublishers
+
+	ffjtChainParametersMaximumAssetWhi
