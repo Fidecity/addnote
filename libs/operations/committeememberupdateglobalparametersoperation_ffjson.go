@@ -225,4 +225,39 @@ var ffjKeyChainParametersCommitteeProposalReviewPeriod = []byte("committee_propo
 
 var ffjKeyChainParametersWitnessPayVestingSeconds = []byte("witness_pay_vesting_seconds")
 
-var ffjKeyChainParametersMaximu
+var ffjKeyChainParametersMaximumProposalLifetime = []byte("maximum_proposal_lifetime")
+
+var ffjKeyChainParametersMaximumTimeUntilExpiration = []byte("maximum_time_until_expiration")
+
+var ffjKeyChainParametersMaximumTransactionSize = []byte("maximum_transaction_size")
+
+var ffjKeyChainParametersMaintenanceInterval = []byte("maintenance_interval")
+
+var ffjKeyChainParametersMaximumBlockSize = []byte("maximum_block_size")
+
+var ffjKeyChainParametersCashbackVestingThreshold = []byte("cashback_vesting_threshold")
+
+var ffjKeyChainParametersWitnessPayPerBlock = []byte("witness_pay_per_block")
+
+var ffjKeyChainParametersWorkerBudgetPerDay = []byte("worker_budget_per_day")
+
+var ffjKeyChainParametersFeeLiquidationThreshold = []byte("fee_liquidation_threshold")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *ChainParameters) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *ChainParameters) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtChainParametersbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", 
