@@ -140,4 +140,59 @@ const (
 
 	ffjtChainParametersMaximumAssetFeedPublishers
 
-	ffjtChainParametersMaximumAssetWhi
+	ffjtChainParametersMaximumAssetWhitelistAuthorities
+
+	ffjtChainParametersAccountsPerFeeScale
+
+	ffjtChainParametersLifetimeReferrerPercentOfFee
+
+	ffjtChainParametersMaxPredicateOpcode
+
+	ffjtChainParametersMaximumAuthorityMembership
+
+	ffjtChainParametersMaximumCommitteeCount
+
+	ffjtChainParametersMaximumWitnessCount
+
+	ffjtChainParametersNetworkPercentOfFee
+
+	ffjtChainParametersReservePercentOfFee
+
+	ffjtChainParametersCashbackVestingPeriodSeconds
+
+	ffjtChainParametersCommitteeProposalReviewPeriod
+
+	ffjtChainParametersWitnessPayVestingSeconds
+
+	ffjtChainParametersMaximumProposalLifetime
+
+	ffjtChainParametersMaximumTimeUntilExpiration
+
+	ffjtChainParametersMaximumTransactionSize
+
+	ffjtChainParametersMaintenanceInterval
+
+	ffjtChainParametersMaximumBlockSize
+
+	ffjtChainParametersCashbackVestingThreshold
+
+	ffjtChainParametersWitnessPayPerBlock
+
+	ffjtChainParametersWorkerBudgetPerDay
+
+	ffjtChainParametersFeeLiquidationThreshold
+)
+
+var ffjKeyChainParametersAllowNonMemberWhitelists = []byte("allow_non_member_whitelists")
+
+var ffjKeyChainParametersCountNonMemberVotes = []byte("count_non_member_votes")
+
+var ffjKeyChainParametersExtensions = []byte("extensions")
+
+var ffjKeyChainParametersCurrentFees = []byte("current_fees")
+
+var ffjKeyChainParametersAccountFeeScaleBitshifts = []byte("account_fee_scale_bitshifts")
+
+var ffjKeyChainParametersBlockInterval = []byte("block_interval")
+
+var ffjKeyChainParametersMaintena
