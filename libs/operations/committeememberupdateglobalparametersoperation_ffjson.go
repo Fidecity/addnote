@@ -195,4 +195,34 @@ var ffjKeyChainParametersAccountFeeScaleBitshifts = []byte("account_fee_scale_bi
 
 var ffjKeyChainParametersBlockInterval = []byte("block_interval")
 
-var ffjKeyChainParametersMaintena
+var ffjKeyChainParametersMaintenanceSkipSlots = []byte("maintenance_skip_slots")
+
+var ffjKeyChainParametersMaxAuthorityDepth = []byte("max_authority_depth")
+
+var ffjKeyChainParametersMaximumAssetFeedPublishers = []byte("maximum_asset_feed_publishers")
+
+var ffjKeyChainParametersMaximumAssetWhitelistAuthorities = []byte("maximum_asset_whitelist_authorities")
+
+var ffjKeyChainParametersAccountsPerFeeScale = []byte("accounts_per_fee_scale")
+
+var ffjKeyChainParametersLifetimeReferrerPercentOfFee = []byte("lifetime_referrer_percent_of_fee")
+
+var ffjKeyChainParametersMaxPredicateOpcode = []byte("max_predicate_opcode")
+
+var ffjKeyChainParametersMaximumAuthorityMembership = []byte("maximum_authority_membership")
+
+var ffjKeyChainParametersMaximumCommitteeCount = []byte("maximum_committee_count")
+
+var ffjKeyChainParametersMaximumWitnessCount = []byte("maximum_witness_count")
+
+var ffjKeyChainParametersNetworkPercentOfFee = []byte("network_percent_of_fee")
+
+var ffjKeyChainParametersReservePercentOfFee = []byte("reserve_percent_of_fee")
+
+var ffjKeyChainParametersCashbackVestingPeriodSeconds = []byte("cashback_vesting_period_seconds")
+
+var ffjKeyChainParametersCommitteeProposalReviewPeriod = []byte("committee_proposal_review_period")
+
+var ffjKeyChainParametersWitnessPayVestingSeconds = []byte("witness_pay_vesting_seconds")
+
+var ffjKeyChainParametersMaximu
