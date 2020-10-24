@@ -312,4 +312,44 @@ mainparse:
 						goto mainparse
 
 					} else if bytes.Equal(ffjKeyChainParametersAccountFeeScaleBitshifts, kn) {
-		
+						currentKey = ffjtChainParametersAccountFeeScaleBitshifts
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersAccountsPerFeeScale, kn) {
+						currentKey = ffjtChainParametersAccountsPerFeeScale
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'b':
+
+					if bytes.Equal(ffjKeyChainParametersBlockInterval, kn) {
+						currentKey = ffjtChainParametersBlockInterval
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'c':
+
+					if bytes.Equal(ffjKeyChainParametersCountNonMemberVotes, kn) {
+						currentKey = ffjtChainParametersCountNonMemberVotes
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersCurrentFees, kn) {
+						currentKey = ffjtChainParametersCurrentFees
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersCashbackVestingPeriodSeconds, kn) {
+						currentKey = ffjtChainParametersCashbackVestingPeriodSeconds
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersCommitteeProposalReviewPeriod, kn) {
+						currentKey = ffjtChainParametersCommitteeProposalReviewPeriod
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersC
