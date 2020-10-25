@@ -352,4 +352,48 @@ mainparse:
 						state = fflib.FFParse_want_colon
 						goto mainparse
 
-					} else if bytes.Equal(ffjKeyChainParametersC
+					} else if bytes.Equal(ffjKeyChainParametersCashbackVestingThreshold, kn) {
+						currentKey = ffjtChainParametersCashbackVestingThreshold
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'e':
+
+					if bytes.Equal(ffjKeyChainParametersExtensions, kn) {
+						currentKey = ffjtChainParametersExtensions
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'f':
+
+					if bytes.Equal(ffjKeyChainParametersFeeLiquidationThreshold, kn) {
+						currentKey = ffjtChainParametersFeeLiquidationThreshold
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'l':
+
+					if bytes.Equal(ffjKeyChainParametersLifetimeReferrerPercentOfFee, kn) {
+						currentKey = ffjtChainParametersLifetimeReferrerPercentOfFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'm':
+
+					if bytes.Equal(ffjKeyChainParametersMaintenanceSkipSlots, kn) {
+						currentKey = ffjtChainParametersMaintenanceSkipSlots
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaxAuthorityDepth, kn) {
+						currentKey = ffjtChainParametersMaxAuthorityDepth
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaximumAssetFeedPublishers, kn) {
+						currentKey = ffjtChainParametersMaximumAssetFeedPublishers
+						sta
