@@ -396,4 +396,37 @@ mainparse:
 
 					} else if bytes.Equal(ffjKeyChainParametersMaximumAssetFeedPublishers, kn) {
 						currentKey = ffjtChainParametersMaximumAssetFeedPublishers
-						sta
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaximumAssetWhitelistAuthorities, kn) {
+						currentKey = ffjtChainParametersMaximumAssetWhitelistAuthorities
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaxPredicateOpcode, kn) {
+						currentKey = ffjtChainParametersMaxPredicateOpcode
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaximumAuthorityMembership, kn) {
+						currentKey = ffjtChainParametersMaximumAuthorityMembership
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaximumCommitteeCount, kn) {
+						currentKey = ffjtChainParametersMaximumCommitteeCount
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaximumWitnessCount, kn) {
+						currentKey = ffjtChainParametersMaximumWitnessCount
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaximumProposalLifetime, kn) {
+						currentKey = ffjtChainParametersMaximumProposalLifetime
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaximumT
