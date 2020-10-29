@@ -429,4 +429,44 @@ mainparse:
 						state = fflib.FFParse_want_colon
 						goto mainparse
 
-					} else if bytes.Equal(ffjKeyChainParametersMaximumT
+					} else if bytes.Equal(ffjKeyChainParametersMaximumTimeUntilExpiration, kn) {
+						currentKey = ffjtChainParametersMaximumTimeUntilExpiration
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaximumTransactionSize, kn) {
+						currentKey = ffjtChainParametersMaximumTransactionSize
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaintenanceInterval, kn) {
+						currentKey = ffjtChainParametersMaintenanceInterval
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersMaximumBlockSize, kn) {
+						currentKey = ffjtChainParametersMaximumBlockSize
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'n':
+
+					if bytes.Equal(ffjKeyChainParametersNetworkPercentOfFee, kn) {
+						currentKey = ffjtChainParametersNetworkPercentOfFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'r':
+
+					if bytes.Equal(ffjKeyChainParametersReservePercentOfFee, kn) {
+						currentKey = ffjtChainParametersReservePercentOfFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'w':
+
+					if bytes.Equal(ffjKeyChainParametersWitnessPayVestingSeconds, kn) {
+						currentKey = ffjtC
