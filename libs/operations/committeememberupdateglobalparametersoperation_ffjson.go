@@ -469,4 +469,45 @@ mainparse:
 				case 'w':
 
 					if bytes.Equal(ffjKeyChainParametersWitnessPayVestingSeconds, kn) {
-						currentKey = ffjtC
+						currentKey = ffjtChainParametersWitnessPayVestingSeconds
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersWitnessPayPerBlock, kn) {
+						currentKey = ffjtChainParametersWitnessPayPerBlock
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyChainParametersWorkerBudgetPerDay, kn) {
+						currentKey = ffjtChainParametersWorkerBudgetPerDay
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersFeeLiquidationThreshold, kn) {
+					currentKey = ffjtChainParametersFeeLiquidationThreshold
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersWorkerBudgetPerDay, kn) {
+					currentKey = ffjtChainParametersWorkerBudgetPerDay
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersWitnessPayPerBlock, kn) {
+					currentKey = ffjtChainParametersWitnessPayPerBlock
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersCashbackVestingThreshold, kn) {
+					currentKey = ffjtChainParametersCashbackVestingThreshold
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+			
