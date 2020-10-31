@@ -510,4 +510,40 @@ mainparse:
 					goto mainparse
 				}
 
-			
+				if fflib.EqualFoldRight(ffjKeyChainParametersMaximumBlockSize, kn) {
+					currentKey = ffjtChainParametersMaximumBlockSize
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyChainParametersMaintenanceInterval, kn) {
+					currentKey = ffjtChainParametersMaintenanceInterval
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersMaximumTransactionSize, kn) {
+					currentKey = ffjtChainParametersMaximumTransactionSize
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyChainParametersMaximumTimeUntilExpiration, kn) {
+					currentKey = ffjtChainParametersMaximumTimeUntilExpiration
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersMaximumProposalLifetime, kn) {
+					currentKey = ffjtChainParametersMaximumProposalLifetime
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersWitnessPayVestingSeconds, kn) {
+					currentKey = ffjtChainParametersWitnessPayVestingSeconds
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersCommitteeProposalReviewPeriod
