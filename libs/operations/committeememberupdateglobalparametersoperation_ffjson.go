@@ -624,4 +624,46 @@ mainparse:
 					goto mainparse
 				}
 
-				if fflib.EqualFoldRight(ffjKeyChainParametersMaintenance
+				if fflib.EqualFoldRight(ffjKeyChainParametersMaintenanceSkipSlots, kn) {
+					currentKey = ffjtChainParametersMaintenanceSkipSlots
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersBlockInterval, kn) {
+					currentKey = ffjtChainParametersBlockInterval
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersAccountFeeScaleBitshifts, kn) {
+					currentKey = ffjtChainParametersAccountFeeScaleBitshifts
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersCurrentFees, kn) {
+					currentKey = ffjtChainParametersCurrentFees
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersExtensions, kn) {
+					currentKey = ffjtChainParametersExtensions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersCountNonMemberVotes, kn) {
+					currentKey = ffjtChainParametersCountNonMemberVotes
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersAllowNonMemberWhitelists, kn) {
+					currentKey = ffjtChainParametersAllowNonMemberWhitelists
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtChai
