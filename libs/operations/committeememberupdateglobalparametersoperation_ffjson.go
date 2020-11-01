@@ -710,4 +710,44 @@ mainparse:
 				case ffjtChainParametersMaximumAssetFeedPublishers:
 					goto handle_MaximumAssetFeedPublishers
 
-				case ffj
+				case ffjtChainParametersMaximumAssetWhitelistAuthorities:
+					goto handle_MaximumAssetWhitelistAuthorities
+
+				case ffjtChainParametersAccountsPerFeeScale:
+					goto handle_AccountsPerFeeScale
+
+				case ffjtChainParametersLifetimeReferrerPercentOfFee:
+					goto handle_LifetimeReferrerPercentOfFee
+
+				case ffjtChainParametersMaxPredicateOpcode:
+					goto handle_MaxPredicateOpcode
+
+				case ffjtChainParametersMaximumAuthorityMembership:
+					goto handle_MaximumAuthorityMembership
+
+				case ffjtChainParametersMaximumCommitteeCount:
+					goto handle_MaximumCommitteeCount
+
+				case ffjtChainParametersMaximumWitnessCount:
+					goto handle_MaximumWitnessCount
+
+				case ffjtChainParametersNetworkPercentOfFee:
+					goto handle_NetworkPercentOfFee
+
+				case ffjtChainParametersReservePercentOfFee:
+					goto handle_ReservePercentOfFee
+
+				case ffjtChainParametersCashbackVestingPeriodSeconds:
+					goto handle_CashbackVestingPeriodSeconds
+
+				case ffjtChainParametersCommitteeProposalReviewPeriod:
+					goto handle_CommitteeProposalReviewPeriod
+
+				case ffjtChainParametersWitnessPayVestingSeconds:
+					goto handle_WitnessPayVestingSeconds
+
+				case ffjtChainParametersMaximumProposalLifetime:
+					goto handle_MaximumProposalLifetime
+
+				case ffjtChainParametersMaximumTimeUntilExpiration:
+					goto ha
