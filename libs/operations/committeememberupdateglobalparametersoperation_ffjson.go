@@ -666,4 +666,48 @@ mainparse:
 					goto mainparse
 				}
 
-				currentKey = ffjtChai
+				currentKey = ffjtChainParametersnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtChainParametersAllowNonMemberWhitelists:
+					goto handle_AllowNonMemberWhitelists
+
+				case ffjtChainParametersCountNonMemberVotes:
+					goto handle_CountNonMemberVotes
+
+				case ffjtChainParametersExtensions:
+					goto handle_Extensions
+
+				case ffjtChainParametersCurrentFees:
+					goto handle_CurrentFees
+
+				case ffjtChainParametersAccountFeeScaleBitshifts:
+					goto handle_AccountFeeScaleBitshifts
+
+				case ffjtChainParametersBlockInterval:
+					goto handle_BlockInterval
+
+				case ffjtChainParametersMaintenanceSkipSlots:
+					goto handle_MaintenanceSkipSlots
+
+				case ffjtChainParametersMaxAuthorityDepth:
+					goto handle_MaxAuthorityDepth
+
+				case ffjtChainParametersMaximumAssetFeedPublishers:
+					goto handle_MaximumAssetFeedPublishers
+
+				case ffj
