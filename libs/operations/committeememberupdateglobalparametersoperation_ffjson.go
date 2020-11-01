@@ -546,4 +546,41 @@ mainparse:
 					goto mainparse
 				}
 
-				if fflib.EqualFoldRight(ffjKeyChainParametersCommitteeProposalReviewPeriod
+				if fflib.EqualFoldRight(ffjKeyChainParametersCommitteeProposalReviewPeriod, kn) {
+					currentKey = ffjtChainParametersCommitteeProposalReviewPeriod
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersCashbackVestingPeriodSeconds, kn) {
+					currentKey = ffjtChainParametersCashbackVestingPeriodSeconds
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersReservePercentOfFee, kn) {
+					currentKey = ffjtChainParametersReservePercentOfFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersNetworkPercentOfFee, kn) {
+					currentKey = ffjtChainParametersNetworkPercentOfFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersMaximumWitnessCount, kn) {
+					currentKey = ffjtChainParametersMaximumWitnessCount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyChainParametersMaximumCommitteeCount, kn) {
+					currentKey = ffjtChainParametersMaximumCommitteeCount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersMaximumAuthorityMembership, kn) {
+					currentKey = ffjtChainParametersMaximumAuthorityMember
