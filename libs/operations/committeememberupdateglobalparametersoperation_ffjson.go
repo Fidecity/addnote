@@ -583,4 +583,45 @@ mainparse:
 				}
 
 				if fflib.EqualFoldRight(ffjKeyChainParametersMaximumAuthorityMembership, kn) {
-					currentKey = ffjtChainParametersMaximumAuthorityMember
+					currentKey = ffjtChainParametersMaximumAuthorityMembership
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyChainParametersMaxPredicateOpcode, kn) {
+					currentKey = ffjtChainParametersMaxPredicateOpcode
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyChainParametersLifetimeReferrerPercentOfFee, kn) {
+					currentKey = ffjtChainParametersLifetimeReferrerPercentOfFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersAccountsPerFeeScale, kn) {
+					currentKey = ffjtChainParametersAccountsPerFeeScale
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersMaximumAssetWhitelistAuthorities, kn) {
+					currentKey = ffjtChainParametersMaximumAssetWhitelistAuthorities
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersMaximumAssetFeedPublishers, kn) {
+					currentKey = ffjtChainParametersMaximumAssetFeedPublishers
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyChainParametersMaxAuthorityDepth, kn) {
+					currentKey = ffjtChainParametersMaxAuthorityDepth
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyChainParametersMaintenance
