@@ -750,4 +750,59 @@ mainparse:
 					goto handle_MaximumProposalLifetime
 
 				case ffjtChainParametersMaximumTimeUntilExpiration:
-					goto ha
+					goto handle_MaximumTimeUntilExpiration
+
+				case ffjtChainParametersMaximumTransactionSize:
+					goto handle_MaximumTransactionSize
+
+				case ffjtChainParametersMaintenanceInterval:
+					goto handle_MaintenanceInterval
+
+				case ffjtChainParametersMaximumBlockSize:
+					goto handle_MaximumBlockSize
+
+				case ffjtChainParametersCashbackVestingThreshold:
+					goto handle_CashbackVestingThreshold
+
+				case ffjtChainParametersWitnessPayPerBlock:
+					goto handle_WitnessPayPerBlock
+
+				case ffjtChainParametersWorkerBudgetPerDay:
+					goto handle_WorkerBudgetPerDay
+
+				case ffjtChainParametersFeeLiquidationThreshold:
+					goto handle_FeeLiquidationThreshold
+
+				case ffjtChainParametersnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_AllowNonMemberWhitelists:
+
+	/* handler: j.AllowNonMemberWhitelists type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.Allow
