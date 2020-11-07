@@ -872,4 +872,78 @@ handle_Extensions:
 			}
 
 			err = j.Extensions.UnmarshalJSON(tbuf)
-			if err != nil 
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_CurrentFees:
+
+	/* handler: j.CurrentFees type=types.FeeSchedule kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.FeeSchedule kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.CurrentFees)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_AccountFeeScaleBitshifts:
+
+	/* handler: j.AccountFeeScaleBitshifts type=types.UInt8 kind=uint8 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.AccountFeeScaleBitshifts.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_BlockInterval:
+
+	/* handler: j.BlockInterval type=types.UInt8 kind=uint8 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.BlockInterval.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFP
