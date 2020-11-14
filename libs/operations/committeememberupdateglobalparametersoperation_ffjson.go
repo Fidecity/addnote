@@ -1382,4 +1382,79 @@ handle_MaximumTransactionSize:
 	/* handler: j.MaximumTransactionSize type=types.UInt32 kind=uint32 quoted=false*/
 
 	{
-		if tok == f
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.MaximumTransactionSize.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_MaintenanceInterval:
+
+	/* handler: j.MaintenanceInterval type=types.UInt32 kind=uint32 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.MaintenanceInterval.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_MaximumBlockSize:
+
+	/* handler: j.MaximumBlockSize type=types.UInt32 kind=uint32 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.MaximumBlockSize.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_CashbackVestingThreshold:
+
+	/* handler: j.CashbackVestingThreshold type=types.Int64 kind=int64 quoted=false*/
+
+	{
+		if tok 
