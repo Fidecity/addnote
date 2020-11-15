@@ -1457,4 +1457,78 @@ handle_CashbackVestingThreshold:
 	/* handler: j.CashbackVestingThreshold type=types.Int64 kind=int64 quoted=false*/
 
 	{
-		if tok 
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.CashbackVestingThreshold.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_WitnessPayPerBlock:
+
+	/* handler: j.WitnessPayPerBlock type=types.Int64 kind=int64 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.WitnessPayPerBlock.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_WorkerBudgetPerDay:
+
+	/* handler: j.WorkerBudgetPerDay type=types.Int64 kind=int64 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.WorkerBudgetPerDay.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_FeeLiquidationThreshold:
+
+	/* handler: j.FeeLiquidationThreshold type=types.Int64 kind=int64 quoted=false*/
+
+	{
