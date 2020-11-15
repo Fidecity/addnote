@@ -1590,4 +1590,56 @@ func (j *CommitteeMemberUpdateGlobalParametersOperation) MarshalJSONBuf(buf ffli
 		buf.WriteString("null")
 		return nil
 	}
-	var 
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{ "new_parameters":`)
+
+	{
+
+		err = j.NewParameters.MarshalJSONBuf(buf)
+		if err != nil {
+			return err
+		}
+
+	}
+	buf.WriteByte(',')
+	if j.Fee != nil {
+		if true {
+			/* Struct fall back. type=types.AssetAmount kind=struct */
+			buf.WriteString(`"fee":`)
+			err = buf.Encode(j.Fee)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtCommitteeMemberUpdateGlobalParametersOperationbase = iota
+	ffjtCommitteeMemberUpdateGlobalParametersOperationnosuchkey
+
+	ffjtCommitteeMemberUpdateGlobalParametersOperationNewParameters
+
+	ffjtCommitteeMemberUpdateGlobalParametersOperationFee
+)
+
+var ffjKeyCommitteeMemberUpdateGlobalParametersOperationNewParameters = []byte("new_parameters")
+
+var ffjKeyCommitteeMemberUpdateGlobalParametersOperationFee = []byte("fee")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *CommitteeMemberUpdateGlobalParametersOperation) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *CommitteeMemberUpdateGlobalParametersOperation) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err er
