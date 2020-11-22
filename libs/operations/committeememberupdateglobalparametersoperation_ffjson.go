@@ -1697,4 +1697,46 @@ mainparse:
 
 				case 'f':
 
-					if bytes.Equal(ffjKeyCommittee
+					if bytes.Equal(ffjKeyCommitteeMemberUpdateGlobalParametersOperationFee, kn) {
+						currentKey = ffjtCommitteeMemberUpdateGlobalParametersOperationFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'n':
+
+					if bytes.Equal(ffjKeyCommitteeMemberUpdateGlobalParametersOperationNewParameters, kn) {
+						currentKey = ffjtCommitteeMemberUpdateGlobalParametersOperationNewParameters
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyCommitteeMemberUpdateGlobalParametersOperationFee, kn) {
+					currentKey = ffjtCommitteeMemberUpdateGlobalParametersOperationFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyCommitteeMemberUpdateGlobalParametersOperationNewParameters, kn) {
+					currentKey = ffjtCommitteeMemberUpdateGlobalParametersOperationNewParameters
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtCommitteeMemberUpdateGlobalParametersOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == 
