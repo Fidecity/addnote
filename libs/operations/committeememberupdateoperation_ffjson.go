@@ -26,4 +26,76 @@ func (j *CommitteeMemberUpdateOperation) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalJSONBuf marshal buff to json - template
-func (j *CommitteeMemberUpda
+func (j *CommitteeMemberUpdateOperation) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	/* Struct fall back. type=types.CommitteeMember kind=struct */
+	buf.WriteString(`{ "committee_member":`)
+	err = buf.Encode(&j.CommitteeMember)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"committee_member_account":`)
+
+	{
+
+		obj, err = j.CommitteeMemberAccount.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte(',')
+	if j.NewURL != nil {
+		if true {
+			buf.WriteString(`"new_url":`)
+
+			{
+
+				obj, err = j.NewURL.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+			buf.WriteByte(',')
+		}
+	}
+	if j.Fee != nil {
+		if true {
+			/* Struct fall back. type=types.AssetAmount kind=struct */
+			buf.WriteString(`"fee":`)
+			err = buf.Encode(j.Fee)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtCommitteeMemberUpdateOperationbase = iota
+	ffjtCommitteeMemberUpdateOperationnosuchkey
+
+	ffjtCommitteeMemberUpdateOperationCommitteeMember
+
+	ffjtCommitteeMemberUpdateOperationCommitteeMemberAccount
+
+	ffjtCommitteeMemberUpdateOperationNewURL
+
+	ffjtCommitteeMemberUpdateOperationFee
+)
+
+var ffj
