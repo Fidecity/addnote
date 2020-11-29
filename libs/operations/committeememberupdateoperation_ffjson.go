@@ -141,4 +141,54 @@ mainparse:
 		case fflib.FFParse_after_value:
 			if tok == fflib.FFTok_comma {
 				state = fflib.FFParse_want_key
-			} else if tok ==
+			} else if tok == fflib.FFTok_right_bracket {
+				goto done
+			} else {
+				wantedTok = fflib.FFTok_comma
+				goto wrongtokenerror
+			}
+
+		case fflib.FFParse_want_key:
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtCommitteeMemberUpdateOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'c':
+
+					if bytes.Equal(ffjKeyCommitteeMemberUpdateOperationCommitteeMember, kn) {
+						currentKey = ffjtCommitteeMemberUpdateOperationCommitteeMember
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyCommitteeMemberUpdateOperationCommitteeMemberAccount, kn) {
+						currentKey = ffjtCommitteeMemberUpdateOperationCommitteeMemberAccount
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'f':
+
+					if bytes.Equal(ffjKeyCommitteeMemberUpdateOperationFee, kn) {
+						currentKey = ffjtCommitteeMemberUpdateOperationFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'n':
+
+					if bytes.Equal(ffjKeyCommitteeMemberUpdateOperationNewURL, kn) {
+						currentKey = ffjtC
