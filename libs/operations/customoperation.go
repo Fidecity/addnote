@@ -37,4 +37,31 @@ func (p CustomOperation) MarshalFeeScheduleParams(params types.M, enc *util.Type
 	if ppk, ok := params["price_per_kbyte"]; ok {
 		if err := enc.Encode(types.UInt32(ppk.(float64))); err != nil {
 			return errors.Annotate(err, "encode PricePerKByte")
-	
+		}
+	}
+
+	return nil
+}
+
+func (p CustomOperation) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(int8(p.Type())); err != nil {
+		return errors.Annotate(err, "encode OperationType")
+	}
+	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode Fee")
+	}
+	if err := enc.Encode(p.Payer); err != nil {
+		return errors.Annotate(err, "encode Payer")
+	}
+	if err := enc.Encode(p.RequiredAuths); err != nil {
+		return errors.Annotate(err, "encode RequiredAuths")
+	}
+	if err := enc.Encode(p.ID); err != nil {
+		return errors.Annotate(err, "encode ID")
+	}
+	if err := enc.Encode(p.Data); err != nil {
+		return errors.Annotate(err, "encode Data")
+	}
+
+	return nil
+}
