@@ -55,4 +55,17 @@ func (p FillOrderOperation) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode Pays")
 	}
 
-	if err := enc.Encode(p.Receives); er
+	if err := enc.Encode(p.Receives); err != nil {
+		return errors.Annotate(err, "encode Receives")
+	}
+
+	if err := enc.Encode(p.FillPrice); err != nil {
+		return errors.Annotate(err, "encode fillprice")
+	}
+
+	if err := enc.Encode(p.IsMaker); err != nil {
+		return errors.Annotate(err, "encode ismaker")
+	}
+
+	return nil
+}
