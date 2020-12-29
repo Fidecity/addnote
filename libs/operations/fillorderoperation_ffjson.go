@@ -168,4 +168,59 @@ mainparse:
 			} else if tok == fflib.FFTok_right_bracket {
 				goto done
 			} else {
-				wantedTok = f
+				wantedTok = fflib.FFTok_comma
+				goto wrongtokenerror
+			}
+
+		case fflib.FFParse_want_key:
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtFillOrderOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeyFillOrderOperationAccountID, kn) {
+						currentKey = ffjtFillOrderOperationAccountID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'f':
+
+					if bytes.Equal(ffjKeyFillOrderOperationFillPrice, kn) {
+						currentKey = ffjtFillOrderOperationFillPrice
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyFillOrderOperationFee, kn) {
+						currentKey = ffjtFillOrderOperationFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'i':
+
+					if bytes.Equal(ffjKeyFillOrderOperationIsMaker, kn) {
+						currentKey = ffjtFillOrderOperationIsMaker
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'o':
+
+					if bytes.Equal(ffjKeyFillOrderOperationOrderID, kn) {
+						currentKey = ffjtFillOrderO
