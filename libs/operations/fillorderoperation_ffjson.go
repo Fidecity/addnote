@@ -223,4 +223,53 @@ mainparse:
 				case 'o':
 
 					if bytes.Equal(ffjKeyFillOrderOperationOrderID, kn) {
-						currentKey = ffjtFillOrderO
+						currentKey = ffjtFillOrderOperationOrderID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'p':
+
+					if bytes.Equal(ffjKeyFillOrderOperationPays, kn) {
+						currentKey = ffjtFillOrderOperationPays
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'r':
+
+					if bytes.Equal(ffjKeyFillOrderOperationReceives, kn) {
+						currentKey = ffjtFillOrderOperationReceives
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyFillOrderOperationFee, kn) {
+					currentKey = ffjtFillOrderOperationFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyFillOrderOperationFillPrice, kn) {
+					currentKey = ffjtFillOrderOperationFillPrice
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyFillOrderOperationIsMaker, kn) {
+					currentKey = ffjtFillOrderOperationIsMaker
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyFillOrderOperationReceives, kn) {
+					currentKey = ffjtFillOrderOperationReceives
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyFillOrderOperationPays, kn) {
+					currentKey = ffjtFillOrderOperationPays
+					state = fflib.FFPars
