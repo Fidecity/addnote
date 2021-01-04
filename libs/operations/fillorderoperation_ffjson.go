@@ -395,4 +395,76 @@ handle_Pays:
 	/* handler: j.Pays type=types.AssetAmount kind=struct quoted=false*/
 
 	{
-		/* Falling back. type=types.AssetAmount k
+		/* Falling back. type=types.AssetAmount kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.Pays)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Receives:
+
+	/* handler: j.Receives type=types.AssetAmount kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.AssetAmount kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.Receives)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_IsMaker:
+
+	/* handler: j.IsMaker type=bool kind=bool quoted=false*/
+
+	{
+		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
+			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
+		}
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.IsMaker = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.IsMaker = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_FillPrice:
+
+	/* handler: j.F
