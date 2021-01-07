@@ -54,4 +54,75 @@ func (j *LimitOrderCreateOperation) MarshalJSONBuf(buf fflib.EncodingBuffer) err
 	}
 	/* Struct fall back. type=types.AssetAmount kind=struct */
 	buf.WriteString(`,"min_to_receive":`)
-	err = buf.Encode(&j.MinToRec
+	err = buf.Encode(&j.MinToReceive)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"expiration":`)
+
+	{
+
+		obj, err = j.Expiration.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	if j.FillOrKill {
+		buf.WriteString(`,"fill_or_kill":true`)
+	} else {
+		buf.WriteString(`,"fill_or_kill":false`)
+	}
+	buf.WriteString(`,"extensions":`)
+
+	{
+
+		obj, err = j.Extensions.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte(',')
+	if j.Fee != nil {
+		if true {
+			/* Struct fall back. type=types.AssetAmount kind=struct */
+			buf.WriteString(`"fee":`)
+			err = buf.Encode(j.Fee)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtLimitOrderCreateOperationbase = iota
+	ffjtLimitOrderCreateOperationnosuchkey
+
+	ffjtLimitOrderCreateOperationSeller
+
+	ffjtLimitOrderCreateOperationAmountToSell
+
+	ffjtLimitOrderCreateOperationMinToReceive
+
+	ffjtLimitOrderCreateOperationExpiration
+
+	ffjtLimitOrderCreateOperationFillOrKill
+
+	ffjtLimitOrderCreateOperationExtensions
+
+	ffjtLimitOrderCreateOperationFee
+)
+
+var ffjKeyLimitOrderCreateOperationSeller = []byte("seller")
+
+var ffjKeyLimitOrderCreateOperationAmountToSell = []byte("amount_to_sell")
+
+var ffjKeyLimitOrderCreate
