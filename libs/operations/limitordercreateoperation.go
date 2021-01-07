@@ -63,4 +63,9 @@ func (p LimitOrderCreateOperation) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode fill or kill")
 	}
 
-	if err := enc.Encode(p
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode extensions")
+	}
+
+	return nil
+}
