@@ -221,4 +221,49 @@ mainparse:
 
 					if bytes.Equal(ffjKeyLimitOrderCreateOperationFillOrKill, kn) {
 						currentKey = ffjtLimitOrderCreateOperationFillOrKill
-						state = ffl
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyLimitOrderCreateOperationFee, kn) {
+						currentKey = ffjtLimitOrderCreateOperationFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'm':
+
+					if bytes.Equal(ffjKeyLimitOrderCreateOperationMinToReceive, kn) {
+						currentKey = ffjtLimitOrderCreateOperationMinToReceive
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 's':
+
+					if bytes.Equal(ffjKeyLimitOrderCreateOperationSeller, kn) {
+						currentKey = ffjtLimitOrderCreateOperationSeller
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyLimitOrderCreateOperationFee, kn) {
+					currentKey = ffjtLimitOrderCreateOperationFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyLimitOrderCreateOperationExtensions, kn) {
+					currentKey = ffjtLimitOrderCreateOperationExtensions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyLimitOrderCreateOperationFillOrKill, kn) {
+					currentKey = ffjtLimitOrderCreateOperationFillOrKill
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyLimitOrderCreateOperationExpirati
