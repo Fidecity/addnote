@@ -307,4 +307,69 @@ mainparse:
 			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
 				switch currentKey {
 
-				case ffjtLi
+				case ffjtLimitOrderCreateOperationSeller:
+					goto handle_Seller
+
+				case ffjtLimitOrderCreateOperationAmountToSell:
+					goto handle_AmountToSell
+
+				case ffjtLimitOrderCreateOperationMinToReceive:
+					goto handle_MinToReceive
+
+				case ffjtLimitOrderCreateOperationExpiration:
+					goto handle_Expiration
+
+				case ffjtLimitOrderCreateOperationFillOrKill:
+					goto handle_FillOrKill
+
+				case ffjtLimitOrderCreateOperationExtensions:
+					goto handle_Extensions
+
+				case ffjtLimitOrderCreateOperationFee:
+					goto handle_Fee
+
+				case ffjtLimitOrderCreateOperationnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_Seller:
+
+	/* handler: j.Seller type=types.AccountID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.Seller.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_AmountToSell:
+
+	/* handler: j.AmountToSell type=types.AssetAmount kind=struct quoted=false*/
+
+	{
+		/* Falli
