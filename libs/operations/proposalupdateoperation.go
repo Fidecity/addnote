@@ -33,4 +33,52 @@ func (p ProposalUpdateOperation) Type() types.OperationType {
 }
 
 func (p ProposalUpdateOperation) MarshalFeeScheduleParams(params types.M, enc *util.TypeEncoder) error {
-	if fee, ok := params["f
+	if fee, ok := params["fee"]; ok {
+		if err := enc.Encode(types.UInt64(fee.(float64))); err != nil {
+			return errors.Annotate(err, "encode Fee")
+		}
+	}
+
+	if ppk, ok := params["price_per_kbyte"]; ok {
+		if err := enc.Encode(types.UInt32(ppk.(float64))); err != nil {
+			return errors.Annotate(err, "encode PricePerKByte")
+		}
+	}
+
+	return nil
+}
+
+func (p ProposalUpdateOperation) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(int8(p.Type())); err != nil {
+		return errors.Annotate(err, "encode OperationType")
+	}
+
+	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode Fee")
+	}
+
+	if err := enc.Encode(p.FeePayingAccount); err != nil {
+		return errors.Annotate(err, "encode FeePayingAccount")
+	}
+
+	if err := enc.Encode(p.Proposal); err != nil {
+		return errors.Annotate(err, "encode Proposal")
+	}
+
+	if err := enc.Encode(p.ActiveApprovalsToAdd); err != nil {
+		return errors.Annotate(err, "encode ActiveApprovalsToAdd")
+	}
+
+	if err := enc.Encode(p.ActiveApprovalsToRemove); err != nil {
+		return errors.Annotate(err, "encode ActiveApprovalsToRemove")
+	}
+
+	if err := enc.Encode(p.OwnerApprovalsToAdd); err != nil {
+		return errors.Annotate(err, "encode OwnerApprovalsToAdd")
+	}
+
+	if err := enc.Encode(p.OwnerApprovalsToRemove); err != nil {
+		return errors.Annotate(err, "encode OwnerApprovalsToRemove")
+	}
+
+	if 
