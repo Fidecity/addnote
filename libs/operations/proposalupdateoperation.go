@@ -81,4 +81,17 @@ func (p ProposalUpdateOperation) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode OwnerApprovalsToRemove")
 	}
 
-	if 
+	if err := enc.Encode(p.KeyApprovalsToAdd); err != nil {
+		return errors.Annotate(err, "encode KeyApprovalsToAdd")
+	}
+
+	if err := enc.Encode(p.KeyApprovalsToRemove); err != nil {
+		return errors.Annotate(err, "encode KeyApprovalsToRemove")
+	}
+
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode Extensions")
+	}
+
+	return nil
+}
