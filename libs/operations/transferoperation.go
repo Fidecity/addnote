@@ -23,4 +23,57 @@ type TransferOperation struct {
 	ToAddr     types.Address     `json:"to_addr"`
 	Amount     types.AssetAmount `json:"amount"`
 	Memo       *types.Memo       `json:"memo,omitempty"`
-	Extensions types.Extensions  `json:"extens
+	Extensions types.Extensions  `json:"extensions"`
+	GuaranteeId types.ObjectID `json:"guarantee_id"`
+}
+
+func (p TransferOperation) Type() types.OperationType {
+	return types.OperationTypeTransfer
+}
+
+func (p TransferOperation) MarshalFeeScheduleParams(params types.M, enc *util.TypeEncoder) error {
+	if fee, ok := params["fee"]; ok {
+		if err := enc.Encode(types.UInt64(fee.(float64))); err != nil {
+			return errors.Annotate(err, "encode Fee")
+		}
+	}
+
+	if ppk, ok := params["price_per_kbyte"]; ok {
+		if err := enc.Encode(types.UInt32(ppk.(float64))); err != nil {
+			return errors.Annotate(err, "encode PricePerKByte")
+		}
+	}
+
+	return nil
+}
+
+func (p TransferOperation) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(int8(p.Type())); err != nil {
+		return errors.Annotate(err, "encode OperationType")
+	}
+
+	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode fee")
+	}
+
+	if err := enc.Encode(p.GuaranteeId); err != nil {
+		return errors.Annotate(err, "encode guarantee_id")
+	}
+
+	if err := enc.Encode(p.From); err != nil {
+		return errors.Annotate(err, "encode from")
+	}
+
+	if err := enc.Encode(p.To); err != nil {
+		return errors.Annotate(err, "encode to")
+	}
+
+	if err := enc.Encode(p.FromAddr); err != nil {
+		return errors.Annotate(err, "encode from addr")
+	}
+
+	if err := enc.Encode(p.ToAddr); err != nil {
+		return errors.Annotate(err, "encode to addr")
+	}
+
+	if err := enc.Encode(p.Amount); err != nil {
