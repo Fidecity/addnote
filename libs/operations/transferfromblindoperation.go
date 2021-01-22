@@ -41,4 +41,11 @@ func (p TransferFromBlindOperation) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode To")
 	}
 	if err := enc.Encode(p.BlindFactor); err != nil {
-		return erro
+		return errors.Annotate(err, "encode BlindFactor")
+	}
+	if err := enc.Encode(p.BlindInputs); err != nil {
+		return errors.Annotate(err, "encode BlindInputs")
+	}
+
+	return nil
+}
