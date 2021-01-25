@@ -77,3 +77,20 @@ func (p TransferOperation) Marshal(enc *util.TypeEncoder) error {
 	}
 
 	if err := enc.Encode(p.Amount); err != nil {
+		return errors.Annotate(err, "encode amount")
+	}
+
+	if err := enc.Encode(p.Memo != nil); err != nil {
+		return errors.Annotate(err, "encode have Memo")
+	}
+
+	if err := enc.Encode(p.Memo); err != nil {
+		return errors.Annotate(err, "encode memo")
+	}
+
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode extensions")
+	}
+
+	return nil
+}
