@@ -24,4 +24,74 @@ func (j *VestingBalanceWithdrawOperation) MarshalJSON() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-// MarshalJSONBu
+// MarshalJSONBuf marshal buff to json - template
+func (j *VestingBalanceWithdrawOperation) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	/* Struct fall back. type=types.AssetAmount kind=struct */
+	buf.WriteString(`{ "amount":`)
+	err = buf.Encode(&j.Amount)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"owner":`)
+
+	{
+
+		obj, err = j.Owner.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"vesting_balance":`)
+
+	{
+
+		obj, err = j.VestingBalance.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte(',')
+	if j.Fee != nil {
+		if true {
+			/* Struct fall back. type=types.AssetAmount kind=struct */
+			buf.WriteString(`"fee":`)
+			err = buf.Encode(j.Fee)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtVestingBalanceWithdrawOperationbase = iota
+	ffjtVestingBalanceWithdrawOperationnosuchkey
+
+	ffjtVestingBalanceWithdrawOperationAmount
+
+	ffjtVestingBalanceWithdrawOperationOwner
+
+	ffjtVestingBalanceWithdrawOperationVestingBalance
+
+	ffjtVestingBalanceWithdrawOperationFee
+)
+
+var ffjKeyVestingBalanceWithdrawOperationAmount = []byte("amount")
+
+var ffjKeyVestingBa
