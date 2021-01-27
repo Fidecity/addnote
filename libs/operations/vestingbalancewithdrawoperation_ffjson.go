@@ -233,4 +233,72 @@ mainparse:
 			continue
 		case fflib.FFParse_want_value:
 
-			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_boo
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtVestingBalanceWithdrawOperationAmount:
+					goto handle_Amount
+
+				case ffjtVestingBalanceWithdrawOperationOwner:
+					goto handle_Owner
+
+				case ffjtVestingBalanceWithdrawOperationVestingBalance:
+					goto handle_VestingBalance
+
+				case ffjtVestingBalanceWithdrawOperationFee:
+					goto handle_Fee
+
+				case ffjtVestingBalanceWithdrawOperationnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_Amount:
+
+	/* handler: j.Amount type=types.AssetAmount kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.AssetAmount kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.Amount)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Owner:
+
+	/* handler: j.Owner type=types.AccountID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.Owner.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		stat
