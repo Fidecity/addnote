@@ -194,3 +194,43 @@ mainparse:
 					}
 
 				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyVestingBalanceWithdrawOperationFee, kn) {
+					currentKey = ffjtVestingBalanceWithdrawOperationFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyVestingBalanceWithdrawOperationVestingBalance, kn) {
+					currentKey = ffjtVestingBalanceWithdrawOperationVestingBalance
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyVestingBalanceWithdrawOperationOwner, kn) {
+					currentKey = ffjtVestingBalanceWithdrawOperationOwner
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyVestingBalanceWithdrawOperationAmount, kn) {
+					currentKey = ffjtVestingBalanceWithdrawOperationAmount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtVestingBalanceWithdrawOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_boo
