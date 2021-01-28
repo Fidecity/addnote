@@ -36,4 +36,39 @@ func (p WithdrawPermissionClaimOperation) MarshalFeeScheduleParams(params types.
 	}
 
 	if ppk, ok := params["price_per_kbyte"]; ok {
-		if err := enc.Encode(types.UIn
+		if err := enc.Encode(types.UInt32(ppk.(float64))); err != nil {
+			return errors.Annotate(err, "encode PricePerKByte")
+		}
+	}
+
+	return nil
+}
+
+func (p WithdrawPermissionClaimOperation) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(int8(p.Type())); err != nil {
+		return errors.Annotate(err, "encode OperationType")
+	}
+	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode Fee")
+	}
+	if err := enc.Encode(p.WithdrawPermission); err != nil {
+		return errors.Annotate(err, "encode WithdrawPermission")
+	}
+	if err := enc.Encode(p.WithdrawFromAccount); err != nil {
+		return errors.Annotate(err, "encode WithdrawFromAccount")
+	}
+	if err := enc.Encode(p.WithdrawToAccount); err != nil {
+		return errors.Annotate(err, "encode WithdrawToAccount")
+	}
+	if err := enc.Encode(p.AmountToWithdraw); err != nil {
+		return errors.Annotate(err, "encode AmountToWithdraw")
+	}
+	if err := enc.Encode(p.Memo != nil); err != nil {
+		return errors.Annotate(err, "encode Memo available")
+	}
+	if err := enc.Encode(p.Memo); err != nil {
+		return errors.Annotate(err, "encode Memo")
+	}
+
+	return nil
+}
