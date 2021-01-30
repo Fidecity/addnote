@@ -31,4 +31,29 @@ func (p WithdrawPermissionCreateOperation) Type() types.OperationType {
 
 func (p WithdrawPermissionCreateOperation) Marshal(enc *util.TypeEncoder) error {
 	if err := enc.Encode(int8(p.Type())); err != nil {
-		return errors.Annotate(err, "encode Operation
+		return errors.Annotate(err, "encode OperationType")
+	}
+	if err := enc.Encode(p.Fee); err != nil {
+		return errors.Annotate(err, "encode Fee")
+	}
+	if err := enc.Encode(p.WithdrawFromAccount); err != nil {
+		return errors.Annotate(err, "encode WithdrawFromAccount")
+	}
+	if err := enc.Encode(p.AuthorizedAccount); err != nil {
+		return errors.Annotate(err, "encode AuthorizedAccount")
+	}
+	if err := enc.Encode(p.WithdrawalLimit); err != nil {
+		return errors.Annotate(err, "encode WithdrawalLimit")
+	}
+	if err := enc.Encode(p.WithdrawalPeriodSec); err != nil {
+		return errors.Annotate(err, "encode WithdrawalPeriodSec")
+	}
+	if err := enc.Encode(p.PeriodsUntilExpiration); err != nil {
+		return errors.Annotate(err, "encode PeriodsUntilExpiration")
+	}
+	if err := enc.Encode(p.PeriodStartTime); err != nil {
+		return errors.Annotate(err, "encode PeriodStartTime")
+	}
+
+	return nil
+}
