@@ -253,3 +253,223 @@ mainparse:
 					state = fflib.FFParse_want_colon
 					goto mainparse
 				}
+
+				if fflib.AsciiEqualFold(ffjKeyWithdrawPermissionClaimOperationWithdrawToAccount, kn) {
+					currentKey = ffjtWithdrawPermissionClaimOperationWithdrawToAccount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyWithdrawPermissionClaimOperationWithdrawFromAccount, kn) {
+					currentKey = ffjtWithdrawPermissionClaimOperationWithdrawFromAccount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyWithdrawPermissionClaimOperationWithdrawPermission, kn) {
+					currentKey = ffjtWithdrawPermissionClaimOperationWithdrawPermission
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtWithdrawPermissionClaimOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtWithdrawPermissionClaimOperationWithdrawPermission:
+					goto handle_WithdrawPermission
+
+				case ffjtWithdrawPermissionClaimOperationWithdrawFromAccount:
+					goto handle_WithdrawFromAccount
+
+				case ffjtWithdrawPermissionClaimOperationWithdrawToAccount:
+					goto handle_WithdrawToAccount
+
+				case ffjtWithdrawPermissionClaimOperationAmountToWithdraw:
+					goto handle_AmountToWithdraw
+
+				case ffjtWithdrawPermissionClaimOperationMemo:
+					goto handle_Memo
+
+				case ffjtWithdrawPermissionClaimOperationFee:
+					goto handle_Fee
+
+				case ffjtWithdrawPermissionClaimOperationnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_WithdrawPermission:
+
+	/* handler: j.WithdrawPermission type=types.WithdrawPermissionID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.WithdrawPermission.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_WithdrawFromAccount:
+
+	/* handler: j.WithdrawFromAccount type=types.AccountID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.WithdrawFromAccount.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_WithdrawToAccount:
+
+	/* handler: j.WithdrawToAccount type=types.AccountID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.WithdrawToAccount.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_AmountToWithdraw:
+
+	/* handler: j.AmountToWithdraw type=types.AssetAmount kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.AssetAmount kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.AmountToWithdraw)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Memo:
+
+	/* handler: j.Memo type=types.Memo kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.Memo kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.Memo)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Fee:
+
+	/* handler: j.Fee type=types.AssetAmount kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.AssetAmount kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.Fee)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+wrongtokenerror:
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
