@@ -226,4 +226,40 @@ mainparse:
 
 					} else if bytes.Equal(ffjKeyWithdrawPermissionCreateOperationWithdrawalLimit, kn) {
 						currentKey = ffjtWithdrawPermissionCreateOperationWithdrawalLimit
-				
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyWithdrawPermissionCreateOperationWithdrawalPeriodSec, kn) {
+						currentKey = ffjtWithdrawPermissionCreateOperationWithdrawalPeriodSec
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyWithdrawPermissionCreateOperationFee, kn) {
+					currentKey = ffjtWithdrawPermissionCreateOperationFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyWithdrawPermissionCreateOperationWithdrawalPeriodSec, kn) {
+					currentKey = ffjtWithdrawPermissionCreateOperationWithdrawalPeriodSec
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyWithdrawPermissionCreateOperationWithdrawalLimit, kn) {
+					currentKey = ffjtWithdrawPermissionCreateOperationWithdrawalLimit
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyWithdrawPermissionCreateOperationWithdrawFromAccount, kn) {
+					currentKey = ffjtWithdrawPermissionCreateOperationWithdrawFromAccount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyWithdrawPermissionCreateOperationPeriodsUntilExpiration, kn) {
+					currentKey = ffjtWithdrawPermissionCreateOperationPeri
