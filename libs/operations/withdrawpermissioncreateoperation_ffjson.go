@@ -83,4 +83,51 @@ func (j *WithdrawPermissionCreateOperation) MarshalJSONBuf(buf fflib.EncodingBuf
 			/* Struct fall back. type=types.AssetAmount kind=struct */
 			buf.WriteString(`"fee":`)
 			err = buf.Encode(j.Fee)
-			if err !
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtWithdrawPermissionCreateOperationbase = iota
+	ffjtWithdrawPermissionCreateOperationnosuchkey
+
+	ffjtWithdrawPermissionCreateOperationAuthorizedAccount
+
+	ffjtWithdrawPermissionCreateOperationPeriodStartTime
+
+	ffjtWithdrawPermissionCreateOperationPeriodsUntilExpiration
+
+	ffjtWithdrawPermissionCreateOperationWithdrawFromAccount
+
+	ffjtWithdrawPermissionCreateOperationWithdrawalLimit
+
+	ffjtWithdrawPermissionCreateOperationWithdrawalPeriodSec
+
+	ffjtWithdrawPermissionCreateOperationFee
+)
+
+var ffjKeyWithdrawPermissionCreateOperationAuthorizedAccount = []byte("authorized_account")
+
+var ffjKeyWithdrawPermissionCreateOperationPeriodStartTime = []byte("period_start_time")
+
+var ffjKeyWithdrawPermissionCreateOperationPeriodsUntilExpiration = []byte("periods_until_expiration")
+
+var ffjKeyWithdrawPermissionCreateOperationWithdrawFromAccount = []byte("withdraw_from_account")
+
+var ffjKeyWithdrawPermissionCreateOperationWithdrawalLimit = []byte("withdrawal_limit")
+
+var ffjKeyWithdrawPermissionCreateOperationWithdrawalPeriodSec = []byte("withdrawal_period_sec")
+
+var ffjKeyWithdrawPermissionCreateOperationFee = []byte("fee")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *WithdrawPermissionCreateOperation) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs,
