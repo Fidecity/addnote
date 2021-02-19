@@ -185,4 +185,45 @@ mainparse:
 				currentKey = ffjtWithdrawPermissionCreateOperationnosuchkey
 				state = fflib.FFParse_want_colon
 				goto mainparse
-			} else 
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeyWithdrawPermissionCreateOperationAuthorizedAccount, kn) {
+						currentKey = ffjtWithdrawPermissionCreateOperationAuthorizedAccount
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'f':
+
+					if bytes.Equal(ffjKeyWithdrawPermissionCreateOperationFee, kn) {
+						currentKey = ffjtWithdrawPermissionCreateOperationFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'p':
+
+					if bytes.Equal(ffjKeyWithdrawPermissionCreateOperationPeriodStartTime, kn) {
+						currentKey = ffjtWithdrawPermissionCreateOperationPeriodStartTime
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyWithdrawPermissionCreateOperationPeriodsUntilExpiration, kn) {
+						currentKey = ffjtWithdrawPermissionCreateOperationPeriodsUntilExpiration
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'w':
+
+					if bytes.Equal(ffjKeyWithdrawPermissionCreateOperationWithdrawFromAccount, kn) {
+						currentKey = ffjtWithdrawPermissionCreateOperationWithdrawFromAccount
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyWithdrawPermissionCreateOperationWithdrawalLimit, kn) {
+						currentKey = ffjtWithdrawPermissionCreateOperationWithdrawalLimit
+				
