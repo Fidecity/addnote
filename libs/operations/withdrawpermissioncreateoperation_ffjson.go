@@ -302,4 +302,68 @@ mainparse:
 				case ffjtWithdrawPermissionCreateOperationPeriodStartTime:
 					goto handle_PeriodStartTime
 
-				case ffjtWithdrawPermissionC
+				case ffjtWithdrawPermissionCreateOperationPeriodsUntilExpiration:
+					goto handle_PeriodsUntilExpiration
+
+				case ffjtWithdrawPermissionCreateOperationWithdrawFromAccount:
+					goto handle_WithdrawFromAccount
+
+				case ffjtWithdrawPermissionCreateOperationWithdrawalLimit:
+					goto handle_WithdrawalLimit
+
+				case ffjtWithdrawPermissionCreateOperationWithdrawalPeriodSec:
+					goto handle_WithdrawalPeriodSec
+
+				case ffjtWithdrawPermissionCreateOperationFee:
+					goto handle_Fee
+
+				case ffjtWithdrawPermissionCreateOperationnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_AuthorizedAccount:
+
+	/* handler: j.AuthorizedAccount type=types.AccountID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.AuthorizedAccount.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_PeriodStartTime:
+
+	/* handler: j.PeriodStartTime type=types.Time kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			
