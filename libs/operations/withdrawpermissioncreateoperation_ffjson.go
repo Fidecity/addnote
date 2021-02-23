@@ -262,4 +262,44 @@ mainparse:
 				}
 
 				if fflib.EqualFoldRight(ffjKeyWithdrawPermissionCreateOperationPeriodsUntilExpiration, kn) {
-					currentKey = ffjtWithdrawPermissionCreateOperationPeri
+					currentKey = ffjtWithdrawPermissionCreateOperationPeriodsUntilExpiration
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyWithdrawPermissionCreateOperationPeriodStartTime, kn) {
+					currentKey = ffjtWithdrawPermissionCreateOperationPeriodStartTime
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyWithdrawPermissionCreateOperationAuthorizedAccount, kn) {
+					currentKey = ffjtWithdrawPermissionCreateOperationAuthorizedAccount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtWithdrawPermissionCreateOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtWithdrawPermissionCreateOperationAuthorizedAccount:
+					goto handle_AuthorizedAccount
+
+				case ffjtWithdrawPermissionCreateOperationPeriodStartTime:
+					goto handle_PeriodStartTime
+
+				case ffjtWithdrawPermissionC
