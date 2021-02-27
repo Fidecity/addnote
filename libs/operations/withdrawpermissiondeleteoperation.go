@@ -36,4 +36,12 @@ func (p WithdrawPermissionDeleteOperation) Marshal(enc *util.TypeEncoder) error 
 	if err := enc.Encode(p.WithdrawFromAccount); err != nil {
 		return errors.Annotate(err, "encode WithdrawFromAccount")
 	}
-	if err := enc.Encode(p.A
+	if err := enc.Encode(p.AuthorizedAccount); err != nil {
+		return errors.Annotate(err, "encode AuthorizedAccount")
+	}
+	if err := enc.Encode(p.WithdrawalPermission); err != nil {
+		return errors.Annotate(err, "encode WithdrawalPermission")
+	}
+
+	return nil
+}
