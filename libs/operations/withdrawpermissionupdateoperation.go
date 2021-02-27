@@ -52,4 +52,12 @@ func (p WithdrawPermissionUpdateOperation) Marshal(enc *util.TypeEncoder) error 
 	if err := enc.Encode(p.WithdrawalPeriodSec); err != nil {
 		return errors.Annotate(err, "encode WithdrawalPeriodSec")
 	}
-	if err := enc.Encode(p.PeriodSta
+	if err := enc.Encode(p.PeriodStartTime); err != nil {
+		return errors.Annotate(err, "encode PeriodStartTime")
+	}
+	if err := enc.Encode(p.PeriodsUntilExpiration); err != nil {
+		return errors.Annotate(err, "encode PeriodsUntilExpiration")
+	}
+
+	return nil
+}
