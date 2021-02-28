@@ -52,4 +52,13 @@ func (p WitnessUpdateOperation) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode NewURL")
 	}
 
-	if err := enc.Encode(p.NewSi
+	if err := enc.Encode(p.NewSigningKey != nil); err != nil {
+		return errors.Annotate(err, "encode have NewSigningKey")
+	}
+
+	if err := enc.Encode(p.NewSigningKey); err != nil {
+		return errors.Annotate(err, "encode NewSigningKey")
+	}
+
+	return nil
+}
