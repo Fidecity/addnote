@@ -54,4 +54,80 @@ func (j *WitnessUpdateOperation) MarshalJSONBuf(buf fflib.EncodingBuffer) error 
 	}
 	if j.NewURL != nil {
 		if true {
-			buf.WriteString(`"new_
+			buf.WriteString(`"new_url":`)
+
+			{
+
+				obj, err = j.NewURL.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.WriteString(`"witness":`)
+
+	{
+
+		obj, err = j.Witness.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"witness_account":`)
+
+	{
+
+		obj, err = j.WitnessAccount.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte(',')
+	if j.Fee != nil {
+		if true {
+			/* Struct fall back. type=types.AssetAmount kind=struct */
+			buf.WriteString(`"fee":`)
+			err = buf.Encode(j.Fee)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtWitnessUpdateOperationbase = iota
+	ffjtWitnessUpdateOperationnosuchkey
+
+	ffjtWitnessUpdateOperationNewSigningKey
+
+	ffjtWitnessUpdateOperationNewURL
+
+	ffjtWitnessUpdateOperationWitness
+
+	ffjtWitnessUpdateOperationWitnessAccount
+
+	ffjtWitnessUpdateOperationFee
+)
+
+var ffjKeyWitnessUpdateOperationNewSigningKey = []byte("new_signing_key")
+
+var ffjKeyWitnessUpdateOperationNewURL = []byte("new_url")
+
+var ffjKeyWitnessUpdateOperationWitness = []byte("witness")
+
+var ffjKeyWitnessUpdateOperationWitnessAccount = []byte("witness_account")
+
+var ffjKeyWitnessUpdateOperationFee = 
