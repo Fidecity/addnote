@@ -180,3 +180,53 @@ mainparse:
 				goto done
 			}
 			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtWitnessUpdateOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'f':
+
+					if bytes.Equal(ffjKeyWitnessUpdateOperationFee, kn) {
+						currentKey = ffjtWitnessUpdateOperationFee
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'n':
+
+					if bytes.Equal(ffjKeyWitnessUpdateOperationNewSigningKey, kn) {
+						currentKey = ffjtWitnessUpdateOperationNewSigningKey
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyWitnessUpdateOperationNewURL, kn) {
+						currentKey = ffjtWitnessUpdateOperationNewURL
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'w':
+
+					if bytes.Equal(ffjKeyWitnessUpdateOperationWitness, kn) {
+						currentKey = ffjtWitnessUpdateOperationWitness
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyWitnessUpdateOperationWitnessAccount, kn) {
+						currentKey = ffjtWitnessUpdateOperationWitnessAccount
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyWitness
