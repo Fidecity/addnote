@@ -273,4 +273,69 @@ mainparse:
 			continue
 		case fflib.FFParse_want_value:
 
-			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_in
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtWitnessUpdateOperationNewSigningKey:
+					goto handle_NewSigningKey
+
+				case ffjtWitnessUpdateOperationNewURL:
+					goto handle_NewURL
+
+				case ffjtWitnessUpdateOperationWitness:
+					goto handle_Witness
+
+				case ffjtWitnessUpdateOperationWitnessAccount:
+					goto handle_WitnessAccount
+
+				case ffjtWitnessUpdateOperationFee:
+					goto handle_Fee
+
+				case ffjtWitnessUpdateOperationnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_NewSigningKey:
+
+	/* handler: j.NewSigningKey type=types.PublicKey kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+			j.NewSigningKey = nil
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			if j.NewSigningKey == nil {
+				j.NewSigningKey = new(types.PublicKey)
+			}
+
+			err = j.NewSigningKey.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_NewURL:
+
+	/* handler: j.
