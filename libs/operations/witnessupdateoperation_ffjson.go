@@ -229,4 +229,48 @@ mainparse:
 
 				}
 
-				if fflib.SimpleLetterEqualFold(ffjKeyWitness
+				if fflib.SimpleLetterEqualFold(ffjKeyWitnessUpdateOperationFee, kn) {
+					currentKey = ffjtWitnessUpdateOperationFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyWitnessUpdateOperationWitnessAccount, kn) {
+					currentKey = ffjtWitnessUpdateOperationWitnessAccount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyWitnessUpdateOperationWitness, kn) {
+					currentKey = ffjtWitnessUpdateOperationWitness
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyWitnessUpdateOperationNewURL, kn) {
+					currentKey = ffjtWitnessUpdateOperationNewURL
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyWitnessUpdateOperationNewSigningKey, kn) {
+					currentKey = ffjtWitnessUpdateOperationNewSigningKey
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtWitnessUpdateOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_in
