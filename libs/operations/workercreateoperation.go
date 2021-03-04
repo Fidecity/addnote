@@ -63,4 +63,9 @@ func (p WorkerCreateOperation) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode URL")
 	}
 
-	if err := enc.Enco
+	if err := enc.Encode(p.Initializer); err != nil {
+		return errors.Annotate(err, "encode Initializer")
+	}
+
+	return nil
+}
