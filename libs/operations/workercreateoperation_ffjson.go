@@ -61,4 +61,73 @@ func (j *WorkerCreateOperation) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 
 	}
 	buf.WriteString(`,"url":`)
-	fflib.WriteJsonString(buf, st
+	fflib.WriteJsonString(buf, string(j.URL))
+	buf.WriteString(`,"work_begin_date":`)
+
+	{
+
+		obj, err = j.WorkBeginDate.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"work_end_date":`)
+
+	{
+
+		obj, err = j.WorkEndDate.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte(',')
+	if j.Fee != nil {
+		if true {
+			/* Struct fall back. type=types.AssetAmount kind=struct */
+			buf.WriteString(`"fee":`)
+			err = buf.Encode(j.Fee)
+			if err != nil {
+				return err
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtWorkerCreateOperationbase = iota
+	ffjtWorkerCreateOperationnosuchkey
+
+	ffjtWorkerCreateOperationDailyPay
+
+	ffjtWorkerCreateOperationInitializer
+
+	ffjtWorkerCreateOperationName
+
+	ffjtWorkerCreateOperationOwner
+
+	ffjtWorkerCreateOperationURL
+
+	ffjtWorkerCreateOperationWorkBeginDate
+
+	ffjtWorkerCreateOperationWorkEndDate
+
+	ffjtWorkerCreateOperationFee
+)
+
+var ffjKeyWorkerCreateOperationDailyPay = []byte("daily_pay")
+
+var ffjKeyWorkerCreateOperationInitializer = []byte("initializer")
+
+var ffjKeyWorkerCreateOperationName = []byte("name")
+
+var ffjKeyWorkerCreateOperationOwner = []byte("owner")
+
+var ffjKeyWorkerCreateOperationURL = []byte("url"
