@@ -130,4 +130,50 @@ var ffjKeyWorkerCreateOperationName = []byte("name")
 
 var ffjKeyWorkerCreateOperationOwner = []byte("owner")
 
-var ffjKeyWorkerCreateOperationURL = []byte("url"
+var ffjKeyWorkerCreateOperationURL = []byte("url")
+
+var ffjKeyWorkerCreateOperationWorkBeginDate = []byte("work_begin_date")
+
+var ffjKeyWorkerCreateOperationWorkEndDate = []byte("work_end_date")
+
+var ffjKeyWorkerCreateOperationFee = []byte("fee")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *WorkerCreateOperation) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *WorkerCreateOperation) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtWorkerCreateOperationbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			continue
+
+		case fflib.FFParse_after_value:
+			if tok == fflib.FFTok_comma {
+				state = fflib.FFParse_want_key
+			} else if tok == fflib.FFTok_right_bracket {
+				goto done
+			} else {
+				wantedTok = 
