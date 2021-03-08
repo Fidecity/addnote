@@ -230,3 +230,50 @@ mainparse:
 						state = fflib.FFParse_want_colon
 						goto mainparse
 					}
+
+				case 'o':
+
+					if bytes.Equal(ffjKeyWorkerCreateOperationOwner, kn) {
+						currentKey = ffjtWorkerCreateOperationOwner
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'u':
+
+					if bytes.Equal(ffjKeyWorkerCreateOperationURL, kn) {
+						currentKey = ffjtWorkerCreateOperationURL
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'w':
+
+					if bytes.Equal(ffjKeyWorkerCreateOperationWorkBeginDate, kn) {
+						currentKey = ffjtWorkerCreateOperationWorkBeginDate
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyWorkerCreateOperationWorkEndDate, kn) {
+						currentKey = ffjtWorkerCreateOperationWorkEndDate
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyWorkerCreateOperationFee, kn) {
+					currentKey = ffjtWorkerCreateOperationFee
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyWorkerCreateOperationWorkEndDate, kn) {
+					currentKey = ffjtWorkerCreateOperationWorkEndDate
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyWorkerCreateOperationWorkBeginDate, kn) {
+					currentKey = ffjtWorkerCreateOperationWorkBeginDate
+		
