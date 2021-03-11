@@ -324,4 +324,61 @@ mainparse:
 			continue
 		case fflib.FFParse_want_value:
 
-			if tok == fflib.FFTo
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtWorkerCreateOperationDailyPay:
+					goto handle_DailyPay
+
+				case ffjtWorkerCreateOperationInitializer:
+					goto handle_Initializer
+
+				case ffjtWorkerCreateOperationName:
+					goto handle_Name
+
+				case ffjtWorkerCreateOperationOwner:
+					goto handle_Owner
+
+				case ffjtWorkerCreateOperationURL:
+					goto handle_URL
+
+				case ffjtWorkerCreateOperationWorkBeginDate:
+					goto handle_WorkBeginDate
+
+				case ffjtWorkerCreateOperationWorkEndDate:
+					goto handle_WorkEndDate
+
+				case ffjtWorkerCreateOperationFee:
+					goto handle_Fee
+
+				case ffjtWorkerCreateOperationnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_DailyPay:
+
+	/* handler: j.DailyPay type=types.UInt64 kind=uint64 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.DailyPay.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs
