@@ -276,4 +276,52 @@ mainparse:
 
 				if fflib.EqualFoldRight(ffjKeyWorkerCreateOperationWorkBeginDate, kn) {
 					currentKey = ffjtWorkerCreateOperationWorkBeginDate
-		
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyWorkerCreateOperationURL, kn) {
+					currentKey = ffjtWorkerCreateOperationURL
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyWorkerCreateOperationOwner, kn) {
+					currentKey = ffjtWorkerCreateOperationOwner
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyWorkerCreateOperationName, kn) {
+					currentKey = ffjtWorkerCreateOperationName
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyWorkerCreateOperationInitializer, kn) {
+					currentKey = ffjtWorkerCreateOperationInitializer
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyWorkerCreateOperationDailyPay, kn) {
+					currentKey = ffjtWorkerCreateOperationDailyPay
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtWorkerCreateOperationnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTo
