@@ -17,3 +17,72 @@ func (j *Account) MarshalJSON() ([]byte, error) {
 		buf.WriteString("null")
 		return buf.Bytes(), nil
 	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *Account) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{"id":`)
+
+	{
+
+		obj, err = j.ID.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"name":`)
+
+	{
+
+		obj, err = j.Name.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"statistics":`)
+
+	{
+
+		obj, err = j.Statistics.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"membership_expiration_date":`)
+
+	{
+
+		obj, err = j.MembershipExpirationDate.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"network_fee_percentage":`)
+	fflib.FormatBits2(buf, uint64(j.NetworkFeePercentage), 10, false)
+	buf.WriteString(`,"lifetime_referrer_fee_percentage":`)
+	fflib.FormatBits2(buf, uint64(j.LifetimeReferrerFeePercentage), 10, false)
+	buf.WriteString(`,"referrer_rewards_percentage":`)
+	fflib.FormatBits2(buf, uint64(j.ReferrerRewardsPercentage), 10, false)
+	buf.WriteString(`,"top_n_control_flags":`)
+	fflib.FormatBits2
