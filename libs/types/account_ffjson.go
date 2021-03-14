@@ -85,4 +85,81 @@ func (j *Account) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	buf.WriteString(`,"referrer_rewards_percentage":`)
 	fflib.FormatBits2(buf, uint64(j.ReferrerRewardsPercentage), 10, false)
 	buf.WriteString(`,"top_n_control_flags":`)
-	fflib.FormatBits2
+	fflib.FormatBits2(buf, uint64(j.TopNControlFlags), 10, false)
+	buf.WriteString(`,"whitelisting_accounts":`)
+	if j.WhitelistingAccounts != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.WhitelistingAccounts {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				obj, err = v.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"blacklisting_accounts":`)
+	if j.BlacklistingAccounts != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.BlacklistingAccounts {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				obj, err = v.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"whitelisted_accounts":`)
+	if j.WhitelistedAccounts != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.WhitelistedAccounts {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				obj, err = v.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"blacklisted_accounts":`)
+	if j.BlacklistedAccounts != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.BlacklistedAccounts {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				obj, err = v
