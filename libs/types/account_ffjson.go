@@ -162,4 +162,89 @@ func (j *Account) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 
 			{
 
-				obj, err = v
+				obj, err = v.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	/* Struct fall back. type=types.AccountOptions kind=struct */
+	buf.WriteString(`,"options":`)
+	err = buf.Encode(&j.Options)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"registrar":`)
+
+	{
+
+		obj, err = j.Registrar.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"referrer":`)
+
+	{
+
+		obj, err = j.Referrer.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"lifetime_referrer":`)
+
+	{
+
+		obj, err = j.LifetimeReferrer.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"cashback_vb":`)
+
+	{
+
+		obj, err = j.CashbackVB.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	/* Struct fall back. type=types.Authority kind=struct */
+	buf.WriteString(`,"owner":`)
+	err = buf.Encode(&j.Owner)
+	if err != nil {
+		return err
+	}
+	/* Struct fall back. type=types.Authority kind=struct */
+	buf.WriteString(`,"active":`)
+	err = buf.Encode(&j.Active)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"owner_special_authority":`)
+
+	{
+
+		obj, err = j.OwnerSpecialAuthority.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	bu
