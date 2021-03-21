@@ -321,4 +321,45 @@ var ffjKeyAccountNetworkFeePercentage = []byte("network_fee_percentage")
 
 var ffjKeyAccountLifetimeReferrerFeePercentage = []byte("lifetime_referrer_fee_percentage")
 
-var ffjKeyAccountReferrerReward
+var ffjKeyAccountReferrerRewardsPercentage = []byte("referrer_rewards_percentage")
+
+var ffjKeyAccountTopNControlFlags = []byte("top_n_control_flags")
+
+var ffjKeyAccountWhitelistingAccounts = []byte("whitelisting_accounts")
+
+var ffjKeyAccountBlacklistingAccounts = []byte("blacklisting_accounts")
+
+var ffjKeyAccountWhitelistedAccounts = []byte("whitelisted_accounts")
+
+var ffjKeyAccountBlacklistedAccounts = []byte("blacklisted_accounts")
+
+var ffjKeyAccountOptions = []byte("options")
+
+var ffjKeyAccountRegistrar = []byte("registrar")
+
+var ffjKeyAccountReferrer = []byte("referrer")
+
+var ffjKeyAccountLifetimeReferrer = []byte("lifetime_referrer")
+
+var ffjKeyAccountCashbackVB = []byte("cashback_vb")
+
+var ffjKeyAccountOwner = []byte("owner")
+
+var ffjKeyAccountActive = []byte("active")
+
+var ffjKeyAccountOwnerSpecialAuthority = []byte("owner_special_authority")
+
+var ffjKeyAccountActiveSpecialAuthority = []byte("active_special_authority")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *Account) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *Account) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtAccountbase
+	_ = currentKey
+	tok := ffli
