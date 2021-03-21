@@ -247,4 +247,78 @@ func (j *Account) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 		buf.Write(obj)
 
 	}
-	bu
+	buf.WriteString(`,"active_special_authority":`)
+
+	{
+
+		obj, err = j.ActiveSpecialAuthority.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtAccountbase = iota
+	ffjtAccountnosuchkey
+
+	ffjtAccountID
+
+	ffjtAccountName
+
+	ffjtAccountStatistics
+
+	ffjtAccountMembershipExpirationDate
+
+	ffjtAccountNetworkFeePercentage
+
+	ffjtAccountLifetimeReferrerFeePercentage
+
+	ffjtAccountReferrerRewardsPercentage
+
+	ffjtAccountTopNControlFlags
+
+	ffjtAccountWhitelistingAccounts
+
+	ffjtAccountBlacklistingAccounts
+
+	ffjtAccountWhitelistedAccounts
+
+	ffjtAccountBlacklistedAccounts
+
+	ffjtAccountOptions
+
+	ffjtAccountRegistrar
+
+	ffjtAccountReferrer
+
+	ffjtAccountLifetimeReferrer
+
+	ffjtAccountCashbackVB
+
+	ffjtAccountOwner
+
+	ffjtAccountActive
+
+	ffjtAccountOwnerSpecialAuthority
+
+	ffjtAccountActiveSpecialAuthority
+)
+
+var ffjKeyAccountID = []byte("id")
+
+var ffjKeyAccountName = []byte("name")
+
+var ffjKeyAccountStatistics = []byte("statistics")
+
+var ffjKeyAccountMembershipExpirationDate = []byte("membership_expiration_date")
+
+var ffjKeyAccountNetworkFeePercentage = []byte("network_fee_percentage")
+
+var ffjKeyAccountLifetimeReferrerFeePercentage = []byte("lifetime_referrer_fee_percentage")
+
+var ffjKeyAccountReferrerReward
