@@ -519,4 +519,58 @@ mainparse:
 						goto mainparse
 
 					} else if bytes.Equal(ffjKeyAccountReferrer, kn) {
-						currentKey = ffj
+						currentKey = ffjtAccountReferrer
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 's':
+
+					if bytes.Equal(ffjKeyAccountStatistics, kn) {
+						currentKey = ffjtAccountStatistics
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 't':
+
+					if bytes.Equal(ffjKeyAccountTopNControlFlags, kn) {
+						currentKey = ffjtAccountTopNControlFlags
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'w':
+
+					if bytes.Equal(ffjKeyAccountWhitelistingAccounts, kn) {
+						currentKey = ffjtAccountWhitelistingAccounts
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAccountWhitelistedAccounts, kn) {
+						currentKey = ffjtAccountWhitelistedAccounts
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountActiveSpecialAuthority, kn) {
+					currentKey = ffjtAccountActiveSpecialAuthority
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountOwnerSpecialAuthority, kn) {
+					currentKey = ffjtAccountOwnerSpecialAuthority
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyAccountActive, kn) {
+					currentKey = ffjtAccountActive
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyAccountOwner, kn)
