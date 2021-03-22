@@ -470,4 +470,53 @@ mainparse:
 				case 'm':
 
 					if bytes.Equal(ffjKeyAccountMembershipExpirationDate, kn) {
-						currentKey = ffjtAccountMem
+						currentKey = ffjtAccountMembershipExpirationDate
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'n':
+
+					if bytes.Equal(ffjKeyAccountName, kn) {
+						currentKey = ffjtAccountName
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAccountNetworkFeePercentage, kn) {
+						currentKey = ffjtAccountNetworkFeePercentage
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'o':
+
+					if bytes.Equal(ffjKeyAccountOptions, kn) {
+						currentKey = ffjtAccountOptions
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAccountOwner, kn) {
+						currentKey = ffjtAccountOwner
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAccountOwnerSpecialAuthority, kn) {
+						currentKey = ffjtAccountOwnerSpecialAuthority
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'r':
+
+					if bytes.Equal(ffjKeyAccountReferrerRewardsPercentage, kn) {
+						currentKey = ffjtAccountReferrerRewardsPercentage
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAccountRegistrar, kn) {
+						currentKey = ffjtAccountRegistrar
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAccountReferrer, kn) {
+						currentKey = ffj
