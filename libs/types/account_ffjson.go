@@ -621,4 +621,46 @@ mainparse:
 					goto mainparse
 				}
 
-				if f
+				if fflib.EqualFoldRight(ffjKeyAccountBlacklistingAccounts, kn) {
+					currentKey = ffjtAccountBlacklistingAccounts
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountWhitelistingAccounts, kn) {
+					currentKey = ffjtAccountWhitelistingAccounts
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountTopNControlFlags, kn) {
+					currentKey = ffjtAccountTopNControlFlags
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountReferrerRewardsPercentage, kn) {
+					currentKey = ffjtAccountReferrerRewardsPercentage
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyAccountLifetimeReferrerFeePercentage, kn) {
+					currentKey = ffjtAccountLifetimeReferrerFeePercentage
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountNetworkFeePercentage, kn) {
+					currentKey = ffjtAccountNetworkFeePercentage
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountMembershipExpirationDate, kn) {
+					currentKey = ffjtAccountMembershipExpirationDate
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountSt
