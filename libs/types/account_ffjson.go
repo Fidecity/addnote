@@ -573,4 +573,52 @@ mainparse:
 					goto mainparse
 				}
 
-				if fflib.SimpleLetterEqualFold(ffjKeyAccountOwner, kn)
+				if fflib.SimpleLetterEqualFold(ffjKeyAccountOwner, kn) {
+					currentKey = ffjtAccountOwner
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountCashbackVB, kn) {
+					currentKey = ffjtAccountCashbackVB
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyAccountLifetimeReferrer, kn) {
+					currentKey = ffjtAccountLifetimeReferrer
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyAccountReferrer, kn) {
+					currentKey = ffjtAccountReferrer
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountRegistrar, kn) {
+					currentKey = ffjtAccountRegistrar
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountOptions, kn) {
+					currentKey = ffjtAccountOptions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountBlacklistedAccounts, kn) {
+					currentKey = ffjtAccountBlacklistedAccounts
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountWhitelistedAccounts, kn) {
+					currentKey = ffjtAccountWhitelistedAccounts
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if f
