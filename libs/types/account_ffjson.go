@@ -711,4 +711,59 @@ mainparse:
 					goto handle_MembershipExpirationDate
 
 				case ffjtAccountNetworkFeePercentage:
-					goto handle_NetworkFeePercenta
+					goto handle_NetworkFeePercentage
+
+				case ffjtAccountLifetimeReferrerFeePercentage:
+					goto handle_LifetimeReferrerFeePercentage
+
+				case ffjtAccountReferrerRewardsPercentage:
+					goto handle_ReferrerRewardsPercentage
+
+				case ffjtAccountTopNControlFlags:
+					goto handle_TopNControlFlags
+
+				case ffjtAccountWhitelistingAccounts:
+					goto handle_WhitelistingAccounts
+
+				case ffjtAccountBlacklistingAccounts:
+					goto handle_BlacklistingAccounts
+
+				case ffjtAccountWhitelistedAccounts:
+					goto handle_WhitelistedAccounts
+
+				case ffjtAccountBlacklistedAccounts:
+					goto handle_BlacklistedAccounts
+
+				case ffjtAccountOptions:
+					goto handle_Options
+
+				case ffjtAccountRegistrar:
+					goto handle_Registrar
+
+				case ffjtAccountReferrer:
+					goto handle_Referrer
+
+				case ffjtAccountLifetimeReferrer:
+					goto handle_LifetimeReferrer
+
+				case ffjtAccountCashbackVB:
+					goto handle_CashbackVB
+
+				case ffjtAccountOwner:
+					goto handle_Owner
+
+				case ffjtAccountActive:
+					goto handle_Active
+
+				case ffjtAccountOwnerSpecialAuthority:
+					goto handle_OwnerSpecialAuthority
+
+				case ffjtAccountActiveSpecialAuthority:
+					goto handle_ActiveSpecialAuthority
+
+				case ffjtAccountnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state 
