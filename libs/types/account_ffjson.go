@@ -925,4 +925,76 @@ handle_LifetimeReferrerFeePercentage:
 	state = fflib.FFParse_after_value
 	goto mainparse
 
-handle_ReferrerRewardsPercentag
+handle_ReferrerRewardsPercentage:
+
+	/* handler: j.ReferrerRewardsPercentage type=types.UInt64 kind=uint64 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.ReferrerRewardsPercentage.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_TopNControlFlags:
+
+	/* handler: j.TopNControlFlags type=types.UInt64 kind=uint64 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.TopNControlFlags.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_WhitelistingAccounts:
+
+	/* handler: j.WhitelistingAccounts type=types.AccountIDs kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for AccountIDs", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.WhitelistingAccounts = nil
+		} else {
+
+			j.WhitelistingAccounts = []AccountID{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJWhitelistingAccounts 
