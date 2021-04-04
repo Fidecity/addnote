@@ -1246,4 +1246,80 @@ handle_BlacklistedAccounts:
 
 						tbuf, err := fs.CaptureField(tok)
 						if err != nil {
-							return fs.WrapEr
+							return fs.WrapErr(err)
+						}
+
+						err = tmpJBlacklistedAccounts.UnmarshalJSON(tbuf)
+						if err != nil {
+							return fs.WrapErr(err)
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.BlacklistedAccounts = append(j.BlacklistedAccounts, tmpJBlacklistedAccounts)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Options:
+
+	/* handler: j.Options type=types.AccountOptions kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.AccountOptions kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.Options)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Registrar:
+
+	/* handler: j.Registrar type=types.AccountID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.Registrar.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Referrer:
+
+	/* handler: j.Referrer type=types.AccountID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != n
