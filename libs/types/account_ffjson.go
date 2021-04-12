@@ -1398,4 +1398,74 @@ handle_Owner:
 			return fs.WrapErr(err)
 		}
 
-		err = 
+		err = json.Unmarshal(tbuf, &j.Owner)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Active:
+
+	/* handler: j.Active type=types.Authority kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.Authority kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.Active)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_OwnerSpecialAuthority:
+
+	/* handler: j.OwnerSpecialAuthority type=types.OwnerSpecialAuthority kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.OwnerSpecialAuthority.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ActiveSpecialAuthority:
+
+	/* handler: j.ActiveSpecialAuthority type=types.ActiveSpecialAuthority kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.ActiveSpecialAuthority.UnmarshalJSON(tbuf)
+			if err != nil {
+		
