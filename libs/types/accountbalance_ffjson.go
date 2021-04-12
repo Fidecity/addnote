@@ -15,4 +15,86 @@ func (j *AccountBalance) MarshalJSON() ([]byte, error) {
 	var buf fflib.Buffer
 	if j == nil {
 		buf.WriteString("null")
-		return buf.Byte
+		return buf.Bytes(), nil
+	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *AccountBalance) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{"id":`)
+
+	{
+
+		obj, err = j.ID.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"owner":`)
+
+	{
+
+		obj, err = j.Owner.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"asset_type":`)
+
+	{
+
+		obj, err = j.AssetType.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"balance":`)
+	fflib.FormatBits2(buf, uint64(j.Balance), 10, false)
+	if j.MaintenanceFlag {
+		buf.WriteString(`,"maintenance_flag":true`)
+	} else {
+		buf.WriteString(`,"maintenance_flag":false`)
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtAccountBalancebase = iota
+	ffjtAccountBalancenosuchkey
+
+	ffjtAccountBalanceID
+
+	ffjtAccountBalanceOwner
+
+	ffjtAccountBalanceAssetType
+
+	ffjtAccountBalanceBalance
+
+	ffjtAccountBalanceMaintenanceFlag
+)
+
+var ffjKeyAccountBalanceID = []byte("id")
+
+var ffjKeyAccountBalanceOwner = []byte("owner")
+
+var ff
