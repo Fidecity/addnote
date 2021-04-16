@@ -146,4 +146,59 @@ mainparse:
 			}
 
 		case fflib.FFParse_want_key:
-			// j
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtAccountBalancenosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeyAccountBalanceAssetType, kn) {
+						currentKey = ffjtAccountBalanceAssetType
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'b':
+
+					if bytes.Equal(ffjKeyAccountBalanceBalance, kn) {
+						currentKey = ffjtAccountBalanceBalance
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'i':
+
+					if bytes.Equal(ffjKeyAccountBalanceID, kn) {
+						currentKey = ffjtAccountBalanceID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'm':
+
+					if bytes.Equal(ffjKeyAccountBalanceMaintenanceFlag, kn) {
+						currentKey = ffjtAccountBalanceMaintenanceFlag
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'o':
+
+					if bytes.Equal(ffjKeyAccountBalanceOwner, kn) {
+						currentKey = ffjtAccountBalanceOwner
+						state = fflib.FFParse_want_colon
+						goto mai
