@@ -201,4 +201,53 @@ mainparse:
 					if bytes.Equal(ffjKeyAccountBalanceOwner, kn) {
 						currentKey = ffjtAccountBalanceOwner
 						state = fflib.FFParse_want_colon
-						goto mai
+						goto mainparse
+					}
+
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyAccountBalanceMaintenanceFlag, kn) {
+					currentKey = ffjtAccountBalanceMaintenanceFlag
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyAccountBalanceBalance, kn) {
+					currentKey = ffjtAccountBalanceBalance
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountBalanceAssetType, kn) {
+					currentKey = ffjtAccountBalanceAssetType
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyAccountBalanceOwner, kn) {
+					currentKey = ffjtAccountBalanceOwner
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyAccountBalanceID, kn) {
+					currentKey = ffjtAccountBalanceID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtAccountBalancenosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.F
