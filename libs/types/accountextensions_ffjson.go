@@ -33,3 +33,87 @@ func (j *AccountCreateExtensions) MarshalJSONBuf(buf fflib.EncodingBuffer) error
 	var obj []byte
 	_ = obj
 	_ = err
+	buf.WriteString(`{ `)
+	if j.NullExt != nil {
+		if true {
+			buf.WriteString(`"null_ext":`)
+
+			{
+
+				err = j.NullExt.MarshalJSONBuf(buf)
+				if err != nil {
+					return err
+				}
+
+			}
+			buf.WriteByte(',')
+		}
+	}
+	if j.OwnerSpecialAuthority != nil {
+		if true {
+			buf.WriteString(`"owner_special_authority":`)
+
+			{
+
+				obj, err = j.OwnerSpecialAuthority.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+			buf.WriteByte(',')
+		}
+	}
+	if j.ActiveSpecialAuthority != nil {
+		if true {
+			buf.WriteString(`"active_special_authority":`)
+
+			{
+
+				obj, err = j.ActiveSpecialAuthority.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+			buf.WriteByte(',')
+		}
+	}
+	if j.BuybackOptions != nil {
+		if true {
+			buf.WriteString(`"buyback_options":`)
+
+			{
+
+				err = j.BuybackOptions.MarshalJSONBuf(buf)
+				if err != nil {
+					return err
+				}
+
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtAccountCreateExtensionsbase = iota
+	ffjtAccountCreateExtensionsnosuchkey
+
+	ffjtAccountCreateExtensionsNullExt
+
+	ffjtAccountCreateExtensionsOwnerSpecialAuthority
+
+	ffjtAccountCreateExtensionsActiveSpecialAuthority
+
+	ffjtAccountCreateExtensionsBuybackOptions
+)
+
+var ffjKeyAccountCreateExtensionsNullExt = []byte("null_ext")
+
+var ffjKeyAccountCreateExtensionsOwnerSpecialAuth
