@@ -218,4 +218,45 @@ mainparse:
 				}
 
 				if fflib.EqualFoldRight(ffjKeyAccountCreateExtensionsBuybackOptions, kn) {
-					curr
+					currentKey = ffjtAccountCreateExtensionsBuybackOptions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountCreateExtensionsActiveSpecialAuthority, kn) {
+					currentKey = ffjtAccountCreateExtensionsActiveSpecialAuthority
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountCreateExtensionsOwnerSpecialAuthority, kn) {
+					currentKey = ffjtAccountCreateExtensionsOwnerSpecialAuthority
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyAccountCreateExtensionsNullExt, kn) {
+					currentKey = ffjtAccountCreateExtensionsNullExt
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtAccountCreateExtensionsnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtAccountCreateExtensionsNullExt:
+					
