@@ -259,4 +259,71 @@ mainparse:
 				switch currentKey {
 
 				case ffjtAccountCreateExtensionsNullExt:
-					
+					goto handle_NullExt
+
+				case ffjtAccountCreateExtensionsOwnerSpecialAuthority:
+					goto handle_OwnerSpecialAuthority
+
+				case ffjtAccountCreateExtensionsActiveSpecialAuthority:
+					goto handle_ActiveSpecialAuthority
+
+				case ffjtAccountCreateExtensionsBuybackOptions:
+					goto handle_BuybackOptions
+
+				case ffjtAccountCreateExtensionsnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_NullExt:
+
+	/* handler: j.NullExt type=types.NullExtension kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+			j.NullExt = nil
+
+		} else {
+
+			if j.NullExt == nil {
+				j.NullExt = new(NullExtension)
+			}
+
+			err = j.NullExt.UnmarshalJSONFFLexer(fs, fflib.FFParse_want_key)
+			if err != nil {
+				return err
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_OwnerSpecialAuthority:
+
+	/* handler: j.OwnerSpecialAuthority type=types.OwnerSpecialAuthority kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+			j.OwnerSpecialAuthority = nil
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			if j.OwnerSpecialAuth
