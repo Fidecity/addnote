@@ -165,4 +165,57 @@ mainparse:
 			}
 
 		case fflib.FFParse_want_key:
-			// json {} ended. goto exit
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtAccountCreateExtensionsnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'a':
+
+					if bytes.Equal(ffjKeyAccountCreateExtensionsActiveSpecialAuthority, kn) {
+						currentKey = ffjtAccountCreateExtensionsActiveSpecialAuthority
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'b':
+
+					if bytes.Equal(ffjKeyAccountCreateExtensionsBuybackOptions, kn) {
+						currentKey = ffjtAccountCreateExtensionsBuybackOptions
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'n':
+
+					if bytes.Equal(ffjKeyAccountCreateExtensionsNullExt, kn) {
+						currentKey = ffjtAccountCreateExtensionsNullExt
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'o':
+
+					if bytes.Equal(ffjKeyAccountCreateExtensionsOwnerSpecialAuthority, kn) {
+						currentKey = ffjtAccountCreateExtensionsOwnerSpecialAuthority
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountCreateExtensionsBuybackOptions, kn) {
+					curr
