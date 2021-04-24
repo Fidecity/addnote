@@ -458,4 +458,63 @@ func (j *AccountUpdateExtensions) MarshalJSONBuf(buf fflib.EncodingBuffer) error
 	}
 	if j.OwnerSpecialAuthority != nil {
 		if true {
-			buf.WriteString(`"owner_special_authority":
+			buf.WriteString(`"owner_special_authority":`)
+
+			{
+
+				obj, err = j.OwnerSpecialAuthority.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+			buf.WriteByte(',')
+		}
+	}
+	if j.ActiveSpecialAuthority != nil {
+		if true {
+			buf.WriteString(`"active_special_authority":`)
+
+			{
+
+				obj, err = j.ActiveSpecialAuthority.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.Rewind(1)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtAccountUpdateExtensionsbase = iota
+	ffjtAccountUpdateExtensionsnosuchkey
+
+	ffjtAccountUpdateExtensionsNullExt
+
+	ffjtAccountUpdateExtensionsOwnerSpecialAuthority
+
+	ffjtAccountUpdateExtensionsActiveSpecialAuthority
+)
+
+var ffjKeyAccountUpdateExtensionsNullExt = []byte("null_ext")
+
+var ffjKeyAccountUpdateExtensionsOwnerSpecialAuthority = []byte("owner_special_authority")
+
+var ffjKeyAccountUpdateExtensionsActiveSpecialAuthority = []byte("active_special_authority")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *AccountUpdateExtensions) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *AccountUpdateExtensions) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error
