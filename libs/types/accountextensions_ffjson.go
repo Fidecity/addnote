@@ -326,4 +326,77 @@ handle_OwnerSpecialAuthority:
 				return fs.WrapErr(err)
 			}
 
-			if j.OwnerSpecialAuth
+			if j.OwnerSpecialAuthority == nil {
+				j.OwnerSpecialAuthority = new(OwnerSpecialAuthority)
+			}
+
+			err = j.OwnerSpecialAuthority.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ActiveSpecialAuthority:
+
+	/* handler: j.ActiveSpecialAuthority type=types.ActiveSpecialAuthority kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+			j.ActiveSpecialAuthority = nil
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			if j.ActiveSpecialAuthority == nil {
+				j.ActiveSpecialAuthority = new(ActiveSpecialAuthority)
+			}
+
+			err = j.ActiveSpecialAuthority.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_BuybackOptions:
+
+	/* handler: j.BuybackOptions type=types.BuybackOptions kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+			j.BuybackOptions = nil
+
+		} else {
+
+			if j.BuybackOptions == nil {
+				j.BuybackOptions = new(BuybackOptions)
+			}
+
+			err = j.BuybackOptions.UnmarshalJSONFFLexer(fs, fflib.FFParse_want_key)
+			if err != nil {
+				return err
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return
