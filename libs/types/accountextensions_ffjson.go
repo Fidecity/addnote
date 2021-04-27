@@ -574,4 +574,50 @@ mainparse:
 				case 'a':
 
 					if bytes.Equal(ffjKeyAccountUpdateExtensionsActiveSpecialAuthority, kn) {
-						currentKey = ffjtAccountUpdateExtensionsActiveSpecialA
+						currentKey = ffjtAccountUpdateExtensionsActiveSpecialAuthority
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'n':
+
+					if bytes.Equal(ffjKeyAccountUpdateExtensionsNullExt, kn) {
+						currentKey = ffjtAccountUpdateExtensionsNullExt
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'o':
+
+					if bytes.Equal(ffjKeyAccountUpdateExtensionsOwnerSpecialAuthority, kn) {
+						currentKey = ffjtAccountUpdateExtensionsOwnerSpecialAuthority
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountUpdateExtensionsActiveSpecialAuthority, kn) {
+					currentKey = ffjtAccountUpdateExtensionsActiveSpecialAuthority
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountUpdateExtensionsOwnerSpecialAuthority, kn) {
+					currentKey = ffjtAccountUpdateExtensionsOwnerSpecialAuthority
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyAccountUpdateExtensionsNullExt, kn) {
+					currentKey = ffjtAccountUpdateExtensionsNullExt
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtAccountUpdateExtensionsnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_w
