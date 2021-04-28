@@ -620,4 +620,59 @@ mainparse:
 				goto mainparse
 			}
 
-		case fflib.FFParse_w
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtAccountUpdateExtensionsNullExt:
+					goto handle_NullExt
+
+				case ffjtAccountUpdateExtensionsOwnerSpecialAuthority:
+					goto handle_OwnerSpecialAuthority
+
+				case ffjtAccountUpdateExtensionsActiveSpecialAuthority:
+					goto handle_ActiveSpecialAuthority
+
+				case ffjtAccountUpdateExtensionsnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_NullExt:
+
+	/* handler: j.NullExt type=types.NullExtension kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+			j.NullExt = nil
+
+		} else {
+
+			if j.NullExt == nil {
+				j.NullExt = new(NullExtension)
+			}
+
+			err = j.NullExt.UnmarshalJSONFFLexer(fs, fflib.FFParse_want_key)
+			if err != nil {
+				return err
+			}
+		}
+		state = 
