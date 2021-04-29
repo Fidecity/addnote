@@ -675,4 +675,69 @@ handle_NullExt:
 				return err
 			}
 		}
-		state = 
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_OwnerSpecialAuthority:
+
+	/* handler: j.OwnerSpecialAuthority type=types.OwnerSpecialAuthority kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+			j.OwnerSpecialAuthority = nil
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			if j.OwnerSpecialAuthority == nil {
+				j.OwnerSpecialAuthority = new(OwnerSpecialAuthority)
+			}
+
+			err = j.OwnerSpecialAuthority.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ActiveSpecialAuthority:
+
+	/* handler: j.ActiveSpecialAuthority type=types.ActiveSpecialAuthority kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+			j.ActiveSpecialAuthority = nil
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			if j.ActiveSpecialAuthority == nil {
+				j.ActiveSpecialAuthority = new(ActiveSpecialAuthority)
+			}
+
+			err = j.ActiveSpecialAuthority.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_af
