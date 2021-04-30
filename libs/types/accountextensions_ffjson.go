@@ -803,4 +803,68 @@ func (j *BuybackOptions) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 		obj, err = j.AssetToBuyIssuer.MarshalJSON()
 		if err != nil {
 			return err
-	
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"markets":`)
+	if j.Markets != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.Markets {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				obj, err = v.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtBuybackOptionsbase = iota
+	ffjtBuybackOptionsnosuchkey
+
+	ffjtBuybackOptionsAssetToBuy
+
+	ffjtBuybackOptionsAssetToBuyIssuer
+
+	ffjtBuybackOptionsMarkets
+)
+
+var ffjKeyBuybackOptionsAssetToBuy = []byte("asset_to_buy")
+
+var ffjKeyBuybackOptionsAssetToBuyIssuer = []byte("asset_to_buy_issuer")
+
+var ffjKeyBuybackOptionsMarkets = []byte("markets")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *BuybackOptions) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *BuybackOptions) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtBuybackOptionsbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state
