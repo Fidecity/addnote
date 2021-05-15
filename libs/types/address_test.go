@@ -12,4 +12,14 @@ var addresses = []string{
 }
 
 func TestAddress(t *testing.T) {
-	config.SetCurrent(c
+	config.SetCurrent(config.ChainIDBTS)
+
+	for _, add := range addresses {
+		address, err := NewAddressFromString(add)
+		if err != nil {
+			assert.FailNow(t, err.Error(), "NewAddressFromString")
+		}
+
+		assert.Equal(t, add, address.String())
+	}
+}
