@@ -43,4 +43,33 @@ func (p AssetOptions) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode Flags")
 	}
 
-	if err := enc.Encode(p.CoreExchangeRate); e
+	if err := enc.Encode(p.CoreExchangeRate); err != nil {
+		return errors.Annotate(err, "encode CoreExchangeRate")
+	}
+
+	if err := enc.Encode(p.WhitelistAuthorities); err != nil {
+		return errors.Annotate(err, "encode WhitelistAuthorities")
+	}
+
+	if err := enc.Encode(p.BlacklistAuthorities); err != nil {
+		return errors.Annotate(err, "encode BlacklistAuthorities")
+	}
+
+	if err := enc.Encode(p.WhitelistMarkets); err != nil {
+		return errors.Annotate(err, "encode WhitelistMarkets")
+	}
+
+	if err := enc.Encode(p.BlacklistMarkets); err != nil {
+		return errors.Annotate(err, "encode BlacklistMarkets")
+	}
+
+	if err := enc.Encode(p.Description); err != nil {
+		return errors.Annotate(err, "encode Description")
+	}
+
+	if err := enc.Encode(p.Extensions); err != nil {
+		return errors.Annotate(err, "encode extensions")
+	}
+
+	return nil
+}
