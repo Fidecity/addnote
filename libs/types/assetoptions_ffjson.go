@@ -548,3 +548,463 @@ handle_MaxMarketFee:
 				return fs.WrapErr(err)
 			}
 		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_MarketFeePercent:
+
+	/* handler: j.MarketFeePercent type=types.UInt16 kind=uint16 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.MarketFeePercent.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Flags:
+
+	/* handler: j.Flags type=types.UInt16 kind=uint16 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.Flags.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Description:
+
+	/* handler: j.Description type=types.String kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.Description.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_CoreExchangeRate:
+
+	/* handler: j.CoreExchangeRate type=types.Price kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.Price kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.CoreExchangeRate)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_IssuerPermissions:
+
+	/* handler: j.IssuerPermissions type=types.UInt16 kind=uint16 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.IssuerPermissions.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_BlacklistAuthorities:
+
+	/* handler: j.BlacklistAuthorities type=types.AccountIDs kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for AccountIDs", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.BlacklistAuthorities = nil
+		} else {
+
+			j.BlacklistAuthorities = []AccountID{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJBlacklistAuthorities AccountID
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJBlacklistAuthorities type=types.AccountID kind=struct quoted=false*/
+
+				{
+					if tok == fflib.FFTok_null {
+
+					} else {
+
+						tbuf, err := fs.CaptureField(tok)
+						if err != nil {
+							return fs.WrapErr(err)
+						}
+
+						err = tmpJBlacklistAuthorities.UnmarshalJSON(tbuf)
+						if err != nil {
+							return fs.WrapErr(err)
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.BlacklistAuthorities = append(j.BlacklistAuthorities, tmpJBlacklistAuthorities)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_WhitelistAuthorities:
+
+	/* handler: j.WhitelistAuthorities type=types.AccountIDs kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for AccountIDs", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.WhitelistAuthorities = nil
+		} else {
+
+			j.WhitelistAuthorities = []AccountID{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJWhitelistAuthorities AccountID
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJWhitelistAuthorities type=types.AccountID kind=struct quoted=false*/
+
+				{
+					if tok == fflib.FFTok_null {
+
+					} else {
+
+						tbuf, err := fs.CaptureField(tok)
+						if err != nil {
+							return fs.WrapErr(err)
+						}
+
+						err = tmpJWhitelistAuthorities.UnmarshalJSON(tbuf)
+						if err != nil {
+							return fs.WrapErr(err)
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.WhitelistAuthorities = append(j.WhitelistAuthorities, tmpJWhitelistAuthorities)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_BlacklistMarkets:
+
+	/* handler: j.BlacklistMarkets type=types.AccountIDs kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for AccountIDs", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.BlacklistMarkets = nil
+		} else {
+
+			j.BlacklistMarkets = []AccountID{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJBlacklistMarkets AccountID
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJBlacklistMarkets type=types.AccountID kind=struct quoted=false*/
+
+				{
+					if tok == fflib.FFTok_null {
+
+					} else {
+
+						tbuf, err := fs.CaptureField(tok)
+						if err != nil {
+							return fs.WrapErr(err)
+						}
+
+						err = tmpJBlacklistMarkets.UnmarshalJSON(tbuf)
+						if err != nil {
+							return fs.WrapErr(err)
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.BlacklistMarkets = append(j.BlacklistMarkets, tmpJBlacklistMarkets)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_WhitelistMarkets:
+
+	/* handler: j.WhitelistMarkets type=types.AccountIDs kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for AccountIDs", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.WhitelistMarkets = nil
+		} else {
+
+			j.WhitelistMarkets = []AccountID{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJWhitelistMarkets AccountID
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJWhitelistMarkets type=types.AccountID kind=struct quoted=false*/
+
+				{
+					if tok == fflib.FFTok_null {
+
+					} else {
+
+						tbuf, err := fs.CaptureField(tok)
+						if err != nil {
+							return fs.WrapErr(err)
+						}
+
+						err = tmpJWhitelistMarkets.UnmarshalJSON(tbuf)
+						if err != nil {
+							return fs.WrapErr(err)
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.WhitelistMarkets = append(j.WhitelistMarkets, tmpJWhitelistMarkets)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Extensions:
+
+	/* handler: j.Extensions type=types.Extensions kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.Extensions.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+wrongtokenerror:
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
