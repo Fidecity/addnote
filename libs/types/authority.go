@@ -247,4 +247,56 @@ func (p AccountAuthsMap) Marshal(enc *util.TypeEncoder) error {
 
 type NoSpecialAuthority struct{}
 
-type TopHoldersSpecia
+type TopHoldersSpecialAuthority struct {
+	Asset         AssetID `json:"asset"`
+	NumTopHolders UInt8   `json:"num_top_holders"`
+}
+
+func (p TopHoldersSpecialAuthority) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(p.Asset); err != nil {
+		return errors.Annotate(err, "encode Asset")
+	}
+
+	if err := enc.Encode(p.NumTopHolders); err != nil {
+		return errors.Annotate(err, "encode NumTopHolders")
+	}
+
+	return nil
+}
+
+type OwnerSpecialAuthority struct {
+	SpecialAuthority
+}
+
+func (p OwnerSpecialAuthority) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(uint8(AccountCreateExtensionsOwnerSpecial)); err != nil {
+		return errors.Annotate(err, "encode AccountCreateExtensionsOwnerSpecial")
+	}
+
+	if err := enc.Encode(p.SpecialAuthority); err != nil {
+		return errors.Annotate(err, "encode SpecialAuthority")
+	}
+
+	return nil
+}
+
+type ActiveSpecialAuthority struct {
+	SpecialAuthority
+}
+
+func (p ActiveSpecialAuthority) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(uint8(AccountCreateExtensionsActiveSpecial)); err != nil {
+		return errors.Annotate(err, "encode AccountCreateExtensionsActiveSpecial")
+	}
+
+	if err := enc.Encode(p.SpecialAuthority); err != nil {
+		return errors.Annotate(err, "encode SpecialAuthority")
+	}
+
+	return nil
+}
+
+type SpecialAuthority struct {
+	Type SpecialAuthorityType
+	Auth interface{}
+}
