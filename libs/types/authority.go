@@ -60,4 +60,64 @@ func (p *KeyAuthsMap) UnmarshalJSON(data []byte) error {
 			return errors.Annotate(err, "NewPublicKeyFromString")
 		}
 
-		(*p)[pub] = UInt16(weight
+		(*p)[pub] = UInt16(weight)
+	}
+
+	return nil
+}
+
+func (p KeyAuthsMap) MarshalJSON() ([]byte, error) {
+	ret := make([]interface{}, 0, len(p))
+	for k, v := range p {
+		ret = append(ret, []interface{}{k.String(), v})
+	}
+	return ffjson.Marshal(ret)
+}
+
+func (p KeyAuthsMap) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(len(p))); err != nil {
+		return errors.Annotate(err, "encode length")
+	}
+
+	//sort keys
+	keys := make([]interface{}, 0, len(p))
+	for k := range p {
+		keys = append(keys, k)
+	}
+
+	var err error
+	sort.Sort(keys, func(a, b interface{}) (s int) {
+		s, err = publicKeyComparator(a.(*PublicKey), b.(*PublicKey))
+		return
+	})
+
+	if err != nil {
+		return errors.Annotate(err, "Sort")
+	}
+
+	for _, k := range keys {
+		pub := k.(*PublicKey)
+		if err := pub.Marshal(enc); err != nil {
+			return errors.Annotate(err, "encode PubKey")
+		}
+
+		if err := enc.Encode(p[pub]); err != nil {
+			return errors.Annotate(err, "encode Weight")
+		}
+	}
+
+	return nil
+}
+
+type AddressAuthsMap map[*Address]UInt16
+
+func (p *AddressAuthsMap) UnmarshalJSON(data []byte) error {
+	var auths [][]interface{}
+	if err := ffjson.Unmarshal(data, &auths); err != nil {
+		return errors.Annotate(err, "unmarshal AddressAuthsMap")
+	}
+
+	(*p) = make(map[*Address]UInt16)
+	for _, tk := range auths {
+		add, ok := tk[0].(string)
+		i
