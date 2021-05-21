@@ -182,4 +182,69 @@ type AccountAuthsMap map[GrapheneObject]UInt16
 
 func (p *AccountAuthsMap) UnmarshalJSON(data []byte) error {
 	var auths [][]interface{}
-	if err := ffjson.Unmarshal(data, &a
+	if err := ffjson.Unmarshal(data, &auths); err != nil {
+		return errors.Annotate(err, "Unmarshal")
+	}
+
+	(*p) = make(map[GrapheneObject]UInt16)
+	for _, tk := range auths {
+		acc, ok := tk[0].(string)
+		if !ok {
+			return ErrInvalidInputType
+		}
+
+		weight, ok := tk[1].(float64)
+		if !ok {
+			return ErrInvalidInputType
+		}
+
+		(*p)[NewAccountID(acc)] = UInt16(weight)
+	}
+
+	return nil
+}
+
+func (p AccountAuthsMap) MarshalJSON() ([]byte, error) {
+	ret := []interface{}{}
+	for k, v := range p {
+		ret = append(ret, []interface{}{k, v})
+	}
+
+	return ffjson.Marshal(ret)
+}
+
+func (p AccountAuthsMap) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(len(p))); err != nil {
+		return errors.Annotate(err, "encode length")
+	}
+
+	//sort keys
+	keys := make([]interface{}, 0, len(p))
+	for k := range p {
+		keys = append(keys, k)
+	}
+
+	sort.Sort(keys, func(a, b interface{}) (s int) {
+		return sort.UInt64Comparator(
+			uint64(a.(GrapheneObject).Instance()),
+			uint64(b.(GrapheneObject).Instance()),
+		)
+	})
+
+	for _, k := range keys {
+		ob := k.(GrapheneObject)
+		if err := enc.Encode(ob); err != nil {
+			return errors.Annotate(err, "encode Account")
+		}
+
+		if err := enc.Encode(p[ob]); err != nil {
+			return errors.Annotate(err, "encode Weight")
+		}
+	}
+
+	return nil
+}
+
+type NoSpecialAuthority struct{}
+
+type TopHoldersSpecia
