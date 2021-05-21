@@ -120,4 +120,66 @@ func (p *AddressAuthsMap) UnmarshalJSON(data []byte) error {
 	(*p) = make(map[*Address]UInt16)
 	for _, tk := range auths {
 		add, ok := tk[0].(string)
-		i
+		if !ok {
+			return ErrInvalidInputType
+		}
+		addr, err := NewAddressFromString(add)
+		if err != nil {
+			return errors.Annotate(err, "NewAddressFromString")
+		}
+
+		weight, ok := tk[1].(float64)
+		if !ok {
+			return ErrInvalidInputType
+		}
+
+		(*p)[addr] = UInt16(weight)
+	}
+
+	return nil
+}
+
+func (p AddressAuthsMap) MarshalJSON() ([]byte, error) {
+	ret := []interface{}{}
+	for k, v := range p {
+		ret = append(ret, []interface{}{k, v})
+	}
+	return ffjson.Marshal(ret)
+}
+
+func (p AddressAuthsMap) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(len(p))); err != nil {
+		return errors.Annotate(err, "encode length")
+	}
+
+	//sort keys
+	keys := make([]interface{}, 0, len(p))
+	for k := range p {
+		keys = append(keys, k)
+	}
+
+	sort.Sort(keys, func(a, b interface{}) (s int) {
+		return sort.StringComparator(
+			a.(*Address).String(),
+			b.(*Address).String(),
+		)
+	})
+
+	for _, v := range keys {
+		add := v.(*Address)
+		if err := enc.Encode(add); err != nil {
+			return errors.Annotate(err, "encode Address")
+		}
+		if err := enc.Encode(p[add]); err != nil {
+			return errors.Annotate(err, "encode Weight")
+		}
+	}
+
+	return nil
+}
+
+type AccountAuthsMap map[GrapheneObject]UInt16
+
+func (p *AccountAuthsMap) UnmarshalJSON(data []byte) error {
+	var auths [][]interface{}
+	if err := ffjson.Unmarshal(data, &a
