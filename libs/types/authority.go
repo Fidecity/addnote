@@ -300,3 +300,53 @@ type SpecialAuthority struct {
 	Type SpecialAuthorityType
 	Auth interface{}
 }
+
+func (p *SpecialAuthority) UnmarshalJSON(data []byte) error {
+	raw := make([]json.RawMessage, 2)
+	if err := ffjson.Unmarshal(data, &raw); err != nil {
+		return errors.Annotate(err, "unmarshal RawData")
+	}
+
+	if err := ffjson.Unmarshal(raw[0], &p.Type); err != nil {
+		return errors.Annotate(err, "unmarshal AuthorityType")
+	}
+
+	switch p.Type {
+	case SpecialAuthorityTypeNoSpecial:
+		p.Auth = &NoSpecialAuthority{}
+	case SpecialAuthorityTypeTopHolders:
+		p.Auth = &TopHoldersSpecialAuthority{}
+	}
+
+	if err := ffjson.Unmarshal(raw[1], p.Auth); err != nil {
+		return errors.Annotate(err, "unmarshal SpecialAuthority")
+	}
+
+	return nil
+}
+
+func (p SpecialAuthority) MarshalJSON() ([]byte, error) {
+	return ffjson.Marshal([]interface{}{
+		p.Type,
+		p.Auth,
+	})
+}
+
+func (p SpecialAuthority) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.Encode(uint8(p.Type)); err != nil {
+		return errors.Annotate(err, "encode Type")
+	}
+
+	switch p.Type {
+	case SpecialAuthorityTypeNoSpecial:
+		if err := enc.Encode(p.Auth.(*NoSpecialAuthority)); err != nil {
+			return errors.Annotate(err, "encode Data")
+		}
+	case SpecialAuthorityTypeTopHolders:
+		if err := enc.Encode(p.Auth.(*TopHoldersSpecialAuthority)); err != nil {
+			return errors.Annotate(err, "encode Data")
+		}
+	}
+
+	return nil
+}
