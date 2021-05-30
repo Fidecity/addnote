@@ -139,4 +139,52 @@ const (
 
 var ffjKeyBitAssetDataID = []byte("id")
 
-var ffjKeyBitAssetDataMembe
+var ffjKeyBitAssetDataMembershipExpirationDate = []byte("current_feed_publication_time")
+
+var ffjKeyBitAssetDataIsPredictionMarket = []byte("is_prediction_market")
+
+var ffjKeyBitAssetDataSettlementPrice = []byte("settlement_price")
+
+var ffjKeyBitAssetDataFeeds = []byte("feeds")
+
+var ffjKeyBitAssetDataOptions = []byte("options")
+
+var ffjKeyBitAssetDataCurrentFeed = []byte("current_feed")
+
+var ffjKeyBitAssetDataForcedSettledVolume = []byte("force_settled_volume")
+
+var ffjKeyBitAssetDataSettlementFund = []byte("settlement_fund")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *BitAssetData) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *BitAssetData) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtBitAssetDatabase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			continue
+
+		case fflib.FFParse_a
