@@ -63,4 +63,80 @@ func (j *BitAssetData) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 		buf.WriteString(`,"is_prediction_market":false`)
 	}
 	/* Struct fall back. type=types.Price kind=struct */
-	
+	buf.WriteString(`,"settlement_price":`)
+	err = buf.Encode(&j.SettlementPrice)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"feeds":`)
+	if j.Feeds != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.Feeds {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				obj, err = v.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"options":`)
+
+	{
+
+		err = j.Options.MarshalJSONBuf(buf)
+		if err != nil {
+			return err
+		}
+
+	}
+	/* Struct fall back. type=types.PriceFeed kind=struct */
+	buf.WriteString(`,"current_feed":`)
+	err = buf.Encode(&j.CurrentFeed)
+	if err != nil {
+		return err
+	}
+	buf.WriteString(`,"force_settled_volume":`)
+	fflib.FormatBits2(buf, uint64(j.ForcedSettledVolume), 10, false)
+	buf.WriteString(`,"settlement_fund":`)
+	fflib.FormatBits2(buf, uint64(j.SettlementFund), 10, false)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtBitAssetDatabase = iota
+	ffjtBitAssetDatanosuchkey
+
+	ffjtBitAssetDataID
+
+	ffjtBitAssetDataMembershipExpirationDate
+
+	ffjtBitAssetDataIsPredictionMarket
+
+	ffjtBitAssetDataSettlementPrice
+
+	ffjtBitAssetDataFeeds
+
+	ffjtBitAssetDataOptions
+
+	ffjtBitAssetDataCurrentFeed
+
+	ffjtBitAssetDataForcedSettledVolume
+
+	ffjtBitAssetDataSettlementFund
+)
+
+var ffjKeyBitAssetDataID = []byte("id")
+
+var ffjKeyBitAssetDataMembe
