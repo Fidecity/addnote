@@ -237,4 +237,53 @@ mainparse:
 						goto mainparse
 
 					} else if bytes.Equal(ffjKeyBitAssetDataForcedSettledVolume, kn) {
-						currentKey 
+						currentKey = ffjtBitAssetDataForcedSettledVolume
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'i':
+
+					if bytes.Equal(ffjKeyBitAssetDataID, kn) {
+						currentKey = ffjtBitAssetDataID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyBitAssetDataIsPredictionMarket, kn) {
+						currentKey = ffjtBitAssetDataIsPredictionMarket
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'o':
+
+					if bytes.Equal(ffjKeyBitAssetDataOptions, kn) {
+						currentKey = ffjtBitAssetDataOptions
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 's':
+
+					if bytes.Equal(ffjKeyBitAssetDataSettlementPrice, kn) {
+						currentKey = ffjtBitAssetDataSettlementPrice
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyBitAssetDataSettlementFund, kn) {
+						currentKey = ffjtBitAssetDataSettlementFund
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitAssetDataSettlementFund, kn) {
+					currentKey = ffjtBitAssetDataSettlementFund
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitAssetDataForcedSettledVolume, kn) {
+					currentKey = ffjtBitAssetDataForcedSettledVolume
+					state = fflib.FFParse_want_co
