@@ -328,4 +328,53 @@ mainparse:
 
 				if fflib.SimpleLetterEqualFold(ffjKeyBitAssetDataID, kn) {
 					currentKey = ffjtBitAssetDataID
-					state = fflib.FFParse_want_colo
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtBitAssetDatanosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtBitAssetDataID:
+					goto handle_ID
+
+				case ffjtBitAssetDataMembershipExpirationDate:
+					goto handle_MembershipExpirationDate
+
+				case ffjtBitAssetDataIsPredictionMarket:
+					goto handle_IsPredictionMarket
+
+				case ffjtBitAssetDataSettlementPrice:
+					goto handle_SettlementPrice
+
+				case ffjtBitAssetDataFeeds:
+					goto handle_Feeds
+
+				case ffjtBitAssetDataOptions:
+					goto handle_Options
+
+				case ffjtBitAssetDataCurrentFeed:
+					goto handle_CurrentFeed
+
+				case ffjtBitAssetDataForcedSettledVolume:
+					goto handle_ForcedSettledVolume
+
+				case ffjtBitAssetDataSettlementFund:
+					goto handle_SettlementFund
+
+				case ffjtBitAssetDatanosuchkey:
+					err = fs.S
