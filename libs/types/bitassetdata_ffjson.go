@@ -286,4 +286,46 @@ mainparse:
 
 				if fflib.EqualFoldRight(ffjKeyBitAssetDataForcedSettledVolume, kn) {
 					currentKey = ffjtBitAssetDataForcedSettledVolume
-					state = fflib.FFParse_want_co
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyBitAssetDataCurrentFeed, kn) {
+					currentKey = ffjtBitAssetDataCurrentFeed
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitAssetDataOptions, kn) {
+					currentKey = ffjtBitAssetDataOptions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitAssetDataFeeds, kn) {
+					currentKey = ffjtBitAssetDataFeeds
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitAssetDataSettlementPrice, kn) {
+					currentKey = ffjtBitAssetDataSettlementPrice
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitAssetDataIsPredictionMarket, kn) {
+					currentKey = ffjtBitAssetDataIsPredictionMarket
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyBitAssetDataMembershipExpirationDate, kn) {
+					currentKey = ffjtBitAssetDataMembershipExpirationDate
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyBitAssetDataID, kn) {
+					currentKey = ffjtBitAssetDataID
+					state = fflib.FFParse_want_colo
