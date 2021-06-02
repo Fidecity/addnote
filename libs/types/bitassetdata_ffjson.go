@@ -448,4 +448,77 @@ handle_IsPredictionMarket:
 		if tok != fflib.FFTok_bool && tok != fflib.FFTok_null {
 			return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for bool", tok))
 		}
-	
+	}
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+			tmpb := fs.Output.Bytes()
+
+			if bytes.Compare([]byte{'t', 'r', 'u', 'e'}, tmpb) == 0 {
+
+				j.IsPredictionMarket = true
+
+			} else if bytes.Compare([]byte{'f', 'a', 'l', 's', 'e'}, tmpb) == 0 {
+
+				j.IsPredictionMarket = false
+
+			} else {
+				err = errors.New("unexpected bytes for true/false value")
+				return fs.WrapErr(err)
+			}
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_SettlementPrice:
+
+	/* handler: j.SettlementPrice type=types.Price kind=struct quoted=false*/
+
+	{
+		/* Falling back. type=types.Price kind=struct */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.SettlementPrice)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Feeds:
+
+	/* handler: j.Feeds type=types.AssetFeeds kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for AssetFeeds", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.Feeds = nil
+		} else {
+
+			j.Feeds = []AssetFeed{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJFeeds AssetFeed
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+				
