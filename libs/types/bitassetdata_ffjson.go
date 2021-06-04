@@ -661,4 +661,50 @@ handle_SettlementFund:
 wantedvalue:
 	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
 wrongtokenerror:
-	re
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
+
+// MarshalJSON marshal bytes to json - template
+func (j *BitassetOptions) MarshalJSON() ([]byte, error) {
+	var buf fflib.Buffer
+	if j == nil {
+		buf.WriteString("null")
+		return buf.Bytes(), nil
+	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *BitassetOptions) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{"feed_lifetime_sec":`)
+	fflib.FormatBits2(buf, uint64(j.FeedLifetimeSec), 10, false)
+	buf.WriteString(`,"minimum_feeds":`)
+	fflib.FormatBits2(buf, uint64(j.MinimumFeeds), 10, false)
+	buf.WriteString(`,"force_settlement_delay_sec":`)
+	fflib.FormatBits2(buf, uint64(j.ForceSettlementDelaySec), 10, false)
+	buf.WriteString(`,"force_settlement_offset_percent":`)
+	fflib.FormatBits2(buf, uint64
