@@ -707,4 +707,60 @@ func (j *BitassetOptions) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	buf.WriteString(`,"force_settlement_delay_sec":`)
 	fflib.FormatBits2(buf, uint64(j.ForceSettlementDelaySec), 10, false)
 	buf.WriteString(`,"force_settlement_offset_percent":`)
-	fflib.FormatBits2(buf, uint64
+	fflib.FormatBits2(buf, uint64(j.ForceSettlementOffsetPercent), 10, false)
+	buf.WriteString(`,"maximum_force_settlement_volume":`)
+	fflib.FormatBits2(buf, uint64(j.MaximumForceSettlementVolume), 10, false)
+	buf.WriteString(`,"short_backing_asset":`)
+
+	{
+
+		obj, err = j.ShortBackingAsset.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"extensions":`)
+
+	{
+
+		obj, err = j.Extensions.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtBitassetOptionsbase = iota
+	ffjtBitassetOptionsnosuchkey
+
+	ffjtBitassetOptionsFeedLifetimeSec
+
+	ffjtBitassetOptionsMinimumFeeds
+
+	ffjtBitassetOptionsForceSettlementDelaySec
+
+	ffjtBitassetOptionsForceSettlementOffsetPercent
+
+	ffjtBitassetOptionsMaximumForceSettlementVolume
+
+	ffjtBitassetOptionsShortBackingAsset
+
+	ffjtBitassetOptionsExtensions
+)
+
+var ffjKeyBitassetOptionsFeedLifetimeSec = []byte("feed_lifetime_sec")
+
+var ffjKeyBitassetOptionsMinimumFeeds = []byte("minimum_feeds")
+
+var ffjKeyBitassetOptionsForceSettlementDelaySec = []byte("force_settlement_delay_sec")
+
+var ffjKeyBitassetOptionsForceSettlementOffsetPercent = []byte("force_settlement_offset_percent")
+
+var ffjKeyBitassetOptionsMaximumForceSettlementVolume = []byte("maximum_force_settlement_vol
