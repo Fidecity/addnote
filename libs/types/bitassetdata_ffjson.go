@@ -861,4 +861,47 @@ mainparse:
 					if bytes.Equal(ffjKeyBitassetOptionsMinimumFeeds, kn) {
 						currentKey = ffjtBitassetOptionsMinimumFeeds
 						state = fflib.FFParse_want_colon
-					
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyBitassetOptionsMaximumForceSettlementVolume, kn) {
+						currentKey = ffjtBitassetOptionsMaximumForceSettlementVolume
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 's':
+
+					if bytes.Equal(ffjKeyBitassetOptionsShortBackingAsset, kn) {
+						currentKey = ffjtBitassetOptionsShortBackingAsset
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitassetOptionsExtensions, kn) {
+					currentKey = ffjtBitassetOptionsExtensions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitassetOptionsShortBackingAsset, kn) {
+					currentKey = ffjtBitassetOptionsShortBackingAsset
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitassetOptionsMaximumForceSettlementVolume, kn) {
+					currentKey = ffjtBitassetOptionsMaximumForceSettlementVolume
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitassetOptionsForceSettlementOffsetPercent, kn) {
+					currentKey = ffjtBitassetOptionsForceSettlementOffsetPercent
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBitassetOptionsForceSettlementDelaySec, kn) {
+					currentKey = ffjtBita
