@@ -813,4 +813,52 @@ mainparse:
 
 		case fflib.FFParse_want_key:
 			// json {} ended. goto exit. woo.
-			if tok == fflib.FFTok_right_br
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtBitassetOptionsnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'e':
+
+					if bytes.Equal(ffjKeyBitassetOptionsExtensions, kn) {
+						currentKey = ffjtBitassetOptionsExtensions
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'f':
+
+					if bytes.Equal(ffjKeyBitassetOptionsFeedLifetimeSec, kn) {
+						currentKey = ffjtBitassetOptionsFeedLifetimeSec
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyBitassetOptionsForceSettlementDelaySec, kn) {
+						currentKey = ffjtBitassetOptionsForceSettlementDelaySec
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyBitassetOptionsForceSettlementOffsetPercent, kn) {
+						currentKey = ffjtBitassetOptionsForceSettlementOffsetPercent
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'm':
+
+					if bytes.Equal(ffjKeyBitassetOptionsMinimumFeeds, kn) {
+						currentKey = ffjtBitassetOptionsMinimumFeeds
+						state = fflib.FFParse_want_colon
+					
