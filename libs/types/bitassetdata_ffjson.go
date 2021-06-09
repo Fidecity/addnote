@@ -1023,4 +1023,73 @@ handle_MinimumFeeds:
 	state = fflib.FFParse_after_value
 	goto mainparse
 
-handle_ForceSe
+handle_ForceSettlementDelaySec:
+
+	/* handler: j.ForceSettlementDelaySec type=types.UInt32 kind=uint32 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.ForceSettlementDelaySec.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ForceSettlementOffsetPercent:
+
+	/* handler: j.ForceSettlementOffsetPercent type=types.UInt16 kind=uint16 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.ForceSettlementOffsetPercent.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_MaximumForceSettlementVolume:
+
+	/* handler: j.MaximumForceSettlementVolume type=types.UInt16 kind=uint16 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.MaximumForceSettlementVolume.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFPar
