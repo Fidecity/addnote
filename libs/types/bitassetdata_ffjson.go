@@ -949,3 +949,78 @@ mainparse:
 
 				case ffjtBitassetOptionsForceSettlementOffsetPercent:
 					goto handle_ForceSettlementOffsetPercent
+
+				case ffjtBitassetOptionsMaximumForceSettlementVolume:
+					goto handle_MaximumForceSettlementVolume
+
+				case ffjtBitassetOptionsShortBackingAsset:
+					goto handle_ShortBackingAsset
+
+				case ffjtBitassetOptionsExtensions:
+					goto handle_Extensions
+
+				case ffjtBitassetOptionsnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_FeedLifetimeSec:
+
+	/* handler: j.FeedLifetimeSec type=types.UInt32 kind=uint32 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.FeedLifetimeSec.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_MinimumFeeds:
+
+	/* handler: j.MinimumFeeds type=types.UInt8 kind=uint8 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.MinimumFeeds.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_ForceSe
