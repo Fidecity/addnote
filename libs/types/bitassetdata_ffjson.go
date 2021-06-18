@@ -1160,4 +1160,8 @@ tokerror:
 	if err != nil {
 		return fs.WrapErr(err)
 	}
-	panic("ffjson-generated: unreachable, please report 
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
