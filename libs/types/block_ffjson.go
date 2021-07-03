@@ -25,4 +25,99 @@ func (j *Block) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalJSONBuf marshal buff to json - template
-func (j *Block) MarshalJSONBuf(buf fflib.Enc
+func (j *Block) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{"witness":`)
+
+	{
+
+		obj, err = j.Witness.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"transaction_merkle_root":`)
+
+	{
+
+		obj, err = j.TransactionMerkleRoot.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"witness_signature":`)
+
+	{
+
+		obj, err = j.WitnessSignature.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"previous":`)
+
+	{
+
+		obj, err = j.Previous.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"block_id":`)
+
+	{
+
+		obj, err = j.BlockID.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"timestamp":`)
+
+	{
+
+		obj, err = j.TimeStamp.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte(',')
+	if j.SigningKey != nil {
+		if true {
+			buf.WriteString(`"signing_key":`)
+
+			{
+
+				obj, err = j.SigningKey.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+			buf.WriteByte(',')
+		}
+	}
+	buf.WriteString(`"transactions":`)
+	if j.Transactions != nil {
+		buf.WriteString(`[`)
+	
