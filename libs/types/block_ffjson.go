@@ -120,4 +120,90 @@ func (j *Block) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	buf.WriteString(`"transactions":`)
 	if j.Transactions != nil {
 		buf.WriteString(`[`)
-	
+		for i, v := range j.Transactions {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+			/* Struct fall back. type=types.SignedTransaction kind=struct */
+			err = buf.Encode(&v)
+			if err != nil {
+				return err
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"transaction_ids":`)
+	if j.TransactionIDs != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.TransactionIDs {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				obj, err = v.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"extensions":`)
+
+	{
+
+		obj, err = j.Extensions.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtBlockbase = iota
+	ffjtBlocknosuchkey
+
+	ffjtBlockWitness
+
+	ffjtBlockTransactionMerkleRoot
+
+	ffjtBlockWitnessSignature
+
+	ffjtBlockPrevious
+
+	ffjtBlockBlockID
+
+	ffjtBlockTimeStamp
+
+	ffjtBlockSigningKey
+
+	ffjtBlockTransactions
+
+	ffjtBlockTransactionIDs
+
+	ffjtBlockExtensions
+)
+
+var ffjKeyBlockWitness = []byte("witness")
+
+var ffjKeyBlockTransactionMerkleRoot = []byte("transaction_merkle_root")
+
+var ffjKeyBlockWitnessSignature = []byte("witness_signature")
+
+var ffjKeyBlockPrevious = []byte("previous")
+
+var ffjKeyBlockBlockID = []byte("block_id")
+
+var ffjKeyBlockTimeStamp = []byte("timestamp")
