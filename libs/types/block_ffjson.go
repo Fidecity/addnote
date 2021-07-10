@@ -361,4 +361,57 @@ mainparse:
 
 				if fflib.EqualFoldRight(ffjKeyBlockTransactions, kn) {
 					currentKey = ffjtBlockTransactions
-					state = 
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockSigningKey, kn) {
+					currentKey = ffjtBlockSigningKey
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockTimeStamp, kn) {
+					currentKey = ffjtBlockTimeStamp
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockBlockID, kn) {
+					currentKey = ffjtBlockBlockID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockPrevious, kn) {
+					currentKey = ffjtBlockPrevious
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockWitnessSignature, kn) {
+					currentKey = ffjtBlockWitnessSignature
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockTransactionMerkleRoot, kn) {
+					currentKey = ffjtBlockTransactionMerkleRoot
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockWitness, kn) {
+					currentKey = ffjtBlockWitness
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtBlocknosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wa
