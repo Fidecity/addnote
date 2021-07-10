@@ -259,4 +259,61 @@ mainparse:
 			}
 
 		case fflib.FFParse_want_key:
-			// json {} ended. got
+			// json {} ended. goto exit. woo.
+			if tok == fflib.FFTok_right_bracket {
+				goto done
+			}
+			if tok != fflib.FFTok_string {
+				wantedTok = fflib.FFTok_string
+				goto wrongtokenerror
+			}
+
+			kn := fs.Output.Bytes()
+			if len(kn) <= 0 {
+				// "" case. hrm.
+				currentKey = ffjtBlocknosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			} else {
+				switch kn[0] {
+
+				case 'b':
+
+					if bytes.Equal(ffjKeyBlockBlockID, kn) {
+						currentKey = ffjtBlockBlockID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'e':
+
+					if bytes.Equal(ffjKeyBlockExtensions, kn) {
+						currentKey = ffjtBlockExtensions
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'p':
+
+					if bytes.Equal(ffjKeyBlockPrevious, kn) {
+						currentKey = ffjtBlockPrevious
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 's':
+
+					if bytes.Equal(ffjKeyBlockSigningKey, kn) {
+						currentKey = ffjtBlockSigningKey
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 't':
+
+					if bytes.Equal(ffjKeyBlockTransactionMerkleRoot, kn) {
+						currentKey = ffjtBlockTransactionMerkleRoot
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else i
