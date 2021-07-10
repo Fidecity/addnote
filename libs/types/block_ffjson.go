@@ -414,4 +414,63 @@ mainparse:
 
 		case fflib.FFParse_want_colon:
 			if tok != fflib.FFTok_colon {
-				wa
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtBlockWitness:
+					goto handle_Witness
+
+				case ffjtBlockTransactionMerkleRoot:
+					goto handle_TransactionMerkleRoot
+
+				case ffjtBlockWitnessSignature:
+					goto handle_WitnessSignature
+
+				case ffjtBlockPrevious:
+					goto handle_Previous
+
+				case ffjtBlockBlockID:
+					goto handle_BlockID
+
+				case ffjtBlockTimeStamp:
+					goto handle_TimeStamp
+
+				case ffjtBlockSigningKey:
+					goto handle_SigningKey
+
+				case ffjtBlockTransactions:
+					goto handle_Transactions
+
+				case ffjtBlockTransactionIDs:
+					goto handle_TransactionIDs
+
+				case ffjtBlockExtensions:
+					goto handle_Extensions
+
+				case ffjtBlocknosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_Witness:
+
+	/* handler: j.Witness type=types.WitnessID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.F
