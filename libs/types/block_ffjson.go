@@ -696,4 +696,68 @@ handle_Transactions:
 
 				{
 					/* Falling back. type=types.SignedTransaction kind=struct */
-					tbuf, err := fs.CaptureField(
+					tbuf, err := fs.CaptureField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+
+					err = json.Unmarshal(tbuf, &tmpJTransactions)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+				}
+
+				j.Transactions = append(j.Transactions, tmpJTransactions)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_TransactionIDs:
+
+	/* handler: j.TransactionIDs type=types.Buffers kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for Buffers", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.TransactionIDs = nil
+		} else {
+
+			j.TransactionIDs = []Buffer{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJTransactionIDs Buffer
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJTransactionIDs type=types.Buffer kind=slice quoted=fals
