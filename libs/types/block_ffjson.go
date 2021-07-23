@@ -912,4 +912,63 @@ func (j *BlockHeader) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 		buf.Write(obj)
 
 	}
-	buf.WriteB
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtBlockHeaderbase = iota
+	ffjtBlockHeadernosuchkey
+
+	ffjtBlockHeaderTransactionMerkleRoot
+
+	ffjtBlockHeaderPrevious
+
+	ffjtBlockHeaderTimeStamp
+
+	ffjtBlockHeaderWitness
+
+	ffjtBlockHeaderExtensions
+)
+
+var ffjKeyBlockHeaderTransactionMerkleRoot = []byte("transaction_merkle_root")
+
+var ffjKeyBlockHeaderPrevious = []byte("previous")
+
+var ffjKeyBlockHeaderTimeStamp = []byte("timestamp")
+
+var ffjKeyBlockHeaderWitness = []byte("witness")
+
+var ffjKeyBlockHeaderExtensions = []byte("extensions")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *BlockHeader) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *BlockHeader) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtBlockHeaderbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_key
+			
