@@ -1027,4 +1027,56 @@ mainparse:
 
 					} else if bytes.Equal(ffjKeyBlockHeaderTimeStamp, kn) {
 						currentKey = ffjtBlockHeaderTimeStamp
-						state = fflib.FF
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'w':
+
+					if bytes.Equal(ffjKeyBlockHeaderWitness, kn) {
+						currentKey = ffjtBlockHeaderWitness
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockHeaderExtensions, kn) {
+					currentKey = ffjtBlockHeaderExtensions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockHeaderWitness, kn) {
+					currentKey = ffjtBlockHeaderWitness
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockHeaderTimeStamp, kn) {
+					currentKey = ffjtBlockHeaderTimeStamp
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockHeaderPrevious, kn) {
+					currentKey = ffjtBlockHeaderPrevious
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyBlockHeaderTransactionMerkleRoot, kn) {
+					currentKey = ffjtBlockHeaderTransactionMerkleRoot
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtBlockHeadernosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokene
