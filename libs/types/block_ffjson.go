@@ -1079,4 +1079,67 @@ mainparse:
 		case fflib.FFParse_want_colon:
 			if tok != fflib.FFTok_colon {
 				wantedTok = fflib.FFTok_colon
-				goto wrongtokene
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtBlockHeaderTransactionMerkleRoot:
+					goto handle_TransactionMerkleRoot
+
+				case ffjtBlockHeaderPrevious:
+					goto handle_Previous
+
+				case ffjtBlockHeaderTimeStamp:
+					goto handle_TimeStamp
+
+				case ffjtBlockHeaderWitness:
+					goto handle_Witness
+
+				case ffjtBlockHeaderExtensions:
+					goto handle_Extensions
+
+				case ffjtBlockHeadernosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_TransactionMerkleRoot:
+
+	/* handler: j.TransactionMerkleRoot type=types.Buffer kind=slice quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.TransactionMerkleRoot.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+hand
