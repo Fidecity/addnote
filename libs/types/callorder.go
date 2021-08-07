@@ -4,4 +4,9 @@ package types
 
 type CallOrders []CallOrder
 type CallOrder struct {
-	ID         CallOrder
+	ID         CallOrderID `json:"id"`
+	Borrower   AccountID   `json:"borrower"`
+	Collateral Int64       `json:"collateral"`
+	Debt       Int64       `json:"debt"`
+	CallPrice  Price       `json:"call_price"`
+}
