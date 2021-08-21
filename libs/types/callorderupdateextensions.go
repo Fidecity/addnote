@@ -33,4 +33,16 @@ func (p CallOrderUpdateExtensions) Length() int {
 	return fields
 }
 
-func (p CallOrderUpdateExtensions) Marshal(enc *util.TypeEncoder
+func (p CallOrderUpdateExtensions) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(p.Length())); err != nil {
+		return errors.Annotate(err, "encode length")
+	}
+
+	if p.TargetCollateralRatio != nil {
+		if err := enc.Encode(p.TargetCollateralRatio); err != nil {
+			return errors.Annotate(err, "encode TargetCollateralRatio")
+		}
+	}
+
+	return nil
+}
