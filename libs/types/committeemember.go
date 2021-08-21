@@ -22,4 +22,11 @@ func (p CommitteeMember) Marshal(enc *util.TypeEncoder) error {
 		return errors.Annotate(err, "encode VoteID")
 	}
 	if err := enc.Encode(p.TotalVotes); err != nil {
-		return errors.A
+		return errors.Annotate(err, "encode TotalVotes")
+	}
+	if err := enc.Encode(p.URL); err != nil {
+		return errors.Annotate(err, "encode URL")
+	}
+
+	return nil
+}
