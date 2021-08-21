@@ -62,3 +62,69 @@ func (j *CommitteeMember) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	{
 
 		obj, err = j.URL.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"vote_id":`)
+
+	{
+
+		obj, err = j.VoteID.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtCommitteeMemberbase = iota
+	ffjtCommitteeMembernosuchkey
+
+	ffjtCommitteeMemberID
+
+	ffjtCommitteeMemberCommitteeMemberAccount
+
+	ffjtCommitteeMemberTotalVotes
+
+	ffjtCommitteeMemberURL
+
+	ffjtCommitteeMemberVoteID
+)
+
+var ffjKeyCommitteeMemberID = []byte("id")
+
+var ffjKeyCommitteeMemberCommitteeMemberAccount = []byte("committee_member_account")
+
+var ffjKeyCommitteeMemberTotalVotes = []byte("total_votes")
+
+var ffjKeyCommitteeMemberURL = []byte("url")
+
+var ffjKeyCommitteeMemberVoteID = []byte("vote_id")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *CommitteeMember) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *CommitteeMember) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtCommitteeMemberbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tok
