@@ -188,4 +188,52 @@ mainparse:
 				case 't':
 
 					if bytes.Equal(ffjKeyCommitteeMemberTotalVotes, kn) {
-						curr
+						currentKey = ffjtCommitteeMemberTotalVotes
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'u':
+
+					if bytes.Equal(ffjKeyCommitteeMemberURL, kn) {
+						currentKey = ffjtCommitteeMemberURL
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'v':
+
+					if bytes.Equal(ffjKeyCommitteeMemberVoteID, kn) {
+						currentKey = ffjtCommitteeMemberVoteID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyCommitteeMemberVoteID, kn) {
+					currentKey = ffjtCommitteeMemberVoteID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyCommitteeMemberURL, kn) {
+					currentKey = ffjtCommitteeMemberURL
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyCommitteeMemberTotalVotes, kn) {
+					currentKey = ffjtCommitteeMemberTotalVotes
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyCommitteeMemberCommitteeMemberAccount, kn) {
+					currentKey = ffjtCommitteeMemberCommitteeMemberAccount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyCommitteeMemberID, kn) {
+					currentKey = ffjtCommitteeMember
