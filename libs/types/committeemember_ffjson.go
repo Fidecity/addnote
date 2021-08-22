@@ -236,4 +236,62 @@ mainparse:
 				}
 
 				if fflib.SimpleLetterEqualFold(ffjKeyCommitteeMemberID, kn) {
-					currentKey = ffjtCommitteeMember
+					currentKey = ffjtCommitteeMemberID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtCommitteeMembernosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtCommitteeMemberID:
+					goto handle_ID
+
+				case ffjtCommitteeMemberCommitteeMemberAccount:
+					goto handle_CommitteeMemberAccount
+
+				case ffjtCommitteeMemberTotalVotes:
+					goto handle_TotalVotes
+
+				case ffjtCommitteeMemberURL:
+					goto handle_URL
+
+				case ffjtCommitteeMemberVoteID:
+					goto handle_VoteID
+
+				case ffjtCommitteeMembernosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_ID:
+
+	/* handler: j.ID type=types.CommitteeMemberID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+	
