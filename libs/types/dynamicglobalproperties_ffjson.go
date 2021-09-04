@@ -119,4 +119,56 @@ func (j *DynamicGlobalProperties) MarshalJSONBuf(buf fflib.EncodingBuffer) error
 	buf.WriteString(`,"last_irreversible_block_num":`)
 	fflib.FormatBits2(buf, uint64(j.LastIrreversibleBlockNum), 10, false)
 	buf.WriteString(`,"current_aslot":`)
-	fflib.FormatBits2(buf, uint64(j.CurrentAslot), 1
+	fflib.FormatBits2(buf, uint64(j.CurrentAslot), 10, j.CurrentAslot < 0)
+	buf.WriteString(`,"witness_budget":`)
+	fflib.FormatBits2(buf, uint64(j.WitnessBudget), 10, j.WitnessBudget < 0)
+	buf.WriteString(`,"recently_missed_count":`)
+	fflib.FormatBits2(buf, uint64(j.RecentlyMissedCount), 10, j.RecentlyMissedCount < 0)
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtDynamicGlobalPropertiesbase = iota
+	ffjtDynamicGlobalPropertiesnosuchkey
+
+	ffjtDynamicGlobalPropertiesID
+
+	ffjtDynamicGlobalPropertiesCurrentWitness
+
+	ffjtDynamicGlobalPropertiesLastBudgetTime
+
+	ffjtDynamicGlobalPropertiesTime
+
+	ffjtDynamicGlobalPropertiesNextMaintenanceTime
+
+	ffjtDynamicGlobalPropertiesAccountsRegisteredThisInterval
+
+	ffjtDynamicGlobalPropertiesDynamicFlags
+
+	ffjtDynamicGlobalPropertiesHeadBlockID
+
+	ffjtDynamicGlobalPropertiesRecentSlotsFilled
+
+	ffjtDynamicGlobalPropertiesHeadBlockNumber
+
+	ffjtDynamicGlobalPropertiesLastIrreversibleBlockNum
+
+	ffjtDynamicGlobalPropertiesCurrentAslot
+
+	ffjtDynamicGlobalPropertiesWitnessBudget
+
+	ffjtDynamicGlobalPropertiesRecentlyMissedCount
+)
+
+var ffjKeyDynamicGlobalPropertiesID = []byte("id")
+
+var ffjKeyDynamicGlobalPropertiesCurrentWitness = []byte("current_witness")
+
+var ffjKeyDynamicGlobalPropertiesLastBudgetTime = []byte("last_budget_time")
+
+var ffjKeyDynamicGlobalPropertiesTime = []byte("time")
+
+var ffjKeyDynamicGlobalPropertiesNextMaintenanceTime = []byte("next_maintenance_time")
+
+var ffjKeyDy
