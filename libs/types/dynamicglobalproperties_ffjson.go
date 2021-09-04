@@ -171,4 +171,39 @@ var ffjKeyDynamicGlobalPropertiesTime = []byte("time")
 
 var ffjKeyDynamicGlobalPropertiesNextMaintenanceTime = []byte("next_maintenance_time")
 
-var ffjKeyDy
+var ffjKeyDynamicGlobalPropertiesAccountsRegisteredThisInterval = []byte("accounts_registered_this_interval")
+
+var ffjKeyDynamicGlobalPropertiesDynamicFlags = []byte("dynamic_flags")
+
+var ffjKeyDynamicGlobalPropertiesHeadBlockID = []byte("head_block_id")
+
+var ffjKeyDynamicGlobalPropertiesRecentSlotsFilled = []byte("recent_slots_filled")
+
+var ffjKeyDynamicGlobalPropertiesHeadBlockNumber = []byte("head_block_number")
+
+var ffjKeyDynamicGlobalPropertiesLastIrreversibleBlockNum = []byte("last_irreversible_block_num")
+
+var ffjKeyDynamicGlobalPropertiesCurrentAslot = []byte("current_aslot")
+
+var ffjKeyDynamicGlobalPropertiesWitnessBudget = []byte("witness_budget")
+
+var ffjKeyDynamicGlobalPropertiesRecentlyMissedCount = []byte("recently_missed_count")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *DynamicGlobalProperties) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *DynamicGlobalProperties) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtDynamicGlobalPropertiesbase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debu
