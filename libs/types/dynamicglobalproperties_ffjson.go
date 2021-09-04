@@ -55,4 +55,68 @@ func (j *DynamicGlobalProperties) MarshalJSONBuf(buf fflib.EncodingBuffer) error
 		buf.Write(obj)
 
 	}
-	buf.WriteString(`,"last_budget_time
+	buf.WriteString(`,"last_budget_time":`)
+
+	{
+
+		obj, err = j.LastBudgetTime.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"time":`)
+
+	{
+
+		obj, err = j.Time.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"next_maintenance_time":`)
+
+	{
+
+		obj, err = j.NextMaintenanceTime.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"accounts_registered_this_interval":`)
+	fflib.FormatBits2(buf, uint64(j.AccountsRegisteredThisInterval), 10, j.AccountsRegisteredThisInterval < 0)
+	buf.WriteString(`,"dynamic_flags":`)
+	fflib.FormatBits2(buf, uint64(j.DynamicFlags), 10, j.DynamicFlags < 0)
+	buf.WriteString(`,"head_block_id":`)
+
+	{
+
+		obj, err = j.HeadBlockID.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"recent_slots_filled":`)
+
+	{
+
+		obj, err = j.RecentSlotsFilled.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"head_block_number":`)
+	fflib.FormatBits2(buf, uint64(j.HeadBlockNumber), 10, false)
+	buf.WriteString(`,"last_irreversible_block_num":`)
+	fflib.FormatBits2(buf, uint64(j.LastIrreversibleBlockNum), 10, false)
+	buf.WriteString(`,"current_aslot":`)
+	fflib.FormatBits2(buf, uint64(j.CurrentAslot), 1
