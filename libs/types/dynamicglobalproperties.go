@@ -38,4 +38,15 @@ func (p DynamicGlobalProperties) RefBlockPrefix() (UInt32, error) {
 	}
 
 	if len(rawBlockID) < 8 {
-		return 0, erro
+		return 0, errors.Errorf("invalid HeadBlockID: %v", p.HeadBlockID)
+	}
+
+	rawPrefix := rawBlockID[4:8]
+
+	var prefix uint32
+	if err := binary.Read(bytes.NewReader(rawPrefix), binary.LittleEndian, &prefix); err != nil {
+		return 0, errors.Annotatef(err, "failed to read block prefix: %v", rawPrefix)
+	}
+
+	return UInt32(prefix), nil
+}
