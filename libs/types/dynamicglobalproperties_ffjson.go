@@ -260,4 +260,49 @@ mainparse:
 
 				case 'c':
 
-					if bytes.Equal(ffjKeyDynamicGlobalPropertiesCurrentWitness, kn)
+					if bytes.Equal(ffjKeyDynamicGlobalPropertiesCurrentWitness, kn) {
+						currentKey = ffjtDynamicGlobalPropertiesCurrentWitness
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyDynamicGlobalPropertiesCurrentAslot, kn) {
+						currentKey = ffjtDynamicGlobalPropertiesCurrentAslot
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'd':
+
+					if bytes.Equal(ffjKeyDynamicGlobalPropertiesDynamicFlags, kn) {
+						currentKey = ffjtDynamicGlobalPropertiesDynamicFlags
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'h':
+
+					if bytes.Equal(ffjKeyDynamicGlobalPropertiesHeadBlockID, kn) {
+						currentKey = ffjtDynamicGlobalPropertiesHeadBlockID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyDynamicGlobalPropertiesHeadBlockNumber, kn) {
+						currentKey = ffjtDynamicGlobalPropertiesHeadBlockNumber
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'i':
+
+					if bytes.Equal(ffjKeyDynamicGlobalPropertiesID, kn) {
+						currentKey = ffjtDynamicGlobalPropertiesID
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'l':
+
+					if bytes.Equal(ffjKeyDynamicGlobalPropertiesLastBudgetTime, kn) {
+						currentKey = ffjtDynamicGlobalPropertiesLastBudgetTime
+						state = fflib.FFParse_want_colon
+	
