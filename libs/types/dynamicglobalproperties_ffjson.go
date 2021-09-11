@@ -352,4 +352,41 @@ mainparse:
 
 				}
 
-				if fflib.EqualFoldRight(ffjKeyDy
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesRecentlyMissedCount, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesRecentlyMissedCount
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesWitnessBudget, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesWitnessBudget
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesCurrentAslot, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesCurrentAslot
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesLastIrreversibleBlockNum, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesLastIrreversibleBlockNum
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesHeadBlockNumber, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesHeadBlockNumber
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesRecentSlotsFilled, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesRecentSlotsFilled
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesHeadBlockID, kn) {
+					currentKey = 
