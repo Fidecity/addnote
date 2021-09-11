@@ -430,4 +430,45 @@ mainparse:
 					goto mainparse
 				}
 
-				if ffli
+				if fflib.SimpleLetterEqualFold(ffjKeyDynamicGlobalPropertiesID, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtDynamicGlobalPropertiesnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtDynamicGlobalPropertiesID:
+					goto handle_ID
+
+				case ffjtDynamicGlobalPropertiesCurrentWitness:
+					goto handle_CurrentWitness
+
+				case ffjtDynamicGlobalPropertiesLastBudgetTime:
+					goto handle_LastBudgetTime
+
+				case ffjtDynamicGlobalPropertiesTime:
+					goto handle_Time
+
+				case ffjtDynamicGlobalPropertiesNextMaintenanceTime:
+					goto handle_NextMaintenanceTime
+
+				case ffjtDynamicGlobalPropertiesAccountsRegisteredThisInterval:
+					goto handle_AccountsRegisteredThisInterval
+
+				case ffjtDynamicGlobalPropertiesDynamicFlag
