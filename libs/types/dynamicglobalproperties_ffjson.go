@@ -389,4 +389,45 @@ mainparse:
 				}
 
 				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesHeadBlockID, kn) {
-					currentKey = 
+					currentKey = ffjtDynamicGlobalPropertiesHeadBlockID
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesDynamicFlags, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesDynamicFlags
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesAccountsRegisteredThisInterval, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesAccountsRegisteredThisInterval
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyDynamicGlobalPropertiesNextMaintenanceTime, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesNextMaintenanceTime
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyDynamicGlobalPropertiesTime, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesTime
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesLastBudgetTime, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesLastBudgetTime
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyDynamicGlobalPropertiesCurrentWitness, kn) {
+					currentKey = ffjtDynamicGlobalPropertiesCurrentWitness
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if ffli
