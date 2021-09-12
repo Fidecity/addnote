@@ -683,4 +683,79 @@ handle_DynamicFlags:
 			tval, err := fflib.ParseInt(fs.Output.Bytes(), 10, 64)
 
 			if err != nil {
-				return fs.Wrap
+				return fs.WrapErr(err)
+			}
+
+			j.DynamicFlags = int(tval)
+
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_HeadBlockID:
+
+	/* handler: j.HeadBlockID type=types.String kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.HeadBlockID.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_RecentSlotsFilled:
+
+	/* handler: j.RecentSlotsFilled type=types.String kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.RecentSlotsFilled.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_HeadBlockNumber:
+
+	/* handler: j.HeadBlockNumber type=types.UInt32 kind=uint32 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.HeadBlockNumber.UnmarshalJSON(tbuf
