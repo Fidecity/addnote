@@ -471,4 +471,67 @@ mainparse:
 				case ffjtDynamicGlobalPropertiesAccountsRegisteredThisInterval:
 					goto handle_AccountsRegisteredThisInterval
 
-				case ffjtDynamicGlobalPropertiesDynamicFlag
+				case ffjtDynamicGlobalPropertiesDynamicFlags:
+					goto handle_DynamicFlags
+
+				case ffjtDynamicGlobalPropertiesHeadBlockID:
+					goto handle_HeadBlockID
+
+				case ffjtDynamicGlobalPropertiesRecentSlotsFilled:
+					goto handle_RecentSlotsFilled
+
+				case ffjtDynamicGlobalPropertiesHeadBlockNumber:
+					goto handle_HeadBlockNumber
+
+				case ffjtDynamicGlobalPropertiesLastIrreversibleBlockNum:
+					goto handle_LastIrreversibleBlockNum
+
+				case ffjtDynamicGlobalPropertiesCurrentAslot:
+					goto handle_CurrentAslot
+
+				case ffjtDynamicGlobalPropertiesWitnessBudget:
+					goto handle_WitnessBudget
+
+				case ffjtDynamicGlobalPropertiesRecentlyMissedCount:
+					goto handle_RecentlyMissedCount
+
+				case ffjtDynamicGlobalPropertiesnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_ID:
+
+	/* handler: j.ID type=types.DynamicGlobalPropertyID kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.ID.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_CurrentWitness:
