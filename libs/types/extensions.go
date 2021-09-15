@@ -41,3 +41,13 @@ func (p Extensions) Marshal(enc *util.TypeEncoder) error {
 
 func (p Extensions) MarshalJSON() ([]byte, error) {
 	if p.ext == nil {
+		p.ext = make([]interface{}, 0)
+	}
+
+	return ffjson.Marshal(p.ext)
+}
+
+// UnmarshalJSON sets *m to a copy of data.
+func (p *Extensions) UnmarshalJSON(data []byte) error {
+	return ffjson.Unmarshal(data, &p.ext)
+}
