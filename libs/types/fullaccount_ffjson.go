@@ -85,4 +85,80 @@ func (j *AccountInfo) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	}
 	buf.WriteString(`,"balances":`)
 	if j.Balances != nil {
-		buf
+		buf.WriteString(`[`)
+		for i, v := range j.Balances {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				err = v.MarshalJSONBuf(buf)
+				if err != nil {
+					return err
+				}
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"vesting_balances":`)
+	if j.VestingBalances != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.VestingBalances {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+			/* Struct fall back. type=types.VestingBalance kind=struct */
+			err = buf.Encode(&v)
+			if err != nil {
+				return err
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"limit_orders":`)
+	if j.LimitOrders != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.LimitOrders {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+			/* Struct fall back. type=types.LimitOrder kind=struct */
+			err = buf.Encode(&v)
+			if err != nil {
+				return err
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"call_orders":`)
+	if j.CallOrders != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.CallOrders {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				err = v.MarshalJSONBuf(buf)
+				if err != nil {
+					return err
+				}
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"settle_orders":`)
+	if j.SettleOrders != nil {
+		buf.WriteString(`
