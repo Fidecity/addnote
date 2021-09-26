@@ -161,4 +161,94 @@ func (j *AccountInfo) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	}
 	buf.WriteString(`,"settle_orders":`)
 	if j.SettleOrders != nil {
-		buf.WriteString(`
+		buf.WriteString(`[`)
+		for i, v := range j.SettleOrders {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				err = v.MarshalJSONBuf(buf)
+				if err != nil {
+					return err
+				}
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"statistics":`)
+
+	{
+
+		err = j.Statistics.MarshalJSONBuf(buf)
+		if err != nil {
+			return err
+		}
+
+	}
+	buf.WriteString(`,"assets":`)
+	if j.Assets != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.Assets {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				obj, err = v.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtAccountInfobase = iota
+	ffjtAccountInfonosuchkey
+
+	ffjtAccountInfoAccount
+
+	ffjtAccountInfoRegistrarName
+
+	ffjtAccountInfoReferrerName
+
+	ffjtAccountInfoLifetimeReferrerName
+
+	ffjtAccountInfoCashbackBalance
+
+	ffjtAccountInfoBalances
+
+	ffjtAccountInfoVestingBalances
+
+	ffjtAccountInfoLimitOrders
+
+	ffjtAccountInfoCallOrders
+
+	ffjtAccountInfoSettleOrders
+
+	ffjtAccountInfoStatistics
+
+	ffjtAccountInfoAssets
+)
+
+var ffjKeyAccountInfoAccount = []byte("account")
+
+var ffjKeyAccountInfoRegistrarName = []byte("registrar_name")
+
+var ffjKeyAccountInfoReferrerName = []byte("referrer_name")
+
+var ffjKeyAccountInfoLifetimeReferrerName = []byte("lifetime_r
