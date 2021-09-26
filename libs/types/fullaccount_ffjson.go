@@ -251,4 +251,51 @@ var ffjKeyAccountInfoRegistrarName = []byte("registrar_name")
 
 var ffjKeyAccountInfoReferrerName = []byte("referrer_name")
 
-var ffjKeyAccountInfoLifetimeReferrerName = []byte("lifetime_r
+var ffjKeyAccountInfoLifetimeReferrerName = []byte("lifetime_referrer_name")
+
+var ffjKeyAccountInfoCashbackBalance = []byte("cashback_balance")
+
+var ffjKeyAccountInfoBalances = []byte("balances")
+
+var ffjKeyAccountInfoVestingBalances = []byte("vesting_balances")
+
+var ffjKeyAccountInfoLimitOrders = []byte("limit_orders")
+
+var ffjKeyAccountInfoCallOrders = []byte("call_orders")
+
+var ffjKeyAccountInfoSettleOrders = []byte("settle_orders")
+
+var ffjKeyAccountInfoStatistics = []byte("statistics")
+
+var ffjKeyAccountInfoAssets = []byte("assets")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *AccountInfo) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *AccountInfo) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtAccountInfobase
+	_ = currentKey
+	tok := fflib.FFTok_init
+	wantedTok := fflib.FFTok_init
+
+mainparse:
+	for {
+		tok = fs.Scan()
+		//	println(fmt.Sprintf("debug: tok: %v  state: %v", tok, state))
+		if tok == fflib.FFTok_error {
+			goto tokerror
+		}
+
+		switch state {
+
+		case fflib.FFParse_map_start:
+			if tok != fflib.FFTok_left_bracket {
+				wantedTok = fflib.FFTok_left_bracket
+				goto wrongtokenerror
+			}
+		
