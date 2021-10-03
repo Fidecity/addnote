@@ -405,4 +405,49 @@ mainparse:
 
 				case 'v':
 
-					if bytes.Equal(ffjK
+					if bytes.Equal(ffjKeyAccountInfoVestingBalances, kn) {
+						currentKey = ffjtAccountInfoVestingBalances
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountInfoAssets, kn) {
+					currentKey = ffjtAccountInfoAssets
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountInfoStatistics, kn) {
+					currentKey = ffjtAccountInfoStatistics
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountInfoSettleOrders, kn) {
+					currentKey = ffjtAccountInfoSettleOrders
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountInfoCallOrders, kn) {
+					currentKey = ffjtAccountInfoCallOrders
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountInfoLimitOrders, kn) {
+					currentKey = ffjtAccountInfoLimitOrders
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountInfoVestingBalances, kn) {
+					currentKey = ffjtAccountInfoVestingBalances
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyAccountInfoBalances, kn) {
+					currentKey = ffjtAccountInfoBalances
