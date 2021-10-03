@@ -354,4 +354,55 @@ mainparse:
 				case 'c':
 
 					if bytes.Equal(ffjKeyAccountInfoCashbackBalance, kn) {
-						currentKey = ffjtAccountInfoCashbackBal
+						currentKey = ffjtAccountInfoCashbackBalance
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAccountInfoCallOrders, kn) {
+						currentKey = ffjtAccountInfoCallOrders
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'l':
+
+					if bytes.Equal(ffjKeyAccountInfoLifetimeReferrerName, kn) {
+						currentKey = ffjtAccountInfoLifetimeReferrerName
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAccountInfoLimitOrders, kn) {
+						currentKey = ffjtAccountInfoLimitOrders
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'r':
+
+					if bytes.Equal(ffjKeyAccountInfoRegistrarName, kn) {
+						currentKey = ffjtAccountInfoRegistrarName
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAccountInfoReferrerName, kn) {
+						currentKey = ffjtAccountInfoReferrerName
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 's':
+
+					if bytes.Equal(ffjKeyAccountInfoSettleOrders, kn) {
+						currentKey = ffjtAccountInfoSettleOrders
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyAccountInfoStatistics, kn) {
+						currentKey = ffjtAccountInfoStatistics
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'v':
+
+					if bytes.Equal(ffjK
