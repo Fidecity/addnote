@@ -499,4 +499,62 @@ mainparse:
 			continue
 		case fflib.FFParse_want_value:
 
-			if tok == fflib.FFTok_left_brace || tok == fflib.FFTo
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtAccountInfoAccount:
+					goto handle_Account
+
+				case ffjtAccountInfoRegistrarName:
+					goto handle_RegistrarName
+
+				case ffjtAccountInfoReferrerName:
+					goto handle_ReferrerName
+
+				case ffjtAccountInfoLifetimeReferrerName:
+					goto handle_LifetimeReferrerName
+
+				case ffjtAccountInfoCashbackBalance:
+					goto handle_CashbackBalance
+
+				case ffjtAccountInfoBalances:
+					goto handle_Balances
+
+				case ffjtAccountInfoVestingBalances:
+					goto handle_VestingBalances
+
+				case ffjtAccountInfoLimitOrders:
+					goto handle_LimitOrders
+
+				case ffjtAccountInfoCallOrders:
+					goto handle_CallOrders
+
+				case ffjtAccountInfoSettleOrders:
+					goto handle_SettleOrders
+
+				case ffjtAccountInfoStatistics:
+					goto handle_Statistics
+
+				case ffjtAccountInfoAssets:
+					goto handle_Assets
+
+				case ffjtAccountInfonosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_Account:
+
+	/* handler: j.Account type=types.Account kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_nul
