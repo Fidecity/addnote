@@ -771,4 +771,70 @@ handle_VestingBalances:
 					if wantVal == true {
 						// TODO(pquerna): this isn't an ideal error message, this handles
 						// things like [,,,] as an array value.
-						ret
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJVestingBalances type=types.VestingBalance kind=struct quoted=false*/
+
+				{
+					/* Falling back. type=types.VestingBalance kind=struct */
+					tbuf, err := fs.CaptureField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+
+					err = json.Unmarshal(tbuf, &tmpJVestingBalances)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+				}
+
+				j.VestingBalances = append(j.VestingBalances, tmpJVestingBalances)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_LimitOrders:
+
+	/* handler: j.LimitOrders type=types.LimitOrders kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for LimitOrders", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.LimitOrders = nil
+		} else {
+
+			j.LimitOrders = []LimitOrder{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJLimitOrders LimitOrder
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// T
