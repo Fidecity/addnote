@@ -703,4 +703,72 @@ handle_Balances:
 					if wantVal == true {
 						// TODO(pquerna): this isn't an ideal error message, this handles
 						// things like [,,,] as an array value.
-						return fs.WrapErr(fmt.Errorf("wanted value token, b
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJBalances type=types.AccountBalance kind=struct quoted=false*/
+
+				{
+					if tok == fflib.FFTok_null {
+
+					} else {
+
+						err = tmpJBalances.UnmarshalJSONFFLexer(fs, fflib.FFParse_want_key)
+						if err != nil {
+							return err
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.Balances = append(j.Balances, tmpJBalances)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_VestingBalances:
+
+	/* handler: j.VestingBalances type=types.VestingBalances kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for VestingBalances", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.VestingBalances = nil
+		} else {
+
+			j.VestingBalances = []VestingBalance{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJVestingBalances VestingBalance
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						ret
