@@ -903,4 +903,68 @@ handle_CallOrders:
 					break
 				}
 
-				if tok =
+				if tok == fflib.FFTok_comma {
+					if wantVal == true {
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJCallOrders type=types.CallOrder kind=struct quoted=false*/
+
+				{
+					if tok == fflib.FFTok_null {
+
+					} else {
+
+						err = tmpJCallOrders.UnmarshalJSONFFLexer(fs, fflib.FFParse_want_key)
+						if err != nil {
+							return err
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.CallOrders = append(j.CallOrders, tmpJCallOrders)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_SettleOrders:
+
+	/* handler: j.SettleOrders type=types.ForceSettlementOrders kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for ForceSettlementOrders", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.SettleOrders = nil
+		} else {
+
+			j.SettleOrders = []ForceSettlementOrder{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJSettleOrders ForceSettlementOrder
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib
