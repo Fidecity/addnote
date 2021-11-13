@@ -837,4 +837,70 @@ handle_LimitOrders:
 
 				if tok == fflib.FFTok_comma {
 					if wantVal == true {
-						// T
+						// TODO(pquerna): this isn't an ideal error message, this handles
+						// things like [,,,] as an array value.
+						return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+					}
+					continue
+				} else {
+					wantVal = true
+				}
+
+				/* handler: tmpJLimitOrders type=types.LimitOrder kind=struct quoted=false*/
+
+				{
+					/* Falling back. type=types.LimitOrder kind=struct */
+					tbuf, err := fs.CaptureField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+
+					err = json.Unmarshal(tbuf, &tmpJLimitOrders)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+				}
+
+				j.LimitOrders = append(j.LimitOrders, tmpJLimitOrders)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_CallOrders:
+
+	/* handler: j.CallOrders type=types.CallOrders kind=slice quoted=false*/
+
+	{
+
+		{
+			if tok != fflib.FFTok_left_brace && tok != fflib.FFTok_null {
+				return fs.WrapErr(fmt.Errorf("cannot unmarshal %s into Go value for CallOrders", tok))
+			}
+		}
+
+		if tok == fflib.FFTok_null {
+			j.CallOrders = nil
+		} else {
+
+			j.CallOrders = []CallOrder{}
+
+			wantVal := true
+
+			for {
+
+				var tmpJCallOrders CallOrder
+
+				tok = fs.Scan()
+				if tok == fflib.FFTok_error {
+					goto tokerror
+				}
+				if tok == fflib.FFTok_right_brace {
+					break
+				}
+
+				if tok =
