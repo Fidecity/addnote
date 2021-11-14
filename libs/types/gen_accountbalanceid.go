@@ -36,4 +36,53 @@ func (p *AccountBalanceID) Unmarshal(dec *util.TypeDecoder) error {
 
 type AccountBalanceIDs []AccountBalanceID
 
-func (p AccountBalanceIDs) Marshal
+func (p AccountBalanceIDs) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(len(p))); err != nil {
+		return errors.Annotate(err, "encode length")
+	}
+
+	for _, ex := range p {
+		if err := enc.Encode(ex); err != nil {
+			return errors.Annotate(err, "encode AccountBalanceID")
+		}
+	}
+
+	return nil
+}
+
+func AccountBalanceIDFromObject(ob GrapheneObject) AccountBalanceID {
+	id, ok := ob.(*AccountBalanceID)
+	if ok {
+		return *id
+	}
+
+	p := AccountBalanceID{}
+	p.MustFromObject(ob)
+	if p.ObjectType() != ObjectTypeAccountBalance {
+		panic(fmt.Sprintf("invalid ObjectType: %q has no ObjectType 'ObjectTypeAccountBalance'", p.ID()))
+	}
+
+	return p
+}
+
+//NewAccountBalanceID creates an new AccountBalanceID object
+func NewAccountBalanceID(id string) GrapheneObject {
+	gid := new(AccountBalanceID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"AccountBalanceID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeAccountBalance {
+		logging.Errorf(
+			"AccountBalanceID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeAccountBalance'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
