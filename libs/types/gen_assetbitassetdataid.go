@@ -17,4 +17,53 @@ type AssetBitAssetDataID struct {
 }
 
 func (p AssetBitAssetDataID) Marshal(enc *util.TypeEncoder) error {
-	if err := enc.EncodeUVarint(uint64(p.Insta
+	if err := enc.EncodeUVarint(uint64(p.Instance())); err != nil {
+		return errors.Annotate(err, "encode instance")
+	}
+
+	return nil
+}
+
+func (p *AssetBitAssetDataID) Unmarshal(dec *util.TypeDecoder) error {
+	var instance uint64
+	if err := dec.DecodeUVarint(&instance); err != nil {
+		return errors.Annotate(err, "decode instance")
+	}
+
+	p.number = UInt64((uint64(SpaceTypeProtocol) << 56) | (uint64(ObjectTypeAssetBitAssetData) << 48) | instance)
+	return nil
+}
+
+type AssetBitAssetDataIDs []AssetBitAssetDataID
+
+func (p AssetBitAssetDataIDs) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(len(p))); err != nil {
+		return errors.Annotate(err, "encode length")
+	}
+
+	for _, ex := range p {
+		if err := enc.Encode(ex); err != nil {
+			return errors.Annotate(err, "encode AssetBitAssetDataID")
+		}
+	}
+
+	return nil
+}
+
+func AssetBitAssetDataIDFromObject(ob GrapheneObject) AssetBitAssetDataID {
+	id, ok := ob.(*AssetBitAssetDataID)
+	if ok {
+		return *id
+	}
+
+	p := AssetBitAssetDataID{}
+	p.MustFromObject(ob)
+	if p.ObjectType() != ObjectTypeAssetBitAssetData {
+		panic(fmt.Sprintf("invalid ObjectType: %q has no ObjectType 'ObjectTypeAssetBitAssetData'", p.ID()))
+	}
+
+	return p
+}
+
+//NewAssetBitAssetDataID creates an new AssetBitAssetDataID object
+func NewAs
