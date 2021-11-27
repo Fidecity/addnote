@@ -66,4 +66,23 @@ func AssetBitAssetDataIDFromObject(ob GrapheneObject) AssetBitAssetDataID {
 }
 
 //NewAssetBitAssetDataID creates an new AssetBitAssetDataID object
-func NewAs
+func NewAssetBitAssetDataID(id string) GrapheneObject {
+	gid := new(AssetBitAssetDataID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"AssetBitAssetDataID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeAssetBitAssetData {
+		logging.Errorf(
+			"AssetBitAssetDataID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeAssetBitAssetData'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
