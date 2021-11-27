@@ -66,4 +66,23 @@ func BalanceIDFromObject(ob GrapheneObject) BalanceID {
 }
 
 //NewBalanceID creates an new BalanceID object
-func NewBalanceID(id string) Gra
+func NewBalanceID(id string) GrapheneObject {
+	gid := new(BalanceID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"BalanceID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeBalance {
+		logging.Errorf(
+			"BalanceID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeBalance'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
