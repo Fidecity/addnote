@@ -59,4 +59,30 @@ func BudgetRecordIDFromObject(ob GrapheneObject) BudgetRecordID {
 	p := BudgetRecordID{}
 	p.MustFromObject(ob)
 	if p.ObjectType() != ObjectTypeBudgetRecord {
-		panic(fmt.Sprintf("invalid Obj
+		panic(fmt.Sprintf("invalid ObjectType: %q has no ObjectType 'ObjectTypeBudgetRecord'", p.ID()))
+	}
+
+	return p
+}
+
+//NewBudgetRecordID creates an new BudgetRecordID object
+func NewBudgetRecordID(id string) GrapheneObject {
+	gid := new(BudgetRecordID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"BudgetRecordID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeBudgetRecord {
+		logging.Errorf(
+			"BudgetRecordID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeBudgetRecord'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
