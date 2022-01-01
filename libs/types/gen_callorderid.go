@@ -30,4 +30,59 @@ func (p *CallOrderID) Unmarshal(dec *util.TypeDecoder) error {
 		return errors.Annotate(err, "decode instance")
 	}
 
-	p.number = UInt64((uint64(SpaceTypeProt
+	p.number = UInt64((uint64(SpaceTypeProtocol) << 56) | (uint64(ObjectTypeCallOrder) << 48) | instance)
+	return nil
+}
+
+type CallOrderIDs []CallOrderID
+
+func (p CallOrderIDs) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(len(p))); err != nil {
+		return errors.Annotate(err, "encode length")
+	}
+
+	for _, ex := range p {
+		if err := enc.Encode(ex); err != nil {
+			return errors.Annotate(err, "encode CallOrderID")
+		}
+	}
+
+	return nil
+}
+
+func CallOrderIDFromObject(ob GrapheneObject) CallOrderID {
+	id, ok := ob.(*CallOrderID)
+	if ok {
+		return *id
+	}
+
+	p := CallOrderID{}
+	p.MustFromObject(ob)
+	if p.ObjectType() != ObjectTypeCallOrder {
+		panic(fmt.Sprintf("invalid ObjectType: %q has no ObjectType 'ObjectTypeCallOrder'", p.ID()))
+	}
+
+	return p
+}
+
+//NewCallOrderID creates an new CallOrderID object
+func NewCallOrderID(id string) GrapheneObject {
+	gid := new(CallOrderID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"CallOrderID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeCallOrder {
+		logging.Errorf(
+			"CallOrderID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeCallOrder'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
