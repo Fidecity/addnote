@@ -59,4 +59,30 @@ func ChainPropertyIDFromObject(ob GrapheneObject) ChainPropertyID {
 	p := ChainPropertyID{}
 	p.MustFromObject(ob)
 	if p.ObjectType() != ObjectTypeChainProperty {
-		panic(fmt.Sprintf("inv
+		panic(fmt.Sprintf("invalid ObjectType: %q has no ObjectType 'ObjectTypeChainProperty'", p.ID()))
+	}
+
+	return p
+}
+
+//NewChainPropertyID creates an new ChainPropertyID object
+func NewChainPropertyID(id string) GrapheneObject {
+	gid := new(ChainPropertyID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"ChainPropertyID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeChainProperty {
+		logging.Errorf(
+			"ChainPropertyID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeChainProperty'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
