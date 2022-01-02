@@ -26,4 +26,63 @@ func (p CustomID) Marshal(enc *util.TypeEncoder) error {
 
 func (p *CustomID) Unmarshal(dec *util.TypeDecoder) error {
 	var instance uint64
-	if err := dec.DecodeUVarint
+	if err := dec.DecodeUVarint(&instance); err != nil {
+		return errors.Annotate(err, "decode instance")
+	}
+
+	p.number = UInt64((uint64(SpaceTypeProtocol) << 56) | (uint64(ObjectTypeCustom) << 48) | instance)
+	return nil
+}
+
+type CustomIDs []CustomID
+
+func (p CustomIDs) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(len(p))); err != nil {
+		return errors.Annotate(err, "encode length")
+	}
+
+	for _, ex := range p {
+		if err := enc.Encode(ex); err != nil {
+			return errors.Annotate(err, "encode CustomID")
+		}
+	}
+
+	return nil
+}
+
+func CustomIDFromObject(ob GrapheneObject) CustomID {
+	id, ok := ob.(*CustomID)
+	if ok {
+		return *id
+	}
+
+	p := CustomID{}
+	p.MustFromObject(ob)
+	if p.ObjectType() != ObjectTypeCustom {
+		panic(fmt.Sprintf("invalid ObjectType: %q has no ObjectType 'ObjectTypeCustom'", p.ID()))
+	}
+
+	return p
+}
+
+//NewCustomID creates an new CustomID object
+func NewCustomID(id string) GrapheneObject {
+	gid := new(CustomID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"CustomID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeCustom {
+		logging.Errorf(
+			"CustomID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeCustom'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
