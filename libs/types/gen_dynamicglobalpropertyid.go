@@ -39,3 +39,51 @@ type DynamicGlobalPropertyIDs []DynamicGlobalPropertyID
 
 func (p DynamicGlobalPropertyIDs) Marshal(enc *util.TypeEncoder) error {
 	if err := enc.EncodeUVarint(uint64(len(p))); err != nil {
+		return errors.Annotate(err, "encode length")
+	}
+
+	for _, ex := range p {
+		if err := enc.Encode(ex); err != nil {
+			return errors.Annotate(err, "encode DynamicGlobalPropertyID")
+		}
+	}
+
+	return nil
+}
+
+func DynamicGlobalPropertyIDFromObject(ob GrapheneObject) DynamicGlobalPropertyID {
+	id, ok := ob.(*DynamicGlobalPropertyID)
+	if ok {
+		return *id
+	}
+
+	p := DynamicGlobalPropertyID{}
+	p.MustFromObject(ob)
+	if p.ObjectType() != ObjectTypeDynamicGlobalProperty {
+		panic(fmt.Sprintf("invalid ObjectType: %q has no ObjectType 'ObjectTypeDynamicGlobalProperty'", p.ID()))
+	}
+
+	return p
+}
+
+//NewDynamicGlobalPropertyID creates an new DynamicGlobalPropertyID object
+func NewDynamicGlobalPropertyID(id string) GrapheneObject {
+	gid := new(DynamicGlobalPropertyID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"DynamicGlobalPropertyID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeDynamicGlobalProperty {
+		logging.Errorf(
+			"DynamicGlobalPropertyID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeDynamicGlobalProperty'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
