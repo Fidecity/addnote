@@ -51,4 +51,38 @@ func (p ForceSettlementIDs) Marshal(enc *util.TypeEncoder) error {
 }
 
 func ForceSettlementIDFromObject(ob GrapheneObject) ForceSettlementID {
-	id, ok := ob.(*ForceS
+	id, ok := ob.(*ForceSettlementID)
+	if ok {
+		return *id
+	}
+
+	p := ForceSettlementID{}
+	p.MustFromObject(ob)
+	if p.ObjectType() != ObjectTypeForceSettlement {
+		panic(fmt.Sprintf("invalid ObjectType: %q has no ObjectType 'ObjectTypeForceSettlement'", p.ID()))
+	}
+
+	return p
+}
+
+//NewForceSettlementID creates an new ForceSettlementID object
+func NewForceSettlementID(id string) GrapheneObject {
+	gid := new(ForceSettlementID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"ForceSettlementID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeForceSettlement {
+		logging.Errorf(
+			"ForceSettlementID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeForceSettlement'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
