@@ -66,4 +66,23 @@ func OperationHistoryIDFromObject(ob GrapheneObject) OperationHistoryID {
 }
 
 //NewOperationHistoryID creates an new OperationHistoryID object
-func NewOperationHistoryID(id string) GrapheneObjec
+func NewOperationHistoryID(id string) GrapheneObject {
+	gid := new(OperationHistoryID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"OperationHistoryID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeOperationHistory {
+		logging.Errorf(
+			"OperationHistoryID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeOperationHistory'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
