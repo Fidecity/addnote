@@ -30,4 +30,59 @@ func (p *TransactionID) Unmarshal(dec *util.TypeDecoder) error {
 		return errors.Annotate(err, "decode instance")
 	}
 
-	p.number = 
+	p.number = UInt64((uint64(SpaceTypeProtocol) << 56) | (uint64(ObjectTypeTransaction) << 48) | instance)
+	return nil
+}
+
+type TransactionIDs []TransactionID
+
+func (p TransactionIDs) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(len(p))); err != nil {
+		return errors.Annotate(err, "encode length")
+	}
+
+	for _, ex := range p {
+		if err := enc.Encode(ex); err != nil {
+			return errors.Annotate(err, "encode TransactionID")
+		}
+	}
+
+	return nil
+}
+
+func TransactionIDFromObject(ob GrapheneObject) TransactionID {
+	id, ok := ob.(*TransactionID)
+	if ok {
+		return *id
+	}
+
+	p := TransactionID{}
+	p.MustFromObject(ob)
+	if p.ObjectType() != ObjectTypeTransaction {
+		panic(fmt.Sprintf("invalid ObjectType: %q has no ObjectType 'ObjectTypeTransaction'", p.ID()))
+	}
+
+	return p
+}
+
+//NewTransactionID creates an new TransactionID object
+func NewTransactionID(id string) GrapheneObject {
+	gid := new(TransactionID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"TransactionID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeTransaction {
+		logging.Errorf(
+			"TransactionID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeTransaction'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
