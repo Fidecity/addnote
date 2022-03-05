@@ -42,4 +42,47 @@ func (p WitnessScheduleIDs) Marshal(enc *util.TypeEncoder) error {
 	}
 
 	for _, ex := range p {
-		if
+		if err := enc.Encode(ex); err != nil {
+			return errors.Annotate(err, "encode WitnessScheduleID")
+		}
+	}
+
+	return nil
+}
+
+func WitnessScheduleIDFromObject(ob GrapheneObject) WitnessScheduleID {
+	id, ok := ob.(*WitnessScheduleID)
+	if ok {
+		return *id
+	}
+
+	p := WitnessScheduleID{}
+	p.MustFromObject(ob)
+	if p.ObjectType() != ObjectTypeWitnessSchedule {
+		panic(fmt.Sprintf("invalid ObjectType: %q has no ObjectType 'ObjectTypeWitnessSchedule'", p.ID()))
+	}
+
+	return p
+}
+
+//NewWitnessScheduleID creates an new WitnessScheduleID object
+func NewWitnessScheduleID(id string) GrapheneObject {
+	gid := new(WitnessScheduleID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"WitnessScheduleID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	if gid.ObjectType() != ObjectTypeWitnessSchedule {
+		logging.Errorf(
+			"WitnessScheduleID parser error %s",
+			fmt.Sprintf("%q has no ObjectType 'ObjectTypeWitnessSchedule'", id),
+		)
+		return nil
+	}
+
+	return gid
+}
