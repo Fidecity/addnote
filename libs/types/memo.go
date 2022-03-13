@@ -108,3 +108,73 @@ func (p Memo) Decrypt(priv *PrivateKey) (string, error) {
 	msg := unpad(dst[4:])
 	dig := sha256.Sum256(msg)
 	chk2 := dig[:4]
+
+	if bytes.Compare(chk1, chk2) != 0 {
+		return "", ErrInvalidChecksum
+	}
+
+	return string(msg), nil
+}
+
+// func (p Memo) cypherBlock(sec []byte) ([]byte, cipher.Block, error) {
+// 	//ss := sha512.Sum512(sec)
+
+// 	var seed []byte
+// 	seed = append(seed, []byte(strconv.FormatUint(uint64(p.Nonce), 10))...)
+// 	seed = append(seed, []byte(hex.EncodeToString(sec[:]))...) //[]byte(hex.EncodeToString(ss[:]))...)
+
+// 	sd := sha512.Sum512(seed)
+// 	hash := hex.EncodeToString(sd[:])
+
+// 	iv, err := hex.DecodeString(string(hash[64:96]))
+// 	if err != nil {
+// 		return nil, nil, errors.Annotate(err, "DecodeString [iv]")
+// 	}
+
+// 	key, err := hex.DecodeString(string(hash[:64]))
+// 	if err != nil {
+// 		return nil, nil, errors.Annotate(err, "DecodeString [key]")
+// 	}
+
+// 	blk, err := aes.NewCipher(key)
+// 	if err != nil {
+// 		return nil, nil, errors.Annotate(err, "NewCipher")
+// 	}
+
+// 	return iv, blk, nil
+// }
+
+func (p Memo) cypherBlock(sec []byte) ([]byte, cipher.Block, error) {
+	ss := sha512.Sum512(sec)
+
+	var seed []byte
+	seed = append(seed, []byte(strconv.FormatUint(uint64(p.Nonce), 10))...)
+	seed = append(seed, []byte(hex.EncodeToString(ss[:]))...)
+
+	sd := sha512.Sum512(seed)
+	blk, err := aes.NewCipher(sd[0:32])
+	if err != nil {
+		return nil, nil, errors.Annotate(err, "NewCipher")
+	}
+
+	return sd[32:48], blk, nil
+}
+
+func unpad(buf []byte) []byte {
+	b := buf[len(buf)-1:][0]
+	cnt := int(b)
+	l := len(buf) - cnt
+
+	a := bytes.Repeat([]byte{b}, cnt)
+	if bytes.Compare(a, buf[l:]) == 0 {
+		return buf[:l]
+	}
+
+	return buf
+}
+
+func pad(buf []byte, length int) []byte {
+	cnt := length - len(buf)%length
+	buf = append(buf, bytes.Repeat([]byte{byte(cnt)}, cnt)...)
+	return buf
+}
