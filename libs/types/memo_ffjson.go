@@ -196,4 +196,56 @@ mainparse:
 
 				if fflib.SimpleLetterEqualFold(ffjKeyMemoNonce, kn) {
 					currentKey = ffjtMemoNonce
-					state 
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyMemoTo, kn) {
+					currentKey = ffjtMemoTo
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyMemoFrom, kn) {
+					currentKey = ffjtMemoFrom
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtMemonosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtMemoFrom:
+					goto handle_From
+
+				case ffjtMemoTo:
+					goto handle_To
+
+				case ffjtMemoNonce:
+					goto handle_Nonce
+
+				case ffjtMemoMessage:
+					goto handle_Message
+
+				case ffjtMemonosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+			
