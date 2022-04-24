@@ -84,4 +84,71 @@ func (p *ObjectID) Unmarshal(dec *util.TypeDecoder) error {
 }
 
 func (p ObjectID) MarshalJSON() ([]byte, error) {
-	return ffjson.Marsha
+	return ffjson.Marshal(p.ID())
+}
+
+func (p *ObjectID) UnmarshalJSON(s []byte) error {
+	var val string
+	if err := ffjson.Unmarshal(s, &val); err != nil {
+		return errors.Annotate(err, "Unmarshal")
+	}
+
+	if err := p.Parse(val); err != nil {
+		return errors.Annotate(err, "Parse")
+	}
+
+	return nil
+}
+
+func (p *ObjectID) FromObject(ob GrapheneObject) error {
+	return p.Parse(ob.ID())
+}
+
+func (p *ObjectID) MustFromObject(ob GrapheneObject) {
+	if err := p.FromObject(ob); err != nil {
+		panic(errors.Annotate(err, "FromObject"))
+	}
+}
+
+func ObjectIDFromObject(ob GrapheneObject) ObjectID {
+	id, ok := ob.(*ObjectID)
+	if ok {
+		return *id
+	}
+
+	p := ObjectID{}
+	p.MustFromObject(ob)
+	return p
+}
+
+func (p ObjectID) Equals(o GrapheneObject) bool {
+	return p.ID() == o.ID()
+}
+
+func (p ObjectID) Valid() bool {
+	return p.number != 0
+}
+
+//String, ObjectID implements Stringer
+func (p ObjectID) String() string {
+	return p.ID()
+}
+
+//ID returns the objects string representation
+func (p ObjectID) ID() string {
+	return fmt.Sprintf("%d.%d.%d",
+		p.SpaceType(),
+		p.ObjectType(),
+		p.Instance(),
+	)
+}
+
+//ObjectType returns the objects ObjectType
+func (p ObjectID) ObjectType() ObjectType {
+	return ObjectType(p.number >> 48 & 0x00ff)
+}
+
+//SpaceType returns the objects SpaceType
+func (p ObjectID) SpaceType() SpaceType {
+	return SpaceType(p.number >> 56)
+}
