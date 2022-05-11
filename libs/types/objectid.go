@@ -152,3 +152,65 @@ func (p ObjectID) ObjectType() ObjectType {
 func (p ObjectID) SpaceType() SpaceType {
 	return SpaceType(p.number >> 56)
 }
+
+func (p ObjectID) Instance() UInt64 {
+	return UInt64(p.number & GrapheneMaxInstanceID)
+}
+
+//NewObjectID creates an new ObjectID object
+func NewObjectID(id string) GrapheneObject {
+	gid := new(ObjectID)
+	if err := gid.Parse(id); err != nil {
+		logging.Errorf(
+			"ObjectID parser error %v",
+			errors.Annotate(err, "Parse"),
+		)
+		return nil
+	}
+
+	return gid
+}
+
+func (p *ObjectID) FromRawData(in interface{}) error {
+	o, ok := in.(map[string]interface{})
+	if !ok {
+		return errors.New("input is not map[string]interface{}")
+	}
+
+	if id, ok := o["id"]; ok {
+		return p.Parse(id.(string))
+	}
+
+	return errors.New("input is no graphene object")
+}
+
+func (p *ObjectID) Parse(in string) error {
+	if len(in) == 0 {
+		return nil
+	}
+
+	parts := strings.Split(in, ".")
+	if len(parts) != 3 {
+		return errors.Errorf("unable to parse ObjectID from %s", in)
+	}
+
+	spaceType, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return errors.Errorf("unable to parse ObjectID [space] from %s", in)
+	}
+
+	objectType, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return errors.Errorf("unable to parse ObjectID [type] from %s", in)
+	}
+
+	instance, err := strconv.ParseUint(parts[2], 10, 64)
+	if err != nil {
+		return errors.Errorf("unable to parse ObjectID [instance] from %s", in)
+	}
+
+	if instance>>48 != 0 {
+		return errors.Errorf("instance overflow for: %s", in)
+	}
+
+	p.number = 
