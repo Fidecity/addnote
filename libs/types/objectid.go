@@ -213,4 +213,6 @@ func (p *ObjectID) Parse(in string) error {
 		return errors.Errorf("instance overflow for: %s", in)
 	}
 
-	p.number = 
+	p.number = UInt64((uint64(spaceType) << 56) | (uint64(objectType) << 48) | instance)
+	return nil
+}
