@@ -39,4 +39,14 @@ func _() {
 	_ = x[ObjectTypeSpecialAuthority-14]
 }
 
-const _ObjectType_n
+const _ObjectType_name = "ObjectTypeBaseObjectTypeAccountObjectTypeAssetObjectTypeForceSettlementObjectTypeCommitteeMemberObjectTypeWitnessObjectTypeLimitOrderObjectTypeCallOrderObjectTypeCustomObjectTypeProposalObjectTypeOperationHistoryObjectTypeWithdrawPermissionObjectTypeVestingBalanceObjectTypeWorkerObjectTypeBalance"
+
+var _ObjectType_index = [...]uint16{0, 14, 31, 46, 71, 96, 113, 133, 152, 168, 186, 212, 240, 264, 280, 297}
+
+func (i ObjectType) String() string {
+	i -= 1
+	if i >= ObjectType(len(_ObjectType_index)-1) {
+		return "ObjectType(" + strconv.FormatInt(int64(i+1), 10) + ")"
+	}
+	return _ObjectType_name[_ObjectType_index[i]:_ObjectType_index[i+1]]
+}
