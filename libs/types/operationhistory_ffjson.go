@@ -25,4 +25,74 @@ func (j *OperationHistory) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalJSONBuf marshal buff to json - template
-func (j *OperationHistory) MarshalJSONBuf(buf fflib.Encodin
+func (j *OperationHistory) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{"id":`)
+
+	{
+
+		obj, err = j.ID.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"block_num":`)
+	fflib.FormatBits2(buf, uint64(j.BlockNum), 10, false)
+	buf.WriteString(`,"trx_in_block":`)
+	fflib.FormatBits2(buf, uint64(j.TrxInBlock), 10, false)
+	buf.WriteString(`,"op_in_trx":`)
+	fflib.FormatBits2(buf, uint64(j.OpInTrx), 10, false)
+	buf.WriteString(`,"virtual_op":`)
+	fflib.FormatBits2(buf, uint64(j.VirtualOp), 10, false)
+	buf.WriteString(`,"op":`)
+
+	{
+
+		obj, err = j.Operation.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"result":`)
+	/* Interface types must use runtime reflection. type=types.OperationResult kind=interface */
+	err = buf.Encode(j.Result)
+	if err != nil {
+		return err
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtOperationHistorybase = iota
+	ffjtOperationHistorynosuchkey
+
+	ffjtOperationHistoryID
+
+	ffjtOperationHistoryBlockNum
+
+	ffjtOperationHistoryTrxInBlock
+
+	ffjtOperationHistoryOpInTrx
+
+	ffjtOperationHistoryVirtualOp
+
+	ffjtOperationHistoryOperation
+
+	ffjtOperationHistoryResult
+)
+
+var ffjKeyOperationHistoryID = []byte("id")
+
+var ffjKeyOperationHistoryBlockNum = []byte("block_nu
