@@ -200,4 +200,52 @@ mainparse:
 				case 'r':
 
 					if bytes.Equal(ffjKeyOperationHistoryResult, kn) {
-						currentKey = ffjtOper
+						currentKey = ffjtOperationHistoryResult
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 't':
+
+					if bytes.Equal(ffjKeyOperationHistoryTrxInBlock, kn) {
+						currentKey = ffjtOperationHistoryTrxInBlock
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'v':
+
+					if bytes.Equal(ffjKeyOperationHistoryVirtualOp, kn) {
+						currentKey = ffjtOperationHistoryVirtualOp
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeyOperationHistoryResult, kn) {
+					currentKey = ffjtOperationHistoryResult
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyOperationHistoryOperation, kn) {
+					currentKey = ffjtOperationHistoryOperation
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyOperationHistoryVirtualOp, kn) {
+					currentKey = ffjtOperationHistoryVirtualOp
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyOperationHistoryOpInTrx, kn) {
+					currentKey = ffjtOperationHistoryOpInTrx
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyOperationHistoryTrxInBlock, kn) {
+					curren
