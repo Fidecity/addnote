@@ -457,3 +457,67 @@ handle_Operation:
 			}
 
 			err = j.Operation.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Result:
+
+	/* handler: j.Result type=types.OperationResult kind=interface quoted=false*/
+
+	{
+		/* Falling back. type=types.OperationResult kind=interface */
+		tbuf, err := fs.CaptureField(tok)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+
+		err = json.Unmarshal(tbuf, &j.Result)
+		if err != nil {
+			return fs.WrapErr(err)
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+wantedvalue:
+	return fs.WrapErr(fmt.Errorf("wanted value token, but got token: %v", tok))
+wrongtokenerror:
+	return fs.WrapErr(fmt.Errorf("ffjson: wanted token: %v, but got token: %v output=%s", wantedTok, tok, fs.Output.String()))
+tokerror:
+	if fs.BigError != nil {
+		return fs.WrapErr(fs.BigError)
+	}
+	err = fs.Error.ToError()
+	if err != nil {
+		return fs.WrapErr(err)
+	}
+	panic("ffjson-generated: unreachable, please report bug.")
+done:
+
+	return nil
+}
+
+// MarshalJSON marshal bytes to json - template
+func (j *OperationRelativeHistory) MarshalJSON() ([]byte, error) {
+	var buf fflib.Buffer
+	if j == nil {
+		buf.WriteString("null")
+		return buf.Bytes(), nil
+	}
+	err := j.MarshalJSONBuf(&buf)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+// MarshalJSONBuf marshal buff to json - template
+func (j *OperationRelativeHistory) MarshalJSONBuf(buf fflib
