@@ -520,4 +520,75 @@ func (j *OperationRelativeHistory) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalJSONBuf marshal buff to json - template
-func (j *OperationRelativeHistory) MarshalJSONBuf(buf fflib
+func (j *OperationRelativeHistory) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
+	if j == nil {
+		buf.WriteString("null")
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{"memo":`)
+
+	{
+
+		obj, err = j.Memo.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"description":`)
+
+	{
+
+		obj, err = j.Description.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"op":`)
+
+	{
+
+		err = j.Op.MarshalJSONBuf(buf)
+		if err != nil {
+			return err
+		}
+
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtOperationRelativeHistorybase = iota
+	ffjtOperationRelativeHistorynosuchkey
+
+	ffjtOperationRelativeHistoryMemo
+
+	ffjtOperationRelativeHistoryDescription
+
+	ffjtOperationRelativeHistoryOp
+)
+
+var ffjKeyOperationRelativeHistoryMemo = []byte("memo")
+
+var ffjKeyOperationRelativeHistoryDescription = []byte("description")
+
+var ffjKeyOperationRelativeHistoryOp = []byte("op")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *OperationRelativeHistory) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *OperationRelativeHistory) UnmarshalJSONFFLexer(fs *fflib.FFLexer, state fflib.FFParseState) error {
+	var err error
+	currentKey := ffjtOp
