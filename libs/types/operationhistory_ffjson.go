@@ -647,4 +647,56 @@ mainparse:
 
 					if bytes.Equal(ffjKeyOperationRelativeHistoryDescription, kn) {
 						currentKey = ffjtOperationRelativeHistoryDescription
-					
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'm':
+
+					if bytes.Equal(ffjKeyOperationRelativeHistoryMemo, kn) {
+						currentKey = ffjtOperationRelativeHistoryMemo
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'o':
+
+					if bytes.Equal(ffjKeyOperationRelativeHistoryOp, kn) {
+						currentKey = ffjtOperationRelativeHistoryOp
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyOperationRelativeHistoryOp, kn) {
+					currentKey = ffjtOperationRelativeHistoryOp
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyOperationRelativeHistoryDescription, kn) {
+					currentKey = ffjtOperationRelativeHistoryDescription
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyOperationRelativeHistoryMemo, kn) {
+					currentKey = ffjtOperationRelativeHistoryMemo
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtOperationRelativeHistorynosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFPar
