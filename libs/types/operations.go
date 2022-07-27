@@ -77,4 +77,67 @@ func (p *OperationEnvelope) UnmarshalJSON(data []byte) error {
 		return errors.Annotate(err, "unmarshal OperationType")
 	}
 
-	descr := fmt.Sprintf("Operation %s", p.Ty
+	descr := fmt.Sprintf("Operation %s", p.Type)
+
+	if getOp, ok := OperationMap[p.Type]; ok {
+
+		p.Operation = getOp()
+		if err := ffjson.Unmarshal(raw[1], p.Operation); err != nil {
+			logging.DDumpUnmarshaled(descr, raw[1])
+			return errors.Annotatef(err, "unmarshal Operation %s", p.Type)
+		}
+	} else {
+		fmt.Printf("Operation type %s not yet supported\n", p.Type)
+		logging.DDumpUnmarshaled(descr, raw[1])
+	}
+
+	return nil
+}
+
+type Operations []Operation
+
+func (p Operations) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(len(p))); err != nil {
+		return errors.Annotate(err, "encode Operations length")
+	}
+
+	for _, op := range p {
+		if err := enc.Encode(op); err != nil {
+			return errors.Annotate(err, "encode Operation")
+		}
+	}
+
+	return nil
+}
+
+func (p Operations) MarshalJSON() ([]byte, error) {
+	env := make([]OperationEnvelope, len(p))
+	for idx, op := range p {
+		env[idx] = OperationEnvelope{
+			Type:      op.Type(),
+			Operation: op,
+		}
+	}
+
+	return ffjson.Marshal(env)
+}
+
+func (p *Operations) UnmarshalJSON(data []byte) error {
+	var envs []OperationEnvelope
+	if err := ffjson.Unmarshal(data, &envs); err != nil {
+		return err
+	}
+
+	ops := make(Operations, len(envs))
+	for idx, env := range envs {
+		if env.Operation != nil {
+			ops[idx] = env.Operation.(Operation)
+		}
+	}
+
+	*p = ops
+	return nil
+}
+
+func (p Operations) ApplyFees(fees AssetAmounts) error {
+	if le
