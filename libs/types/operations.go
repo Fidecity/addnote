@@ -140,4 +140,50 @@ func (p *Operations) UnmarshalJSON(data []byte) error {
 }
 
 func (p Operations) ApplyFees(fees AssetAmounts) error {
-	if le
+	if len(p) != len(fees) {
+		return errors.New("count of fees must match count of operations")
+	}
+
+	for idx, op := range p {
+		op.SetFee(fees[idx])
+	}
+
+	return nil
+}
+
+func (p Operations) CombinedFees() AssetAmounts {
+	amounts := make(AssetAmounts, 0)
+	feeMap := make(map[AssetID]Int64)
+	for _, op := range p {
+		f := op.GetFee()
+		id := f.Asset
+		if fee, ok := feeMap[id]; ok {
+			feeMap[id] = fee + f.Amount
+		} else {
+			feeMap[id] = f.Amount
+		}
+	}
+
+	for ass, am := range feeMap {
+		amounts = append(amounts,
+			AssetAmount{
+				Asset:  ass,
+				Amount: am,
+			},
+		)
+	}
+
+	return amounts
+}
+
+func (p Operations) Envelopes() []OperationEnvelope {
+	ret := make([]OperationEnvelope, len(p))
+	for idx, op := range p {
+		ret[idx] = OperationEnvelope{
+			Type:      op.Type(),
+			Operation: op,
+		}
+	}
+
+	return ret
+}
