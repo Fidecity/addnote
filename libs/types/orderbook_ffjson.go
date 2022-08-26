@@ -131,4 +131,52 @@ mainparse:
 
 				case 'p':
 
-					if byt
+					if bytes.Equal(ffjKeyOrderPrice, kn) {
+						currentKey = ffjtOrderPrice
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'q':
+
+					if bytes.Equal(ffjKeyOrderQuote, kn) {
+						currentKey = ffjtOrderQuote
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyOrderPrice, kn) {
+					currentKey = ffjtOrderPrice
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyOrderQuote, kn) {
+					currentKey = ffjtOrderQuote
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyOrderBase, kn) {
+					currentKey = ffjtOrderBase
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtOrdernosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
