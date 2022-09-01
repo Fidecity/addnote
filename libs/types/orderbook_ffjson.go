@@ -330,4 +330,91 @@ func (j *OrderBook) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 		if err != nil {
 			return err
 		}
-		buf.
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"asks":`)
+	if j.Asks != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.Asks {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				err = v.MarshalJSONBuf(buf)
+				if err != nil {
+					return err
+				}
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"quote":`)
+
+	{
+
+		obj, err = j.Quote.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"bids":`)
+	if j.Bids != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.Bids {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				err = v.MarshalJSONBuf(buf)
+				if err != nil {
+					return err
+				}
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtOrderBookbase = iota
+	ffjtOrderBooknosuchkey
+
+	ffjtOrderBookBase
+
+	ffjtOrderBookAsks
+
+	ffjtOrderBookQuote
+
+	ffjtOrderBookBids
+)
+
+var ffjKeyOrderBookBase = []byte("base")
+
+var ffjKeyOrderBookAsks = []byte("asks")
+
+var ffjKeyOrderBookQuote = []byte("quote")
+
+var ffjKeyOrderBookBids = []byte("bids")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *OrderBook) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ff
