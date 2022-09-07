@@ -475,4 +475,57 @@ mainparse:
 				case 'a':
 
 					if bytes.Equal(ffjKeyOrderBookAsks, kn) {
-						currentKey = ffjtOrderBookAs
+						currentKey = ffjtOrderBookAsks
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'b':
+
+					if bytes.Equal(ffjKeyOrderBookBase, kn) {
+						currentKey = ffjtOrderBookBase
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyOrderBookBids, kn) {
+						currentKey = ffjtOrderBookBids
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'q':
+
+					if bytes.Equal(ffjKeyOrderBookQuote, kn) {
+						currentKey = ffjtOrderBookQuote
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeyOrderBookBids, kn) {
+					currentKey = ffjtOrderBookBids
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyOrderBookQuote, kn) {
+					currentKey = ffjtOrderBookQuote
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyOrderBookAsks, kn) {
+					currentKey = ffjtOrderBookAsks
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyOrderBookBase, kn) {
+					currentKey = ffjtOrderBookBase
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtOrderBooknosuchkey
+				state = fflib
