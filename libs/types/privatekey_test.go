@@ -19,4 +19,65 @@ var privKeys = [][]string{
 
 var data = [][]string{
 	{"5JWHY5DxTF6qN5grTtChDCYBmWHfY9zaSsw4CxEKN5eZpH9iBma", "5ad2b8df2c255d4a2996ee7d065e013e1bbb35c075ee6e5208aca44adc9a9d4c"},
-	{"5KPipdRzoxrp6dDqsBfMD6oFZG356trVHV5QBGx3rABs1zzWWs8", "cf9d6121ed458f24ea456ad7ff700da39e8668
+	{"5KPipdRzoxrp6dDqsBfMD6oFZG356trVHV5QBGx3rABs1zzWWs8", "cf9d6121ed458f24ea456ad7ff700da39e86688988cfe5c6ed6558642cf1e32f"},
+}
+
+func Test_PrivatePublic(t *testing.T) {
+	config.SetCurrent(config.ChainIDBTS)
+
+	for _, k := range privKeys {
+		wif := k[0]
+		pub := k[1]
+
+		key, err := NewPrivateKeyFromWif(wif)
+		if err != nil {
+			assert.FailNow(t, err.Error(), "NewPrivateKeyFromWif")
+		}
+
+		assert.Equal(t, pub, key.PublicKey().String())
+		assert.Equal(t, wif, key.ToWIF())
+	}
+}
+
+func TestDecode(t *testing.T) {
+	config.SetCurrent(config.ChainIDBTS)
+
+	for _, k := range data {
+		wif := k[0]
+		hx := k[1]
+
+		key, err := NewPrivateKeyFromWif(wif)
+		if err != nil {
+			assert.FailNow(t, err.Error(), "NewPrivateKeyFromWif")
+		}
+
+		assert.Equal(t, hx, key.ToHex())
+	}
+}
+
+func TestMarshalUnmarshal(t *testing.T) {
+	config.SetCurrent(config.ChainIDBTS)
+
+	for _, k := range data {
+		wif := k[0]
+		key1, err := NewPrivateKeyFromWif(wif)
+		if err != nil {
+			assert.FailNow(t, err.Error(), "NewPrivateKeyFromWif")
+		}
+
+		var buf bytes.Buffer
+		enc := util.NewTypeEncoder(&buf)
+
+		if err := key1.Marshal(enc); err != nil {
+			assert.FailNow(t, err.Error(), "Marshal")
+		}
+
+		dec := util.NewTypeDecoder(&buf)
+		var key2 PrivateKey
+		if err := key2.Unmarshal(dec); err != nil {
+			assert.FailNow(t, err.Error(), "Unmarshal")
+		}
+
+		assert.Equal(t, key2.Bytes(), key1.Bytes())
+	}
+}
