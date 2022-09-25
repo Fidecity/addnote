@@ -27,4 +27,92 @@ func (j *SignedTransaction) MarshalJSON() ([]byte, error) {
 func (j *SignedTransaction) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 	if j == nil {
 		buf.WriteString("null")
-		retur
+		return nil
+	}
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{"signatures":`)
+	if j.Signatures != nil {
+		buf.WriteString(`[`)
+		for i, v := range j.Signatures {
+			if i != 0 {
+				buf.WriteString(`,`)
+			}
+
+			{
+
+				obj, err = v.MarshalJSON()
+				if err != nil {
+					return err
+				}
+				buf.Write(obj)
+
+			}
+		}
+		buf.WriteString(`]`)
+	} else {
+		buf.WriteString(`null`)
+	}
+	buf.WriteString(`,"ref_block_num":`)
+	fflib.FormatBits2(buf, uint64(j.RefBlockNum), 10, false)
+	buf.WriteString(`,"ref_block_prefix":`)
+	fflib.FormatBits2(buf, uint64(j.RefBlockPrefix), 10, false)
+	buf.WriteString(`,"expiration":`)
+
+	{
+
+		obj, err = j.Expiration.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"operations":`)
+
+	{
+
+		obj, err = j.Operations.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"extensions":`)
+
+	{
+
+		obj, err = j.Extensions.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtSignedTransactionbase = iota
+	ffjtSignedTransactionnosuchkey
+
+	ffjtSignedTransactionSignatures
+
+	ffjtSignedTransactionRefBlockNum
+
+	ffjtSignedTransactionRefBlockPrefix
+
+	ffjtSignedTransactionExpiration
+
+	ffjtSignedTransactionOperations
+
+	ffjtSignedTransactionExtensions
+)
+
+var ffjKeySignedTransactionSignatures = []byte("signatures")
+
+var f
