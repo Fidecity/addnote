@@ -214,4 +214,50 @@ mainparse:
 						state = fflib.FFParse_want_colon
 						goto mainparse
 
-					} else if byt
+					} else if bytes.Equal(ffjKeySignedTransactionRefBlockPrefix, kn) {
+						currentKey = ffjtSignedTransactionRefBlockPrefix
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 's':
+
+					if bytes.Equal(ffjKeySignedTransactionSignatures, kn) {
+						currentKey = ffjtSignedTransactionSignatures
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.EqualFoldRight(ffjKeySignedTransactionExtensions, kn) {
+					currentKey = ffjtSignedTransactionExtensions
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySignedTransactionOperations, kn) {
+					currentKey = ffjtSignedTransactionOperations
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeySignedTransactionExpiration, kn) {
+					currentKey = ffjtSignedTransactionExpiration
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySignedTransactionRefBlockPrefix, kn) {
+					currentKey = ffjtSignedTransactionRefBlockPrefix
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeySignedTransactionRefBlockNum, kn) {
+					currentKey = ffjtSignedTransactionRefBlockNum
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjK
