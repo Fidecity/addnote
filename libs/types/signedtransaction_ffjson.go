@@ -260,4 +260,48 @@ mainparse:
 					goto mainparse
 				}
 
-				if fflib.EqualFoldRight(ffjK
+				if fflib.EqualFoldRight(ffjKeySignedTransactionSignatures, kn) {
+					currentKey = ffjtSignedTransactionSignatures
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtSignedTransactionnosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtSignedTransactionSignatures:
+					goto handle_Signatures
+
+				case ffjtSignedTransactionRefBlockNum:
+					goto handle_RefBlockNum
+
+				case ffjtSignedTransactionRefBlockPrefix:
+					goto handle_RefBlockPrefix
+
+				case ffjtSignedTransactionExpiration:
+					goto handle_Expiration
+
+				case ffjtSignedTransactionOperations:
+					goto handle_Operations
+
+				case ffjtSignedTransactionExtensions:
+					goto handle_Extensions
+
+				case ffjtSignedTransactionnosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapE
