@@ -371,4 +371,85 @@ handle_Signatures:
 						}
 
 						err = tmpJSignatures.UnmarshalJSON(tbuf)
-						if err != nil 
+						if err != nil {
+							return fs.WrapErr(err)
+						}
+					}
+					state = fflib.FFParse_after_value
+				}
+
+				j.Signatures = append(j.Signatures, tmpJSignatures)
+
+				wantVal = false
+			}
+		}
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_RefBlockNum:
+
+	/* handler: j.RefBlockNum type=types.UInt16 kind=uint16 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.RefBlockNum.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_RefBlockPrefix:
+
+	/* handler: j.RefBlockPrefix type=types.UInt32 kind=uint32 quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.RefBlockPrefix.UnmarshalJSON(tbuf)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+		}
+		state = fflib.FFParse_after_value
+	}
+
+	state = fflib.FFParse_after_value
+	goto mainparse
+
+handle_Expiration:
+
+	/* handler: j.Expiration type=types.Time kind=struct quoted=false*/
+
+	{
+		if tok == fflib.FFTok_null {
+
+		} else {
+
+			tbuf, err := fs.CaptureField(tok)
+			if err != nil {
+				return fs.WrapErr(err)
+			}
+
+			err = j.E
