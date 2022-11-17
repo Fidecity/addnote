@@ -51,3 +51,62 @@ func (p LinearVestingPolicy) Marshal(enc *util.TypeEncoder) error {
 
 	if err := enc.Encode(p.VestingCliffSeconds); err != nil {
 		return errors.Annotate(err, "encode VestingCliffSeconds")
+	}
+
+	if err := enc.Encode(p.VestingDurationSeconds); err != nil {
+		return errors.Annotate(err, "encode VestingDurationSeconds")
+	}
+
+	return nil
+}
+
+type VestingPolicy struct {
+	typ  VestingPolicyType
+	data util.TypeMarshaler
+}
+
+func (p *VestingPolicy) UnmarshalJSON(data []byte) error {
+	var res []interface{}
+	if err := ffjson.Unmarshal(data, &res); err != nil {
+		return errors.Annotate(err, "Unmarshal")
+	}
+
+	if len(res) != 2 {
+		return ErrInvalidInputLength
+	}
+
+	p.typ = VestingPolicyType(res[0].(float64))
+
+	switch p.typ {
+	case VestingPolicyTypeLinear:
+		pol := LinearVestingPolicy{}
+		if err := ffjson.Unmarshal(util.ToBytes(res[1]), &pol); err != nil {
+			return errors.Annotate(err, "unmarshal LinearVestingPolicy")
+		}
+		p.data = pol
+
+	case VestingPolicyTypeCCD:
+		pol := CCDVestingPolicy{}
+		if err := ffjson.Unmarshal(util.ToBytes(res[1]), &pol); err != nil {
+			return errors.Annotate(err, "unmarshal CCDVestingPolicy")
+		}
+		p.data = pol
+	}
+
+	return nil
+}
+
+func (p VestingPolicy) MarshalJSON() ([]byte, error) {
+	return ffjson.Marshal([]interface{}{
+		p.typ,
+		p.data,
+	})
+}
+
+func (p VestingPolicy) Marshal(enc *util.TypeEncoder) error {
+	if err := enc.EncodeUVarint(uint64(p.typ)); err != nil {
+		return errors.Annotate(err, "encode PolicyType")
+	}
+
+	if err := enc.Encode(p.data); err != nil {
+		return
