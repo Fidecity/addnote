@@ -109,4 +109,8 @@ func (p VestingPolicy) Marshal(enc *util.TypeEncoder) error {
 	}
 
 	if err := enc.Encode(p.data); err != nil {
-		return
+		return errors.Annotate(err, "encode Policy")
+	}
+
+	return nil
+}
