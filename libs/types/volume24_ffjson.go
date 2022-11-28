@@ -29,4 +29,81 @@ func (j *Volume24) MarshalJSONBuf(buf fflib.EncodingBuffer) error {
 		buf.WriteString("null")
 		return nil
 	}
-	var 
+	var err error
+	var obj []byte
+	_ = obj
+	_ = err
+	buf.WriteString(`{"base":`)
+
+	{
+
+		obj, err = j.Base.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"base_volume":`)
+	fflib.AppendFloat(buf, float64(j.BaseVolume), 'g', -1, 64)
+	buf.WriteString(`,"quote":`)
+
+	{
+
+		obj, err = j.Quote.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteString(`,"quote_volume":`)
+	fflib.AppendFloat(buf, float64(j.QuoteVolume), 'g', -1, 64)
+	buf.WriteString(`,"time":`)
+
+	{
+
+		obj, err = j.Time.MarshalJSON()
+		if err != nil {
+			return err
+		}
+		buf.Write(obj)
+
+	}
+	buf.WriteByte('}')
+	return nil
+}
+
+const (
+	ffjtVolume24base = iota
+	ffjtVolume24nosuchkey
+
+	ffjtVolume24Base
+
+	ffjtVolume24BaseVolume
+
+	ffjtVolume24Quote
+
+	ffjtVolume24QuoteVolume
+
+	ffjtVolume24Time
+)
+
+var ffjKeyVolume24Base = []byte("base")
+
+var ffjKeyVolume24BaseVolume = []byte("base_volume")
+
+var ffjKeyVolume24Quote = []byte("quote")
+
+var ffjKeyVolume24QuoteVolume = []byte("quote_volume")
+
+var ffjKeyVolume24Time = []byte("time")
+
+// UnmarshalJSON umarshall json - template of ffjson
+func (j *Volume24) UnmarshalJSON(input []byte) error {
+	fs := fflib.NewFFLexer(input)
+	return j.UnmarshalJSONFFLexer(fs, fflib.FFParse_map_start)
+}
+
+// UnmarshalJSONFFLexer fast json unmarshall - template ffjson
+func (j *Volum
