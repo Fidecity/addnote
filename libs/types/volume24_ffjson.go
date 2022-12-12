@@ -217,4 +217,62 @@ mainparse:
 				if fflib.EqualFoldRight(ffjKeyVolume24BaseVolume, kn) {
 					currentKey = ffjtVolume24BaseVolume
 					state = fflib.FFParse_want_colon
-					goto mai
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyVolume24Base, kn) {
+					currentKey = ffjtVolume24Base
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				currentKey = ffjtVolume24nosuchkey
+				state = fflib.FFParse_want_colon
+				goto mainparse
+			}
+
+		case fflib.FFParse_want_colon:
+			if tok != fflib.FFTok_colon {
+				wantedTok = fflib.FFTok_colon
+				goto wrongtokenerror
+			}
+			state = fflib.FFParse_want_value
+			continue
+		case fflib.FFParse_want_value:
+
+			if tok == fflib.FFTok_left_brace || tok == fflib.FFTok_left_bracket || tok == fflib.FFTok_integer || tok == fflib.FFTok_double || tok == fflib.FFTok_string || tok == fflib.FFTok_bool || tok == fflib.FFTok_null {
+				switch currentKey {
+
+				case ffjtVolume24Base:
+					goto handle_Base
+
+				case ffjtVolume24BaseVolume:
+					goto handle_BaseVolume
+
+				case ffjtVolume24Quote:
+					goto handle_Quote
+
+				case ffjtVolume24QuoteVolume:
+					goto handle_QuoteVolume
+
+				case ffjtVolume24Time:
+					goto handle_Time
+
+				case ffjtVolume24nosuchkey:
+					err = fs.SkipField(tok)
+					if err != nil {
+						return fs.WrapErr(err)
+					}
+					state = fflib.FFParse_after_value
+					goto mainparse
+				}
+			} else {
+				goto wantedvalue
+			}
+		}
+	}
+
+handle_Base:
+
+	/* handler: j.Base type=types.String kind=struct quoted=false*/
+
