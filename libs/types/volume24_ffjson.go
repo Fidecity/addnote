@@ -165,4 +165,56 @@ mainparse:
 					if bytes.Equal(ffjKeyVolume24Base, kn) {
 						currentKey = ffjtVolume24Base
 						state = fflib.FFParse_want_colon
-						goto main
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyVolume24BaseVolume, kn) {
+						currentKey = ffjtVolume24BaseVolume
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 'q':
+
+					if bytes.Equal(ffjKeyVolume24Quote, kn) {
+						currentKey = ffjtVolume24Quote
+						state = fflib.FFParse_want_colon
+						goto mainparse
+
+					} else if bytes.Equal(ffjKeyVolume24QuoteVolume, kn) {
+						currentKey = ffjtVolume24QuoteVolume
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				case 't':
+
+					if bytes.Equal(ffjKeyVolume24Time, kn) {
+						currentKey = ffjtVolume24Time
+						state = fflib.FFParse_want_colon
+						goto mainparse
+					}
+
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyVolume24Time, kn) {
+					currentKey = ffjtVolume24Time
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.AsciiEqualFold(ffjKeyVolume24QuoteVolume, kn) {
+					currentKey = ffjtVolume24QuoteVolume
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.SimpleLetterEqualFold(ffjKeyVolume24Quote, kn) {
+					currentKey = ffjtVolume24Quote
+					state = fflib.FFParse_want_colon
+					goto mainparse
+				}
+
+				if fflib.EqualFoldRight(ffjKeyVolume24BaseVolume, kn) {
+					currentKey = ffjtVolume24BaseVolume
+					state = fflib.FFParse_want_colon
+					goto mai
