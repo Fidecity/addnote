@@ -70,4 +70,67 @@ func (p *TypeDecoder) Decode(v interface{}) error {
 		return p.DecodeNumber(v)
 	case uint8:
 		return p.DecodeNumber(v)
-	case ui
+	case uint16:
+		return p.DecodeNumber(v)
+	case uint32:
+		return p.DecodeNumber(v)
+	case uint64:
+		return p.DecodeNumber(v)
+	case float32:
+		return p.DecodeNumber(v)
+	case float64:
+		return p.DecodeNumber(v)
+	case string:
+		return p.DecodeString(v)
+	case bool:
+		var val uint8
+		if err := p.DecodeNumber(&val); err != nil {
+			return errors.Annotate(err, "DecodeNumber")
+		}
+		reflect.ValueOf(v).Elem().SetBool(val == 1)
+		return nil
+
+	default:
+		return errors.Errorf("TypeDecoder: unsupported type encountered")
+	}
+}
+
+func (p *TypeDecoder) DecodeString(v interface{}) error {
+	var length uint64
+	if err := p.DecodeUVarint(&length); err != nil {
+		return errors.Annotate(err, "DecodeUVarint")
+	}
+
+	buf := make([]byte, length)
+	n, err := p.r.Read(buf)
+	if err != nil {
+		return errors.Annotate(err, "Read")
+	}
+
+	buf = buf[:n]
+
+	reflect.ValueOf(v).Elem().SetString(string(buf))
+	return nil
+}
+
+func (p *TypeDecoder) ReadBytes(v interface{}, len uint64) error {
+	buf := make([]byte, len)
+	if _, err := p.r.Read(buf); err != nil {
+		return errors.Annotate(err, "Read")
+	}
+
+	reflect.ValueOf(v).Elem().SetBytes(buf)
+	return nil
+}
+
+type ByteReader struct {
+	io.Reader
+}
+
+func (br ByteReader) ReadByte() (byte, error) {
+	buf := make([]byte, 1)
+	if _, err := br.Read(buf); err != nil {
+		return 0, err
+	}
+
+	r
