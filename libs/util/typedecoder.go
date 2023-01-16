@@ -133,4 +133,5 @@ func (br ByteReader) ReadByte() (byte, error) {
 		return 0, err
 	}
 
-	r
+	return buf[0], nil
+}
