@@ -96,4 +96,56 @@ func TestWalletManager_GetAssetsAccountList(t *testing.T) {
 
 	walletID := "WCYrRzsTTEW5NcGMiPabgxbkyJ2PsQTkZm"
 	list, err := tm.GetAssetsAccountList(testApp, walletID, 0, 10000000)
-	if e
+	if err != nil {
+		log.Error("unexpected error:", err)
+		return
+	}
+	for i, w := range list {
+		log.Info("account[", i, "] :", w)
+	}
+	log.Info("account count:", len(list))
+
+	tm.CloseDB(testApp)
+
+}
+
+func TestWalletManager_CreateAddress(t *testing.T) {
+
+	tm := testInitWalletManager()
+
+	walletID := "WCYrRzsTTEW5NcGMiPabgxbkyJ2PsQTkZm"
+	accountID := "FVYVywDHSkze62CkeCxgLWd9eQiZM1XPn2XRdTBfZSGM"
+	//accountID := "8zpEMuVUuWN64WuCUQxd2b5LF7Yw9HnqTyg5FQVfogS"
+	address, err := tm.CreateAddress(testApp, walletID, accountID, 10)
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	for _, w := range address {
+		fmt.Printf("%s\n", w.Address)
+	}
+
+	tm.CloseDB(testApp)
+}
+
+func TestWalletManager_GetAddressList(t *testing.T) {
+
+	tm := testInitWalletManager()
+
+	walletID := "WCYrRzsTTEW5NcGMiPabgxbkyJ2PsQTkZm"
+	//accountID := "FVYVywDHSkze62CkeCxgLWd9eQiZM1XPn2XRdTBfZSGM"
+	accountID := "8zpEMuVUuWN64WuCUQxd2b5LF7Yw9HnqTyg5FQVfogS"
+	list, err := tm.GetAddressList(testApp, walletID, accountID, 0, -1, false)
+	if err != nil {
+		log.Error("unexpected error:", err)
+		return
+	}
+	for _, w := range list {
+		fmt.Printf("%s\n", w.Address)
+		//fmt.Printf("pub: %s\n", w.PublicKey)
+	}
+	log.Info("address count:", len(list))
+
+	tm.CloseDB(testApp)
+}
