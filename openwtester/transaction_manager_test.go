@@ -137,4 +137,48 @@ func TestWalletManager_GetAssetsAccountTokenBalance(t *testing.T) {
 	log.Info("balance:", balance.Balance)
 }
 
-func TestWalletManager_GetEstimateF
+func TestWalletManager_GetEstimateFeeRate(t *testing.T) {
+	tm := testInitWalletManager()
+	coin := openwallet.Coin{
+		Symbol: "XWC",
+	}
+	feeRate, unit, err := tm.GetEstimateFeeRate(coin)
+	if err != nil {
+		log.Error("GetEstimateFeeRate failed, unexpected error:", err)
+		return
+	}
+	log.Std.Info("feeRate: %s %s/%s", feeRate, coin.Symbol, unit)
+}
+
+func TestGetAddressBalance(t *testing.T) {
+	symbol := "BTX"
+	assetsMgr, err := openw.GetAssetsAdapter(symbol)
+	if err != nil {
+		log.Error(symbol, "is not support")
+		return
+	}
+	//读取配置
+	absFile := filepath.Join(configFilePath, symbol+".ini")
+
+	c, err := config.NewConfig("ini", absFile)
+	if err != nil {
+		return
+	}
+	assetsMgr.LoadAssetsConfig(c)
+	bs := assetsMgr.GetBlockScanner()
+
+	addrs := []string{
+		"2YARdSbYnAriqdAu2rauNr3gvbEoqhdnTt",
+	}
+
+	balances, err := bs.GetBalanceByAddress(addrs...)
+	if err != nil {
+		log.Errorf(err.Error())
+		return
+	}
+	for _, b := range balances {
+		log.Infof("balance[%s] = %s", b.Address, b.Balance)
+		log.Infof("UnconfirmBalance[%s] = %s", b.Address, b.UnconfirmBalance)
+		log.Infof("ConfirmBalance[%s] = %s", b.Address, b.ConfirmBalance)
+	}
+}
