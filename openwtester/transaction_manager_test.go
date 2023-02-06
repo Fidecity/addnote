@@ -87,4 +87,54 @@ func TestWalletManager_GetTransactionByWxID(t *testing.T) {
 	tm := testInitWalletManager()
 	wxID := openwallet.GenTransactionWxID(&openwallet.Transaction{
 		TxID: "bfa6febb33c8ddde9f7f7b4d93043956cce7e0f4e95da259a78dc9068d178fee",
-		Coin: open
+		Coin: openwallet.Coin{
+			Symbol:     "LTC",
+			IsContract: false,
+			ContractID: "",
+		},
+	})
+	log.Info("wxID:", wxID)
+	//"D0+rxcKSqEsFMfGesVzBdf6RloM="
+	tx, err := tm.GetTransactionByWxID(testApp, wxID)
+	if err != nil {
+		log.Error("GetTransactionByTxID failed, unexpected error:", err)
+		return
+	}
+	log.Info("tx:", tx)
+}
+
+func TestWalletManager_GetAssetsAccountBalance(t *testing.T) {
+	tm := testInitWalletManager()
+	walletID := "WCYrRzsTTEW5NcGMiPabgxbkyJ2PsQTkZm"
+	accountID := "8zpEMuVUuWN64WuCUQxd2b5LF7Yw9HnqTyg5FQVfogS"
+	balance, err := tm.GetAssetsAccountBalance(testApp, walletID, accountID)
+	if err != nil {
+		log.Error("GetAssetsAccountBalance failed, unexpected error:", err)
+		return
+	}
+	log.Info("balance:", balance)
+}
+
+func TestWalletManager_GetAssetsAccountTokenBalance(t *testing.T) {
+	tm := testInitWalletManager()
+	walletID := "WCYrRzsTTEW5NcGMiPabgxbkyJ2PsQTkZm"
+	accountID := "8zpEMuVUuWN64WuCUQxd2b5LF7Yw9HnqTyg5FQVfogS"
+	//accountID := "FVYVywDHSkze62CkeCxgLWd9eQiZM1XPn2XRdTBfZSGM"
+
+	contract := openwallet.SmartContract{
+		Address:  "1.3.0",
+		Symbol:   "XWC",
+		Name:     "XWC",
+		Token:    "XWC",
+		Decimals: 8,
+	}
+
+	balance, err := tm.GetAssetsAccountTokenBalance(testApp, walletID, accountID, contract)
+	if err != nil {
+		log.Error("GetAssetsAccountTokenBalance failed, unexpected error:", err)
+		return
+	}
+	log.Info("balance:", balance.Balance)
+}
+
+func TestWalletManager_GetEstimateF
