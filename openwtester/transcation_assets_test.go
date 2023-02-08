@@ -41,4 +41,43 @@ func testGetAssetsAccountTokenBalance(tm *openw.WalletManager, walletID, account
 	log.Info("token balance:", balance.Balance)
 }
 
-func testCreateTransactionStep(tm *openw.WalletManager, walletID, accountID, to, amoun
+func testCreateTransactionStep(tm *openw.WalletManager, walletID, accountID, to, amount, feeRate string, contract *openwallet.SmartContract) (*openwallet.RawTransaction, error) {
+
+	//err := tm.RefreshAssetsAccountBalance(testApp, accountID)
+	//if err != nil {
+	//	log.Error("RefreshAssetsAccountBalance failed, unexpected error:", err)
+	//	return nil, err
+	//}
+
+	rawTx, err := tm.CreateTransaction(testApp, walletID, accountID, amount, to, feeRate, "", contract)
+
+	if err != nil {
+		log.Error("CreateTransaction failed, unexpected error:", err)
+		return nil, err
+	}
+
+	return rawTx, nil
+}
+
+func testCreateSummaryTransactionStep(
+	tm *openw.WalletManager,
+	walletID, accountID, summaryAddress, minTransfer, retainedBalance, feeRate string,
+	start, limit int,
+	contract *openwallet.SmartContract) ([]*openwallet.RawTransaction, error) {
+
+	rawTxArray, err := tm.CreateSummaryTransaction(testApp, walletID, accountID, summaryAddress, minTransfer,
+		retainedBalance, feeRate, start, limit, contract)
+
+	if err != nil {
+		log.Error("CreateSummaryTransaction failed, unexpected error:", err)
+		return nil, err
+	}
+
+	return rawTxArray, nil
+}
+
+func testSignTransactionStep(tm *openw.WalletManager, rawTx *openwallet.RawTransaction) (*openwallet.RawTransaction, error) {
+
+	_, err := tm.SignTransaction(testApp, rawTx.Account.WalletID, rawTx.Account.AccountID, "12345678", rawTx)
+	if err != nil {
+		log.Error("SignTran
