@@ -80,4 +80,49 @@ func testSignTransactionStep(tm *openw.WalletManager, rawTx *openwallet.RawTrans
 
 	_, err := tm.SignTransaction(testApp, rawTx.Account.WalletID, rawTx.Account.AccountID, "12345678", rawTx)
 	if err != nil {
-		log.Error("SignTran
+		log.Error("SignTransaction failed, unexpected error:", err)
+		return nil, err
+	}
+
+	log.Infof("rawTx: %+v", rawTx)
+	return rawTx, nil
+}
+
+func testVerifyTransactionStep(tm *openw.WalletManager, rawTx *openwallet.RawTransaction) (*openwallet.RawTransaction, error) {
+
+	//log.Info("rawTx.Signatures:", rawTx.Signatures)
+
+	_, err := tm.VerifyTransaction(testApp, rawTx.Account.WalletID, rawTx.Account.AccountID, rawTx)
+	if err != nil {
+		log.Error("VerifyTransaction failed, unexpected error:", err)
+		return nil, err
+	}
+
+	log.Infof("rawTx: %+v", rawTx)
+	return rawTx, nil
+}
+
+func testSubmitTransactionStep(tm *openw.WalletManager, rawTx *openwallet.RawTransaction) (*openwallet.RawTransaction, error) {
+
+	tx, err := tm.SubmitTransaction(testApp, rawTx.Account.WalletID, rawTx.Account.AccountID, rawTx)
+	if err != nil {
+		log.Error("SubmitTransaction failed, unexpected error:", err)
+		return nil, err
+	}
+
+	log.Std.Info("tx: %+v", tx)
+	log.Info("wxID:", tx.WxID)
+	log.Info("txID:", rawTx.TxID)
+
+	return rawTx, nil
+}
+
+func TestTransfer(t *testing.T) {
+
+	addrs := []string{
+		"XWCNSb4UJUYEPrzxAfdVho4fjS4GY9FDANrZi",
+		"XWCNPFtc21VpmAykPZe8HKJxHCj5qiREugv5J",
+		"XWCNVqNUJ5uLnjhUKnRKc8Y7BdzijjREf11T6",
+		"XWCNURuJhywJYbxKger7CPUP1nRrHEbvrCDqQ",
+		"XWCNPiXvMRxD7Eo3N3b7Lp7ugnBTLomzgai66",
+		"XWCNSzK3xpgHuZajNEvybTZuu8Swh
