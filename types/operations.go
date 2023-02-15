@@ -134,3 +134,139 @@ type TransferOperation struct {
 type Buffer []byte
 
 func (p Buffer) String() string {
+	return hex.EncodeToString(p)
+}
+
+func (p *Buffer) FromString(data string) error {
+	buf, err := hex.DecodeString(data)
+	if err != nil {
+		return fmt.Errorf("DecodeString: %v", err)
+	}
+
+	*p = buf
+	return nil
+}
+
+func (p Buffer) Bytes() []byte {
+	return p
+}
+
+func (p Buffer) Marshal(encoder *encoding.Encoder) error {
+	enc := encoding.NewRollingEncoder(encoder)
+	enc.EncodeUVarint(uint64(len(p)))
+	enc.Encode(p.Bytes())
+	return enc.Err()
+}
+
+func (p Buffer) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.String())
+}
+
+func (p *Buffer) UnmarshalJSON(data []byte) error {
+	var b string
+	if err := json.Unmarshal(data, &b); err != nil {
+		return fmt.Errorf("Unmarshal: %v", err)
+	}
+
+	return p.FromString(b)
+}
+
+type Memo struct {
+	From    string `json:"from"`
+	To      string `json:"to"`
+	Nonce   uint64 `json:"nonce"`
+	Message Buffer `json:"message"`
+}
+
+func (m Memo) Marshal(encoder *encoding.Encoder) error {
+	enc := encoding.NewRollingEncoder(encoder)
+	enc.Encode(m.From)
+	enc.Encode(m.To)
+	enc.Encode(m.Nonce)
+	enc.Encode(m.Message)
+	return enc.Err()
+}
+
+func (op *TransferOperation) Type() OpType { return TransferOpType }
+
+func (op *TransferOperation) Marshal(encoder *encoding.Encoder) error {
+	enc := encoding.NewRollingEncoder(encoder)
+
+	enc.EncodeUVarint(uint64(op.Type()))
+	enc.Encode(op.Fee)
+	enc.Encode(op.From)
+	enc.Encode(op.To)
+	enc.Encode(op.Amount)
+	enc.Encode(op.Memo)
+
+	//Memo?
+	// enc.EncodeUVarint(0)
+	//Extensions
+	enc.EncodeUVarint(0)
+	return enc.Err()
+}
+
+// LimitOrderCreateOperation
+type LimitOrderCreateOperation struct {
+	Fee          AssetAmount       `json:"fee"`
+	Seller       ObjectID          `json:"seller"`
+	AmountToSell AssetAmount       `json:"amount_to_sell"`
+	MinToReceive AssetAmount       `json:"min_to_receive"`
+	Expiration   Time              `json:"expiration"`
+	FillOrKill   bool              `json:"fill_or_kill"`
+	Extensions   []json.RawMessage `json:"extensions"`
+}
+
+func (op *LimitOrderCreateOperation) Marshal(encoder *encoding.Encoder) error {
+	enc := encoding.NewRollingEncoder(encoder)
+
+	enc.EncodeUVarint(uint64(op.Type()))
+	enc.Encode(op.Fee)
+	enc.Encode(op.Seller)
+	enc.Encode(op.AmountToSell)
+	enc.Encode(op.MinToReceive)
+	enc.Encode(op.Expiration)
+	enc.EncodeBool(op.FillOrKill)
+
+	//extensions
+	enc.EncodeUVarint(0)
+	return enc.Err()
+}
+
+func (op *LimitOrderCreateOperation) Type() OpType { return LimitOrderCreateOpType }
+
+// LimitOrderCancelOpType
+type LimitOrderCancelOperation struct {
+	Fee              AssetAmount       `json:"fee"`
+	FeePayingAccount ObjectID          `json:"fee_paying_account"`
+	Order            ObjectID          `json:"order"`
+	Extensions       []json.RawMessage `json:"extensions"`
+}
+
+func (op *LimitOrderCancelOperation) Marshal(encoder *encoding.Encoder) error {
+	enc := encoding.NewRollingEncoder(encoder)
+
+	enc.EncodeUVarint(uint64(op.Type()))
+	enc.Encode(op.Fee)
+	enc.Encode(op.FeePayingAccount)
+	enc.Encode(op.Order)
+
+	// extensions
+	enc.EncodeUVarint(0)
+	return enc.Err()
+}
+
+func (op *LimitOrderCancelOperation) Type() OpType { return LimitOrderCancelOpType }
+
+// FillOrderOpType
+type FillOrderOperation struct {
+	Order   ObjectID
+	Account ObjectID
+	Pays    AssetAmount
+	Recives AssetAmount
+	Fee     AssetAmount
+	Price   Price
+	IsMaker bool
+}
+
+func (op *FillOrderOperation) Type() OpType { return FillOrderOpType }
