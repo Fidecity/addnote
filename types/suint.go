@@ -36,4 +36,25 @@ func (su *Suint64) UnmarshalJSON(b []byte) (err error) {
 	return err
 }
 
-func
+func (su *Suint32) UnmarshalJSON(b []byte) (err error) {
+	var u uint32
+	if err = json.Unmarshal(b, &u); err == nil {
+		temp := Suint32(u)
+		su = &temp
+		return nil
+	}
+
+	// failed on uint32, try string
+	var s string
+	if err = json.Unmarshal(b, &s); err == nil {
+		u, err := strconv.Atoi(s)
+		if err != nil {
+			return err
+		}
+		temp := Suint32(u)
+		su = &temp
+		return nil
+	}
+
+	return err
+}
