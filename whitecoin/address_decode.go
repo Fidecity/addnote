@@ -9,4 +9,48 @@
  *
  * The OpenWallet library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ */
+
+package whitecoin
+
+import (
+	"github.com/Assetsadapter/whitecoin-adapter/whitecoin_addrdec"
+)
+
+type addressDecoder struct {
+	wm *WalletManager //钱包管理者
+}
+
+//NewAddressDecoder 地址解析器
+func NewAddressDecoder(wm *WalletManager) *addressDecoder {
+	decoder := addressDecoder{}
+	decoder.wm = wm
+	return &decoder
+}
+
+//PrivateKeyToWIF 私钥转WIF
+func (decoder *addressDecoder) PrivateKeyToWIF(priv []byte, isTestnet bool) (string, error) {
+	return "", nil
+}
+
+//PublicKeyToAddress 公钥转地址
+func (decoder *addressDecoder) PublicKeyToAddress(pub []byte, isTestnet bool) (string, error) {
+	address, err := whitecoin_addrdec.Default.AddressEncode(pub)
+	return address, err
+}
+
+//RedeemScriptToAddress 多重签名赎回脚本转地址
+func (decoder *addressDecoder) RedeemScriptToAddress(pubs [][]byte, required uint64, isTestnet bool) (string, error) {
+	return "", nil
+}
+
+//WIFToPrivateKey WIF转私钥
+func (decoder *addressDecoder) WIFToPrivateKey(wif string, isTestnet bool) ([]byte, error) {
+	priv, err := whitecoin_addrdec.Default.AddressDecode(wif)
+	if err != nil {
+		return nil, err
+	}
+	return priv, nil
+}
