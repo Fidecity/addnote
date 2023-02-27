@@ -40,4 +40,10 @@ func TestAddressDecoder_AddressDecode(t *testing.T) {
 
 	p2pkAddr := "D8qHfnugKAgavULzVjQKyjqxMD7wBETN4s"
 	p2pkHash, _ := whitecoin_addrdec.Default.AddressDecode(p2pkAddr)
-	t.Logf("p2pkHash: %s", hex.EncodeToString(p2p
+	t.Logf("p2pkHash: %s", hex.EncodeToString(p2pkHash))
+
+	p2shAddr := "Lb5hzBamSSS4xz2FJqAV2cL2bYMq6oDjJA"
+
+	p2shHash, _ := whitecoin_addrdec.Default.AddressDecode(p2shAddr)
+	t.Logf("p2shHash: %s", hex.EncodeToString(p2shHash))
+}
