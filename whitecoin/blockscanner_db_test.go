@@ -42,4 +42,48 @@ package whitecoin
 //	}
 //
 //	if _height != height || _hash != hash {
-//		t.Errorf("Expecting local height: %v and hash: %v, but returned height: %v and hash: %v.", height, hash, _height,
+//		t.Errorf("Expecting local height: %v and hash: %v, but returned height: %v and hash: %v.", height, hash, _height, _hash)
+//	}
+//}
+//
+////SaveLocalBlock 记录本地新区块
+//func TestSaveLocalBlock(t *testing.T) {
+//	wm := testNewWalletManager()
+//	block := Block{}
+//
+//	block.Height = uint32(50990764)
+//	block.Hash = "030a0eac393c1899070c021ff5c4304e3790aefa89d0a6fe7e026dd86932f723"
+//
+//	err := wm.Blockscanner.SaveLocalBlock(&block)
+//
+//	if err != nil {
+//		t.Error(err)
+//	}
+//}
+//
+////GetLocalBlock 获取本地区块数据
+//func TestGetLocalBlock(t *testing.T) {
+//	height := 50991100
+//	hash := "030a0ffc276dc36dff0c35222d88fe3aecb1c02d99afe5f3705fff53cd2ebd93"
+//	wm := testNewWalletManager()
+//	block := Block{}
+//
+//	block.Height = uint32(height)
+//	block.Hash = hash
+//
+//	err := wm.Blockscanner.SaveLocalBlock(&block)
+//	if err != nil {
+//		t.Error(err)
+//		return
+//	}
+//
+//	_block, err := wm.Blockscanner.GetLocalBlock(uint32(height))
+//	if err != nil {
+//		t.Error(err)
+//		return
+//	}
+//
+//	if _block.Hash != block.Hash || _block.Height != block.Height {
+//		t.Errorf("Expecting block height: %v and hash: %v, but returned height: %v and hash: %v.", height, hash, _block.Height, _block.Hash)
+//	}
+//}
