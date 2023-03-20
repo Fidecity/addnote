@@ -44,4 +44,31 @@ func (decoder *ContractDecoder) GetTokenBalanceByAddress(contract openwallet.Sma
 	for _, addr := range address {
 
 		balance, err := decoder.wm.Api.GetAddrBalance(addr, asset)
-		if err 
+		if err != nil {
+			decoder.wm.Log.Errorf("get account[%v] token balance failed, err: %v", addr, err)
+		}
+
+		if balance == nil {
+			return nil, err
+		}
+
+		balanceDec, _ := decimal.NewFromString(balance.Amount)
+		balanceDec = balanceDec.Shift(0 - int32(contract.Decimals))
+
+		tokenBalance := &openwallet.TokenBalance{
+			Contract: &contract,
+			Balance: &openwallet.Balance{
+				Address:          addr,
+				Symbol:           contract.Symbol,
+				Balance:          balanceDec.String(),
+				ConfirmBalance:   balanceDec.String(),
+				UnconfirmBalance: "0",
+			},
+		}
+
+		tokenBalanceList = append(tokenBalanceList, tokenBalance)
+	}
+
+	return tokenBalanceList, nil
+
+}
