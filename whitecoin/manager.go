@@ -10,4 +10,42 @@
  * The OpenWallet library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more 
+ * GNU Lesser General Public License for more details.
+ */
+
+package whitecoin
+
+import (
+	"fmt"
+	"github.com/blocktree/openwallet/v2/log"
+	"github.com/blocktree/openwallet/v2/openwallet"
+	bt "github.com/Assetsadapter/whitecoin-adapter/libs/types"
+	"github.com/Assetsadapter/whitecoin-adapter/whitecoin_addrdec"
+)
+
+type WalletManager struct {
+	openwallet.AssetsAdapterBase
+
+	Api             *WalletClient                   // 节点客户端
+	Config          *WalletConfig                   // 节点配置
+	Decoder         openwallet.AddressDecoder       //地址编码器
+	DecoderV2       openwallet.AddressDecoderV2     //地址编码器V2
+	TxDecoder       openwallet.TransactionDecoder   //交易单编码器
+	Log             *log.OWLogger                   //日志工具
+	ContractDecoder openwallet.SmartContractDecoder //智能合约解析器
+	Blockscanner    openwallet.BlockScanner         //区块扫描器
+}
+
+func NewWalletManager() *WalletManager {
+	wm := WalletManager{}
+	wm.Config = NewConfig(Symbol)
+	wm.Blockscanner = NewBlockScanner(&wm)
+	wm.Decoder = NewAddressDecoder(&wm)
+	wm.DecoderV2 = whitecoin_addrdec.NewAddressDecoderV2()
+	wm.TxDecoder = NewTransactionDecoder(&wm)
+	wm.ContractDecoder = NewContractDecoder(&wm)
+	wm.Log = log.NewOWLogger(wm.Symbol())
+	return &wm
+}
+
+func (wm *WalletManager) GetRequiredFee(ops []bt.Operation, assetID string) ([]bt.AssetAmount, erro
