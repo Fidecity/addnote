@@ -93,4 +93,59 @@ func (c *WalletClient) call(method string, request interface{}, queryWalletAPI b
 		return nil, err
 	}
 
-	result := resp.Get("r
+	result := resp.Get("result")
+
+	return &result, nil
+}
+
+// isError 是否报错
+func (c *WalletClient) isError(r *req.Resp) error {
+
+	if r.Response().StatusCode != http.StatusOK {
+		message := r.Response().Status
+		status := r.Response().StatusCode
+		return fmt.Errorf("[%d]%s", status, message)
+	}
+
+	result := gjson.ParseBytes(r.Bytes())
+
+	if result.Get("error").IsObject() {
+
+		return fmt.Errorf("[%d]%s",
+			result.Get("error.code").Int(),
+			result.Get("error.message").String())
+
+	}
+
+	return nil
+
+}
+
+// GetObjects return a block by the given block number
+func (c *WalletClient) GetObjects(assets ...types.ObjectID) (*gjson.Result, error) {
+	resp, err := c.call("get_objects", []interface{}{objectsToParams(assets)}, false)
+	return resp, err
+}
+
+func objectsToParams(objs []types.ObjectID) []string {
+	objsStr := make([]string, len(objs))
+	for i, asset := range objs {
+		objsStr[i] = asset.String()
+	}
+	return objsStr
+}
+
+// GetBlockchainInfo returns current blockchain data
+func (c *WalletClient) GetBlockchainInfo() (*BlockchainInfo, error) {
+	//get_dynamic_global_properties
+	r, err := c.call("get_dynamic_global_properties", []interface{}{}, false)
+	if err != nil {
+		return nil, err
+	}
+	info := NewBlockchainInfo(r)
+	return info, nil
+}
+
+// GetBlockByHeight returns a certain block
+func (c *WalletClient) GetBlockByHeight(height uint32) (*Block, error) {
+	r, err := c.call("get_block", []int
