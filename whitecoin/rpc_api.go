@@ -204,3 +204,53 @@ func (c *WalletClient) GetAccountID(name string) (*types.ObjectID, error) {
 			id := arr[0].Array()[1].String()
 			objectID := types.MustParseObjectID(id)
 			return &objectID, nil
+		}
+	}
+	return nil, fmt.Errorf("[%s] have not registered", name)
+}
+
+// GetAssetsBalance Returns information about the given account.
+func (c *WalletClient) GetAccounts(names_or_ids ...string) ([]*types.Account, error) {
+	var resp []*types.Account
+	r, err := c.call("get_accounts", []interface{}{names_or_ids}, false)
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal([]byte(r.Raw), &resp); err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+//func (c *WalletClient) GetRequiredFee(ops []bt.Operation, assetID string) ([]bt.AssetAmount, error) {
+//	var resp []bt.AssetAmount
+//
+//	opsJSON := []interface{}{}
+//	for _, o := range ops {
+//		_, err := json.Marshal(o)
+//		if err != nil {
+//			return []bt.AssetAmount{}, err
+//		}
+//
+//		opArr := []interface{}{o.Type(), o}
+//
+//		opsJSON = append(opsJSON, opArr)
+//	}
+//	r, err := c.call("get_required_fees", []interface{}{opsJSON, assetID}, false)
+//	if err != nil {
+//		return nil, err
+//	}
+//	if err := json.Unmarshal([]byte(r.Raw), &resp); err != nil {
+//		return nil, err
+//	}
+//
+//	return resp, nil
+//}
+
+// BroadcastTransaction broadcast a transaction
+func (c *WalletClient) BroadcastTransaction(tx *bt.SignedTransaction) (string, error) {
+	//resp := BroadcastResponse{}
+
+	r, err := c.call("lightwallet_broadcast", []interface{}{tx}, false)
+	if err != nil {
+		r
