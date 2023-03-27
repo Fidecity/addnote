@@ -148,4 +148,59 @@ func (c *WalletClient) GetBlockchainInfo() (*BlockchainInfo, error) {
 
 // GetBlockByHeight returns a certain block
 func (c *WalletClient) GetBlockByHeight(height uint32) (*Block, error) {
-	r, err := c.call("get_block", []int
+	r, err := c.call("get_block", []interface{}{height}, false)
+	if err != nil {
+		return nil, err
+	}
+	block := NewBlock(height, r)
+	return block, nil
+}
+
+// GetTransaction returns the TX
+func (c *WalletClient) GetTransaction(txid string) (*types.Transaction, error) {
+	r, err := c.call("get_transaction", []interface{}{txid}, false)
+	if err != nil {
+		return nil, err
+	}
+	return NewTransaction(r, txid)
+}
+
+// GetAddrBalance Returns information about the given account.
+func (c *WalletClient) GetAddrBalance(addr string, asset types.ObjectID) (*Balance, error) {
+
+	balance := &Balance{
+		AssetID: asset,
+		Amount:  "0",
+	}
+
+	//var resp []*types.Account
+	r, err := c.call("get_addr_balances", []interface{}{addr, []interface{}{asset.String()}}, false)
+	if err != nil {
+		return balance, nil
+	}
+
+	if r.IsArray() {
+		for _, item := range r.Array() {
+			b := NewBalance(item)
+			if b.AssetID.String() == asset.String() {
+				return b, nil
+			}
+
+		}
+	}
+
+	return balance, nil
+}
+
+// GetAssetsBalance Returns information about the given account.
+func (c *WalletClient) GetAccountID(name string) (*types.ObjectID, error) {
+	r, err := c.call("lookup_accounts", []interface{}{name, 1}, false)
+	if err != nil {
+		return nil, err
+	}
+	arr := r.Array()
+	if len(arr) > 0 {
+		if arr[0].Array()[0].String() == name {
+			id := arr[0].Array()[1].String()
+			objectID := types.MustParseObjectID(id)
+			return &objectID, nil
