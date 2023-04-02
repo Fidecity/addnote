@@ -313,4 +313,19 @@ func post(url, method string, request interface{}) (*gjson.Result, error) {
 	req.Header.Set("Connection", "close")
 
 	client := &http.Client{}
-	r
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	ret, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("response error:", err)
+	}
+	// fmt.Println("response Body:", string(ret))
+	gj := gjson.ParseBytes(ret)
+	result := gj.Get("result")
+
+	return &result, nil
+}
