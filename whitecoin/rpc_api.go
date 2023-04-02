@@ -253,4 +253,64 @@ func (c *WalletClient) BroadcastTransaction(tx *bt.SignedTransaction) (string, e
 
 	r, err := c.call("lightwallet_broadcast", []interface{}{tx}, false)
 	if err != nil {
-		r
+		return "", err
+	}
+
+	txid := r.String()
+	return txid, nil
+
+	//data := []interface{}{}
+	//if err := json.Unmarshal([]byte(r.Raw), &data); err != nil {
+	//	return nil, err
+	//}
+	//if len(data) == 2 {
+	//	resp.ID = data[0].(string)
+	//}
+	//return &resp, err
+}
+
+// GetTransactionID return the TX ID
+func (c *WalletClient) GetTransactionID(tx *types.Transaction) (string, error) {
+	r, err := c.call("get_transaction_id", []interface{}{tx}, true)
+	if err != nil {
+		return "", err
+	}
+	return r.String(), err
+}
+
+func (c *WalletClient) GetAccountByAddr(address string) (*types.Account, error) {
+	var resp *types.Account
+	r, err := c.call("get_account_by_addr", []interface{}{address}, false)
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal([]byte(r.Raw), &resp); err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func post(url, method string, request interface{}) (*gjson.Result, error) {
+
+	var (
+		body = make(map[string]interface{}, 0)
+	)
+
+	//json-rpc
+	body["jsonrpc"] = "2.0"
+	body["id"] = 1
+	body["method"] = method
+	body["params"] = request
+
+	j, err := json.Marshal(&body)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(j))
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Connection", "close")
+
+	client := &http.Client{}
+	r
